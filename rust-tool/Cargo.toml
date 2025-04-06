@@ -1,0 +1,13 @@
+[package]
+name = "rust-tool"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+prettyplease = "0.2.31"
+proc-macro2 = "1.0.93"
+quote = "1.0.38"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+syn = { version = "2.0.100", features = ["full", "visit", "visit-mut"] }
+walkdir = "2.5.0"
