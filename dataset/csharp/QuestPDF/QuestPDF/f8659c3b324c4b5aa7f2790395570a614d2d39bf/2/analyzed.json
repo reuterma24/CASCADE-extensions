@@ -1,0 +1,114 @@
+[
+    {
+        "doc": "/// <summary>\r\n/// Sets the right-to-left (RTL) direction for its entire content.\r\n/// <a href=\"https://www.questpdf.com/api-reference/content-direction.html\">Learn more</a>\r\n/// </summary>\r\n/// <include file='../Resources/Documentation.xml' path='documentation/doc[@for=\"contentDirection.rtl.remarks\"]/*'/>",
+        "signature": {
+            "name": "ContentFromRightToLeft",
+            "returns": "IContainer",
+            "params": [
+                "this IContainer element"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "ContentDirectionExtensions",
+            "doc": "",
+            "other_methods": [
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ContentDirection",
+                        "returns": "IContainer",
+                        "params": [
+                            "this IContainer element",
+                            "ContentDirection direction"
+                        ],
+                        "modifier": [
+                            "internal",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return element.Element(new ContentDirectionSetter\r\n            {\r\n                ContentDirection = direction\r\n            });\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Sets the left-to-right (LTR) direction for its entire content.\r\n/// <a href=\"https://www.questpdf.com/api-reference/content-direction.html\">Learn more</a>\r\n/// </summary>\r\n/// <include file='../Resources/Documentation.xml' path='documentation/doc[@for=\"contentDirection.ltr.remarks\"]/*'/>",
+                    "signature": {
+                        "name": "ContentFromLeftToRight",
+                        "returns": "IContainer",
+                        "params": [
+                            "this IContainer element"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return element.ContentDirection(Infrastructure.ContentDirection.LeftToRight);\r\n        }"
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [
+                "using QuestPDF.Elements;",
+                "using QuestPDF.Infrastructure;"
+            ],
+            "constructors": [],
+            "extends": "",
+            "implements": [],
+            "namespace": "QuestPDF.Fluent"
+        },
+        "code": "{\r\n            return element.ContentDirection(Infrastructure.ContentDirection.RightToLeft);\r\n        }",
+        "code_file_path": "QuestPDF/Fluent/ContentDirectionExtensions.cs",
+        "called_functions": [
+            "element.ContentDirection(Infrastructure.ContentDirection.RightToLeft)"
+        ],
+        "id": 292,
+        "tests": [
+            {
+                "tests": "using System;\r\nusing System.IO;\r\nusing System.Linq;\r\nusing System.Net.Mime;\r\nusing System.Threading;\r\nusing FluentAssertions;\r\nusing NUnit.Framework;\r\nusing QuestPDF.Drawing;\r\nusing QuestPDF.Drawing.Exceptions;\r\nusing QuestPDF.Elements;\r\nusing QuestPDF.Fluent;\r\nusing QuestPDF.Helpers;\r\nusing QuestPDF.Infrastructure;\r\nusing QuestPDF.UnitTests.TestEngine;\r\nusing SkiaSharp;\r\nusing ImageElement = QuestPDF.Elements.Image;\r\nusing DocumentImage = QuestPDF.Infrastructure.Image;\r\n\r\nnamespace QuestPDF.UnitTests\r\n{\r\n    [TestFixture]\r\n    public class ImageTests\r\n    {\r\n        [Test]\r\n        public void Measure_TakesAvailableSpaceRegardlessOfSize()\r\n        {\r\n            var x = new AspectRatio().ContentFromRightToLeft();\r\n            ContentDirectionExtensions.ContentFromRightToLeft(new AspectRatio());\r\n\r\n            TestPlan\r\n                .For(x => new ImageElement\r\n                {\r\n                    DocumentImage = GenerateDocumentImage(400, 300)\r\n                })\r\n                .MeasureElement(new Size(300, 200))\r\n                .CheckMeasureResult(SpacePlan.FullRender(300, 200));\r\n        }\r\n\r\n        [Test]\r\n        public void Draw_TakesAvailableSpaceRegardlessOfSize()\r\n        {\r\n            TestPlan\r\n                .For(x => new ImageElement\r\n                {\r\n                    CompressionQuality = ImageCompressionQuality.High,\r\n                    TargetDpi = DocumentSettings.DefaultRasterDpi,\r\n                    DocumentImage = GenerateDocumentImage(400, 300)\r\n                })\r\n                .DrawElement(new Size(300, 200))\r\n                .ExpectCanvasDrawImage(new Position(0, 0), new Size(300, 200))\r\n                .CheckDrawResult();\r\n        }\r\n\r\n        [Test]\r\n        public void Fluent_RecognizesImageProportions()\r\n        {\r\n            var image = GenerateDocumentImage(600, 200);\r\n\r\n            TestPlan\r\n                .For(x =>\r\n                {\r\n                    var container = new Container();\r\n                    container.Image(image);\r\n                    return container;\r\n                })\r\n                .MeasureElement(new Size(300, 200))\r\n                .CheckMeasureResult(SpacePlan.FullRender(300, 100)); ;\r\n        }\r\n\r\n        [Test]\r\n        public void ImageObject_ThrowsEncodingException_WhenImageDataIsIncorrect()\r\n        {\r\n            Func<Infrastructure.Image> action = () => Infrastructure.Image.FromBinaryData(new byte[] { 1, 2, 3 });\r\n            action.Should().ThrowExactly<DocumentComposeException>().WithMessage(\"Cannot decode the provided image.\");\r\n        }\r\n\r\n        [Test]\r\n        public void ImageObject_ThrowsEncodingException_WhenStreamIsIncorrect()\r\n        {\r\n            Func<Infrastructure.Image> action = () =>\r\n            {\r\n                using var stream = new MemoryStream(new byte[] { 1, 2, 3 });\r\n                return Infrastructure.Image.FromStream(stream);\r\n            };\r\n\r\n            action.Should().ThrowExactly<DocumentComposeException>().WithMessage(\"Cannot decode the provided image.\");\r\n        }\r\n\r\n        [Test]\r\n        public void ImageObject_ThrowsFileNotFoundException_FileIsNotFound()\r\n        {\r\n            Func<Infrastructure.Image> action = () => Infrastructure.Image.FromFile(\"non-existing-file.jpg\");\r\n            action.Should().ThrowExactly<DocumentComposeException>().WithMessage(\"Cannot load provided image, file not found: *\");\r\n        }\r\n\r\n        [Test]\r\n        public void UsingSharedImageShouldNotDrasticallyIncreaseDocumentSize()\r\n        {\r\n            var photo = File.ReadAllBytes(\"Resources/photo.jpg\");\r\n\r\n            var documentWithSingleImageSize = GetDocumentSize(container =>\r\n            {\r\n                container.Image(photo);\r\n            });\r\n\r\n            var documentWithMultipleImagesSize = GetDocumentSize(container =>\r\n            {\r\n                container.Column(column =>\r\n                {\r\n                    foreach (var i in Enumerable.Range(0, 10))\r\n                        column.Item().Image(photo);\r\n                });\r\n            });\r\n\r\n            var documentWithSingleImageUsedMultipleTimesSize = GetDocumentSize(container =>\r\n            {\r\n                container.Column(column =>\r\n                {\r\n                    var sharedImage = DocumentImage.FromBinaryData(photo);\r\n\r\n                    foreach (var i in Enumerable.Range(0, 10))\r\n                        column.Item().Image(sharedImage);\r\n                });\r\n            });\r\n\r\n            (documentWithMultipleImagesSize / (float)documentWithSingleImageSize).Should().BeInRange(9.9f, 10);\r\n            (documentWithSingleImageUsedMultipleTimesSize / (float)documentWithSingleImageSize).Should().BeInRange(1f, 1.05f);\r\n        }\r\n\r\n        [Test]\r\n        public void ImageCompressionHasImpactOnDocumentSize()\r\n        {\r\n            var photo = File.ReadAllBytes(\"Resources/photo.jpg\");\r\n\r\n            var veryLowCompressionSize = GetDocumentSize(container => container.Image(photo).WithCompressionQuality(ImageCompressionQuality.VeryLow));\r\n            var bestCompressionSize = GetDocumentSize(container => container.Image(photo).WithCompressionQuality(ImageCompressionQuality.Best));\r\n\r\n            (bestCompressionSize / (float)veryLowCompressionSize).Should().BeGreaterThan(25);\r\n        }\r\n\r\n        [Test]\r\n        public void TargetDpiHasImpactOnDocumentSize()\r\n        {\r\n            var photo = File.ReadAllBytes(\"Resources/photo.jpg\");\r\n\r\n            var lowDpiSize = GetDocumentSize(container => container.Image(photo).WithRasterDpi(12));\r\n            var highDpiSize = GetDocumentSize(container => container.Image(photo).WithRasterDpi(144));\r\n\r\n            (highDpiSize / (float)lowDpiSize).Should().BeGreaterThan(40);\r\n        }\r\n\r\n        private static int GetDocumentSize(Action<IContainer> container)\r\n        {\r\n            return Document\r\n                .Create(document =>\r\n                {\r\n                    document.Page(page =>\r\n                    {\r\n                        page.Content().Element(container);\r\n                    });\r\n                })\r\n                .GeneratePdf()\r\n                .Length;\r\n        }\r\n\r\n        DocumentImage GenerateDocumentImage(int width, int height)\r\n        {\r\n            var image = Placeholders.Image(width, height);\r\n            return DocumentImage.FromBinaryData(image);\r\n        }\r\n    }\r\n}",
+                "test_imports": [
+                    "using System;",
+                    "using System.IO;",
+                    "using System.Linq;",
+                    "using System.Net.Mime;",
+                    "using System.Threading;",
+                    "using FluentAssertions;",
+                    "using NUnit.Framework;",
+                    "using QuestPDF.Drawing;",
+                    "using QuestPDF.Drawing.Exceptions;",
+                    "using QuestPDF.Elements;",
+                    "using QuestPDF.Fluent;",
+                    "using QuestPDF.Helpers;",
+                    "using QuestPDF.Infrastructure;",
+                    "using QuestPDF.UnitTests.TestEngine;",
+                    "using SkiaSharp;",
+                    "using ImageElement = QuestPDF.Elements.Image;",
+                    "using DocumentImage = QuestPDF.Infrastructure.Image;"
+                ],
+                "test_namespace": "QuestPDF.UnitTests",
+                "test_class_name": "ImageTests",
+                "test_file_path": "QuestPDF.UnitTests/ImageTests.cs",
+                "test_runner": "NUnit",
+                "project_path": "QuestPDF.UnitTests/QuestPDF.UnitTests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\n[Test]\npublic void ContentFromRightToLeft_Should_SetDirectionToRTL()\n{\n    // Arrange\n    var container = new Container();\n    \n    // Act\n    var result = container.ContentFromRightToLeft();\n\n    // Assert\n    result.Should().NotBeNull();\n    result.Should().BeSameAs(container);\n    // Assuming there's a way to check the content direction\n    container.ContentDirection.Should().Be(ContentDirection.RTL);\n}\n\n[Test]\npublic void ContentFromRightToLeft_Should_ReturnSameContainer()\n{\n    // Arrange\n    var container = new Container();\n\n    // Act\n    var result = container.ContentFromRightToLeft();\n\n    // Assert\n    result.Should().Be(container);\n}\n\n[Test]\npublic void ContentFromRightToLeft_Should_AllowChaining()\n{\n    // Arrange\n    var container = new Container();\n\n    // Act\n    var result = container.ContentFromRightToLeft().ContentFromRightToLeft();\n\n    // Assert\n    result.Should().Be(container);\n    // Assuming the direction remains RTL\n    container.ContentDirection.Should().Be(ContentDirection.RTL);\n}\n\n[Test]\npublic void ContentFromRightToLeft_Should_ThrowException_When_NullContainer()\n{\n    // Arrange\n    IContainer container = null;\n\n    // Act\n    Action act = () => container.ContentFromRightToLeft();\n\n    // Assert\n    act.Should().Throw<ArgumentNullException>();\n}}",
+        "new_code": "{\nreturn element.ContentDirection(ContentDirection.RightToLeft);}"
+    }
+]

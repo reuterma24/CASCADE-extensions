@@ -1,0 +1,384 @@
+[
+    {
+        "doc": "/// <summary>\r\n/// Attempts to stop the subscription.\r\n/// </summary>\r\n/// <param name = \"timeout\">The amount of time within which the subscription should stop.</param>\r\n/// <exception cref = \"TimeoutException\">Thrown if the subscription fails to stop within it's timeout period.</exception>",
+        "signature": {
+            "name": "Stop",
+            "returns": "void",
+            "params": [
+                "TimeSpan timeout"
+            ],
+            "modifier": [
+                "public"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "EventStoreCatchUpSubscription",
+            "doc": "/// <summary>\r\n/// Base class representing catch-up subscriptions.\r\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\r\n/// Read events until the given position or event number async.\r\n/// </summary>\r\n/// <param name = \"connection\">The connection.</param>\r\n/// <param name = \"resolveLinkTos\">Whether to resolve Link events.</param>\r\n/// <param name = \"userCredentials\">User credentials for the operation.</param>\r\n/// <param name = \"lastCommitPosition\">The commit position to read until.</param>\r\n/// <param name = \"lastEventNumber\">The event number to read until.</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "ReadEventsTillAsync",
+                        "returns": "Task",
+                        "params": [
+                            "IEventStoreConnection connection",
+                            "bool resolveLinkTos",
+                            "UserCredentials userCredentials",
+                            "long? lastCommitPosition",
+                            "long? lastEventNumber"
+                        ],
+                        "modifier": [
+                            "protected",
+                            "abstract"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Try to process a single <see cref = \"ResolvedEvent\"/>.\r\n/// </summary>\r\n/// <param name = \"e\">The <see cref = \"ResolvedEvent\"/> to process.</param>",
+                    "signature": {
+                        "name": "TryProcessAsync",
+                        "returns": "Task",
+                        "params": [
+                            "ResolvedEvent e"
+                        ],
+                        "modifier": [
+                            "protected",
+                            "abstract"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "StartAsync",
+                        "returns": "Task",
+                        "params": [],
+                        "modifier": [
+                            "internal"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: starting...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            return RunSubscriptionAsync();\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Attempts to stop the subscription without blocking for completion of stop\r\n/// </summary>",
+                    "signature": {
+                        "name": "Stop",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: requesting stop...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: unhooking from connection.Connected.\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            _connection.Connected -= OnReconnect;\r\n\r\n            ShouldStop = true;\r\n            EnqueueSubscriptionDropNotification(SubscriptionDropReason.UserInitiated, null);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "OnReconnect",
+                        "returns": "void",
+                        "params": [
+                            "object sender",
+                            "ClientConnectionEventArgs clientConnectionEventArgs"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: recovering after reconnection.\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: unhooking from connection.Connected.\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            _connection.Connected -= OnReconnect;\r\n            RunSubscriptionAsync();\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "RunSubscriptionAsync",
+                        "returns": "Task",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return LoadHistoricalEventsAsync();\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "LoadHistoricalEventsAsync",
+                        "returns": "Task",
+                        "params": [],
+                        "modifier": [
+                            "private",
+                            "async"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: running...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n\r\n            _stopped.Reset();\r\n            _allowProcessing = false;\r\n\r\n            if (!ShouldStop)\r\n            {\r\n                if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: pulling events...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n\r\n                try\r\n                {\r\n                    await ReadEventsTillAsync(_connection, _resolveLinkTos, _userCredentials, null, null).ConfigureAwait(false);\r\n                    await SubscribeToStreamAsync().ConfigureAwait(false);\r\n                }\r\n                catch (Exception ex)\r\n                {\r\n                    DropSubscription(SubscriptionDropReason.CatchUpError, ex);\r\n                    throw;\r\n                }\r\n            }\r\n            else\r\n            {\r\n                DropSubscription(SubscriptionDropReason.UserInitiated, null);\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "SubscribeToStreamAsync",
+                        "returns": "Task",
+                        "params": [],
+                        "modifier": [
+                            "private",
+                            "async"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (!ShouldStop)\r\n            {\r\n                if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: subscribing...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n\r\n                var subscription =\r\n                    StreamId == string.Empty\r\n                    ? await _connection.SubscribeToAllAsync(_resolveLinkTos, EnqueuePushedEvent, ServerSubscriptionDropped, _userCredentials).ConfigureAwait(false)\r\n                    : await _connection.SubscribeToStreamAsync(StreamId, _resolveLinkTos, EnqueuePushedEvent, ServerSubscriptionDropped, _userCredentials).ConfigureAwait(false);\r\n\r\n                _subscription = subscription;\r\n                await ReadMissedHistoricEventsAsync().ConfigureAwait(false);\r\n            }\r\n            else\r\n            {\r\n                DropSubscription(SubscriptionDropReason.UserInitiated, null);\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ReadMissedHistoricEventsAsync",
+                        "returns": "Task",
+                        "params": [],
+                        "modifier": [
+                            "private",
+                            "async"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (!ShouldStop)\r\n            {\r\n                if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: pulling events (if left)...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n\r\n                await ReadEventsTillAsync(_connection, _resolveLinkTos, _userCredentials, _subscription.LastCommitPosition, _subscription.LastEventNumber).ConfigureAwait(false);\r\n                StartLiveProcessing();\r\n            }\r\n            else\r\n            {\r\n                DropSubscription(SubscriptionDropReason.UserInitiated, null);\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "StartLiveProcessing",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (ShouldStop)\r\n            {\r\n                DropSubscription(SubscriptionDropReason.UserInitiated, null);\r\n                return;\r\n            }\r\n\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: processing live events...\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n\r\n            if (_liveProcessingStarted != null)\r\n                _liveProcessingStarted(this);\r\n\r\n            if (Verbose) Log.Debug(\"Catch-up Subscription {0} to {1}: hooking to connection.Connected\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId);\r\n            _connection.Connected += OnReconnect;\r\n\r\n            _allowProcessing = true;\r\n            EnsureProcessingPushQueue();\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "EnqueuePushedEvent",
+                        "returns": "Task",
+                        "params": [
+                            "EventStoreSubscription subscription",
+                            "ResolvedEvent e"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Verbose)\r\n            {\r\n                Log.Debug(\"Catch-up Subscription {0} to {1}: event appeared ({2}, {3}, {4} @ {5}).\",\r\n                         SubscriptionName,\r\n                         IsSubscribedToAll ? \"<all>\" : StreamId,\r\n                         e.OriginalStreamId, e.OriginalEventNumber, e.OriginalEvent.EventType, e.OriginalPosition);\r\n            }\r\n\r\n            if (_liveQueue.Count >= MaxPushQueueSize)\r\n            {\r\n                EnqueueSubscriptionDropNotification(SubscriptionDropReason.ProcessingQueueOverflow, null);\r\n                subscription.Unsubscribe();\r\n                return Task.CompletedTask;\r\n            }\r\n\r\n            _liveQueue.Enqueue(e);\r\n\r\n            if (_allowProcessing)\r\n                EnsureProcessingPushQueue();\r\n            return Task.CompletedTask;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ServerSubscriptionDropped",
+                        "returns": "void",
+                        "params": [
+                            "EventStoreSubscription subscription",
+                            "SubscriptionDropReason reason",
+                            "Exception exc"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            EnqueueSubscriptionDropNotification(reason, exc);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "EnqueueSubscriptionDropNotification",
+                        "returns": "void",
+                        "params": [
+                            "SubscriptionDropReason reason",
+                            "Exception error"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            // if drop data was already set -- no need to enqueue drop again, somebody did that already\r\n            var dropData = new DropData(reason, error);\r\n            if (Interlocked.CompareExchange(ref _dropData, dropData, null) == null)\r\n            {\r\n                _liveQueue.Enqueue(DropSubscriptionEvent);\r\n                if (_allowProcessing)\r\n                    EnsureProcessingPushQueue();\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "EnsureProcessingPushQueue",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Interlocked.CompareExchange(ref _isProcessing, 1, 0) == 0)\r\n                ThreadPool.QueueUserWorkItem(_ => ProcessLiveQueueAsync());\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ProcessLiveQueueAsync",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "private",
+                            "async"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            do\r\n            {\r\n                ResolvedEvent e;\r\n                while (_liveQueue.TryDequeue(out e))\r\n                {\r\n                    if (e.Equals(DropSubscriptionEvent)) // drop subscription artificial ResolvedEvent\r\n                    {\r\n                        _dropData = _dropData ?? new DropData(SubscriptionDropReason.Unknown, new Exception(\"Drop reason not specified.\"));\r\n                        DropSubscription(_dropData.Reason, _dropData.Error);\r\n                        Interlocked.CompareExchange(ref _isProcessing, 0, 1);\r\n                        return;\r\n                    }\r\n\r\n                    try\r\n                    {\r\n                        await TryProcessAsync(e).ConfigureAwait(false);\r\n                    }\r\n                    catch (Exception exc)\r\n                    {\r\n                        Log.Debug(\"Catch-up Subscription {0} to {1} Exception occurred in subscription {1}\", SubscriptionName, IsSubscribedToAll ? \"<all>\" : StreamId, exc);\r\n                        DropSubscription(SubscriptionDropReason.EventHandlerException, exc);\r\n                        return;\r\n                    }\r\n                }\r\n                Interlocked.CompareExchange(ref _isProcessing, 0, 1);\r\n            } while (_liveQueue.Count > 0 && Interlocked.CompareExchange(ref _isProcessing, 1, 0) == 0);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "DropSubscription",
+                        "returns": "void",
+                        "params": [
+                            "SubscriptionDropReason reason",
+                            "Exception error"
+                        ],
+                        "modifier": [
+                            "internal"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (Interlocked.CompareExchange(ref _isDropped, 1, 0) == 0)\r\n            {\r\n                if (Verbose)\r\n                    Log.Debug(\"Catch-up Subscription {0} to {1}: dropping subscription, reason: {2} {3}.\",\r\n                              SubscriptionName,\r\n                              IsSubscribedToAll ? \"<all>\" : StreamId,\r\n                              reason, error == null ? string.Empty : error.ToString());\r\n\r\n                _subscription?.Unsubscribe();\r\n                _subscriptionDropped?.Invoke(this, reason, error);\r\n                _stopped.Set();\r\n            }\r\n        }"
+                }
+            ],
+            "variables": [
+                "private static readonly ResolvedEvent DropSubscriptionEvent = new ResolvedEvent();",
+                "/// <summary>\r\n/// The <see cref = \"ILogger\"/> to use for the subscription.\r\n/// </summary>\r\nprotected readonly ILogger Log;",
+                "private readonly IEventStoreConnection _connection;",
+                "private readonly bool _resolveLinkTos;",
+                "private readonly UserCredentials _userCredentials;",
+                "/// <summary>\r\n/// The batch size to use during the read phase of the subscription.\r\n/// </summary>\r\nprotected readonly int ReadBatchSize;",
+                "/// <summary>\r\n/// The maximum number of events to buffer before the subscription drops.\r\n/// </summary>\r\nprotected readonly int MaxPushQueueSize;",
+                "/// <summary>\r\n/// Action invoked when a new event appears on the subscription.\r\n/// </summary>\r\nprotected readonly Func<EventStoreCatchUpSubscription, ResolvedEvent, Task> EventAppeared;",
+                "private readonly Action<EventStoreCatchUpSubscription> _liveProcessingStarted;",
+                "private readonly Action<EventStoreCatchUpSubscription, SubscriptionDropReason, Exception> _subscriptionDropped;",
+                "/// <summary>\r\n/// Whether or not to use verbose logging (useful during debugging).\r\n/// </summary>\r\nprotected readonly bool Verbose;",
+                "private readonly ConcurrentQueue<ResolvedEvent> _liveQueue = new ConcurrentQueue<ResolvedEvent>();",
+                "private EventStoreSubscription _subscription;",
+                "private DropData _dropData;",
+                "private volatile bool _allowProcessing;",
+                "private int _isProcessing;",
+                "///<summary>\r\n/// stop has been called.\r\n///</summary>\r\nprotected volatile bool ShouldStop;",
+                "private int _isDropped;",
+                "private readonly ManualResetEventSlim _stopped = new ManualResetEventSlim(true);"
+            ],
+            "generics": [],
+            "imports": [
+                "using EventStore.ClientAPI.Common.Utils;",
+                "using EventStore.ClientAPI.Exceptions;",
+                "using EventStore.ClientAPI.SystemData;",
+                "using System;",
+                "using System.Collections.Concurrent;",
+                "using System.Threading;",
+                "using System.Threading.Tasks;"
+            ],
+            "constructors": [
+                "/// <summary>\r\n/// Constructs state for EventStoreCatchUpSubscription.\r\n/// </summary>\r\n/// <param name = \"connection\">The connection.</param>\r\n/// <param name = \"log\">The <see cref = \"ILogger\"/> to use.</param>\r\n/// <param name = \"streamId\">The stream name.</param>\r\n/// <param name = \"userCredentials\">User credentials for the operations.</param>\r\n/// <param name = \"eventAppeared\">Action invoked when events are received.</param>\r\n/// <param name = \"liveProcessingStarted\">Action invoked when the read phase finishes.</param>\r\n/// <param name = \"subscriptionDropped\">Action invoked if the subscription drops.</param>\r\n/// <param name = \"settings\">Settings for this subscription.</param>\r\nprotected EventStoreCatchUpSubscription(IEventStoreConnection connection, ILogger log, string streamId, UserCredentials userCredentials, Func<EventStoreCatchUpSubscription, ResolvedEvent, Task> eventAppeared, Action<EventStoreCatchUpSubscription> liveProcessingStarted, Action<EventStoreCatchUpSubscription, SubscriptionDropReason, Exception> subscriptionDropped, CatchUpSubscriptionSettings settings)\r\n{\r\n    Ensure.NotNull(connection, \"connection\");\r\n    Ensure.NotNull(log, \"log\");\r\n    Ensure.NotNull(eventAppeared, \"eventAppeared\");\r\n    _connection = connection;\r\n    Log = log;\r\n    StreamId = string.IsNullOrEmpty(streamId) ? string.Empty : streamId;\r\n    _resolveLinkTos = settings.ResolveLinkTos;\r\n    _userCredentials = userCredentials;\r\n    ReadBatchSize = settings.ReadBatchSize;\r\n    MaxPushQueueSize = settings.MaxLiveQueueSize;\r\n    EventAppeared = eventAppeared;\r\n    _liveProcessingStarted = liveProcessingStarted;\r\n    _subscriptionDropped = subscriptionDropped;\r\n    Verbose = settings.VerboseLogging;\r\n    SubscriptionName = settings.SubscriptionName ?? String.Empty;\r\n}"
+            ],
+            "extends": "",
+            "implements": [],
+            "namespace": "EventStore.ClientAPI"
+        },
+        "code": "{\r\n            Stop();\r\n            if (Verbose) Log.Debug(\"Waiting on subscription {0} to stop\", SubscriptionName);\r\n            if (!_stopped.Wait(timeout))\r\n                throw new TimeoutException(string.Format(\"Could not stop {0} in time.\", GetType().Name));\r\n        }",
+        "code_file_path": "EventStore.ClientAPI/EventStoreCatchUpSubscription.cs",
+        "called_functions": [
+            "Stop()",
+            "Log.Debug(\"Waiting on subscription {0} to stop\", SubscriptionName)",
+            "_stopped.Wait(timeout)",
+            "string.Format(\"Could not stop {0} in time.\", GetType().Name)",
+            "GetType()"
+        ],
+        "id": 4250,
+        "tests": [
+            {
+                "tests": "using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Threading;\r\nusing System.Threading.Tasks;\r\nusing EventStore.ClientAPI;\r\nusing EventStore.ClientAPI.SystemData;\r\nusing EventStore.Common.Log;\r\nusing EventStore.Core.Services;\r\nusing EventStore.Core.Tests.ClientAPI.Helpers;\r\nusing EventStore.Core.Tests.Helpers;\r\nusing NUnit.Framework;\r\nusing ILogger = EventStore.Common.Log.ILogger;\r\n\r\nnamespace EventStore.Core.Tests.ClientAPI\r\n{\r\n    [TestFixture, Category(\"ClientAPI\"), Category(\"LongRunning\")]\r\n    public class subscribe_to_all_catching_up_should : SpecificationWithDirectory\r\n    {\r\n        private static readonly ILogger Log = LogManager.GetLoggerFor<subscribe_to_all_catching_up_should>();\r\n        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(60);\r\n\r\n        private MiniNode _node;\r\n        private IEventStoreConnection _conn;\r\n\r\n        [SetUp]\r\n        public override void SetUp()\r\n        {\r\n            base.SetUp();\r\n            _node = new MiniNode(PathName, skipInitializeStandardUsersCheck: false);\r\n            _node.Start();\r\n\r\n            _conn = BuildConnection(_node);\r\n            _conn.ConnectAsync().Wait();\r\n            _conn.SetStreamMetadataAsync(\"$all\", -1,\r\n                                    StreamMetadata.Build().SetReadRole(SystemRoles.All),\r\n                                    new UserCredentials(SystemUsers.Admin, SystemUsers.DefaultAdminPassword)).Wait();\r\n        }\r\n\r\n        [TearDown]\r\n        public override void TearDown()\r\n        {\r\n            _conn.Close();\r\n            _node.Shutdown();\r\n            base.TearDown();\r\n        }\r\n\r\n        protected virtual IEventStoreConnection BuildConnection(MiniNode node)\r\n        {\r\n            return TestConnection.Create(node.TcpEndPoint);\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void call_dropped_callback_after_stop_method_call()\r\n        {\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var dropped = new CountdownEvent(1);\r\n                var subscription = store.SubscribeToAllFrom(null,\r\n                                                            CatchUpSubscriptionSettings.Default,\r\n                                                            (x, y) => Task.CompletedTask,\r\n                                                            _ => Log.Info(\"Live processing started.\"),\r\n                                                            (x, y, z) => dropped.Signal());\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void call_dropped_callback_when_an_error_occurs_while_processing_an_event()\r\n        {\r\n            const string stream = \"call_dropped_callback_when_an_error_occurs_while_processing_an_event\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                store.AppendToStreamAsync(stream, ExpectedVersion.Any, new EventData(Guid.NewGuid(), \"event\", false, new byte[3], null)).Wait();\r\n\r\n                var dropped = new CountdownEvent(1);\r\n                store.SubscribeToAllFrom(null, CatchUpSubscriptionSettings.Default,\r\n                                           (x, y) => { throw new Exception(\"Error\"); },\r\n                                           _ => Log.Info(\"Live processing started.\"),\r\n                                           (x, y, z) => dropped.Signal());\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void be_able_to_subscribe_to_empty_db()\r\n        {\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                var appeared = new ManualResetEventSlim(false);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                var subscription = store.SubscribeToAllFrom(null,\r\n                                                            CatchUpSubscriptionSettings.Default,\r\n                                                            (_, x) =>\r\n                                                            {\r\n                                                                if (!SystemStreams.IsSystemStream(x.OriginalEvent.EventStreamId))\r\n                                                                    appeared.Set();\r\n                                                                return Task.CompletedTask;\r\n                                                            },\r\n                                                            _ => Log.Info(\"Live processing started.\"),\r\n                                                            (_, __, ___) => dropped.Signal());\r\n\r\n                Thread.Sleep(100); // give time for first pull phase\r\n                store.SubscribeToAllAsync(false, (s, x) => Task.CompletedTask, (s, r, e) => { }).Wait();\r\n                Thread.Sleep(100);\r\n\r\n                Assert.IsFalse(appeared.Wait(0), \"Some event appeared.\");\r\n                Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void read_all_existing_events_and_keep_listening_to_new_ones()\r\n        {\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(20);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(\"stream-\" + i.ToString(), -1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var subscription = store.SubscribeToAllFrom(null,\r\n                                                            CatchUpSubscriptionSettings.Default,\r\n                                                            (x, y) =>\r\n                                                            {\r\n                                                                if (!SystemStreams.IsSystemStream(y.OriginalEvent.EventStreamId))\r\n                                                                {\r\n                                                                    events.Add(y);\r\n                                                                    appeared.Signal();\r\n                                                                }\r\n                                                                return Task.CompletedTask;\r\n                                                            },\r\n                                                            _ => Log.Info(\"Live processing started.\"),\r\n                                                            (x, y, z) => dropped.Signal());\r\n                for (int i = 10; i < 20; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(\"stream-\" + i.ToString(), -1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n\r\n                Assert.AreEqual(20, events.Count);\r\n                for (int i = 0; i < 20; ++i)\r\n                {\r\n                    Assert.AreEqual(\"et-\" + i.ToString(), events[i].OriginalEvent.EventType);\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void filter_events_and_keep_listening_to_new_ones()\r\n        {\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(10);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(\"stream-\" + i.ToString(), -1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var allSlice = store.ReadAllEventsForwardAsync(Position.Start, 100, false).Result;\r\n                var lastEvent = allSlice.Events.Last();\r\n\r\n                var subscription = store.SubscribeToAllFrom(lastEvent.OriginalPosition,\r\n                                                            CatchUpSubscriptionSettings.Default,\r\n                                                            (x, y) =>\r\n                                                            {\r\n                                                                events.Add(y);\r\n                                                                appeared.Signal();\r\n                                                                return Task.CompletedTask;\r\n                                                            },\r\n                                                            _ => Log.Info(\"Live processing started.\"),\r\n                                                            (x, y, z) =>\r\n                                                            {\r\n                                                                Log.Info(\"Subscription dropped: {0}, {1}.\", y, z);\r\n                                                                dropped.Signal();\r\n                                                            });\r\n\r\n                for (int i = 10; i < 20; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(\"stream-\" + i.ToString(), -1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n                Log.Info(\"Waiting for events...\");\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n                Log.Info(\"Events appeared...\");\r\n                Assert.AreEqual(10, events.Count);\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    Assert.AreEqual(\"et-\" + (10 + i).ToString(), events[i].OriginalEvent.EventType);\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n\r\n                Assert.AreEqual(events.Last().OriginalPosition, subscription.LastProcessedPosition);\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void filter_events_and_work_if_nothing_was_written_after_subscription()\r\n        {\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(1);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(\"stream-\" + i.ToString(), -1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var allSlice = store.ReadAllEventsForwardAsync(Position.Start, 100, false).Result;\r\n                var lastEvent = allSlice.Events[allSlice.Events.Length - 2];\r\n\r\n                var subscription = store.SubscribeToAllFrom(lastEvent.OriginalPosition,\r\n                                                            CatchUpSubscriptionSettings.Default,\r\n                                                            (x, y) =>\r\n                                                            {\r\n                                                                events.Add(y);\r\n                                                                appeared.Signal();\r\n                                                                return Task.CompletedTask;\r\n                                                            },\r\n                                                            _ => Log.Info(\"Live processing started.\"),\r\n                                                            (x, y, z) =>\r\n                                                            {\r\n                                                                Log.Info(\"Subscription dropped: {0}, {1}.\", y, z);\r\n                                                                dropped.Signal();\r\n                                                            });\r\n\r\n                Log.Info(\"Waiting for events...\");\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n                Log.Info(\"Events appeared...\");\r\n                Assert.AreEqual(1, events.Count);\r\n                Assert.AreEqual(\"et-9\", events[0].OriginalEvent.EventType);\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n\r\n                Assert.AreEqual(events.Last().OriginalPosition, subscription.LastProcessedPosition);\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+                "test_imports": [
+                    "using System;",
+                    "using System.Collections.Generic;",
+                    "using System.Linq;",
+                    "using System.Threading;",
+                    "using System.Threading.Tasks;",
+                    "using EventStore.ClientAPI;",
+                    "using EventStore.ClientAPI.SystemData;",
+                    "using EventStore.Common.Log;",
+                    "using EventStore.Core.Services;",
+                    "using EventStore.Core.Tests.ClientAPI.Helpers;",
+                    "using EventStore.Core.Tests.Helpers;",
+                    "using NUnit.Framework;",
+                    "using ILogger = EventStore.Common.Log.ILogger;"
+                ],
+                "test_namespace": "EventStore.Core.Tests.ClientAPI",
+                "test_class_name": "subscribe_to_all_catching_up_should",
+                "test_file_path": "EventStore.Core.Tests/ClientAPI/subscribe_to_all_catching_up_should.cs",
+                "test_runner": "NUnit",
+                "project_path": "EventStore.Core.Tests/EventStore.Core.Tests.csproj"
+            },
+            {
+                "tests": "using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Threading;\r\nusing System.Threading.Tasks;\r\nusing EventStore.ClientAPI;\r\nusing EventStore.Common.Log;\r\nusing EventStore.Core.Tests.ClientAPI.Helpers;\r\nusing EventStore.Core.Tests.Helpers;\r\nusing NUnit.Framework;\r\n\r\nnamespace EventStore.Core.Tests.ClientAPI\r\n{\r\n    [TestFixture, Category(\"ClientAPI\"), Category(\"LongRunning\")]\r\n    public class subscribe_to_stream_catching_up_should : SpecificationWithDirectoryPerTestFixture\r\n    {\r\n        private static readonly EventStore.Common.Log.ILogger Log = LogManager.GetLoggerFor<subscribe_to_stream_catching_up_should>();\r\n        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(500);\r\n\r\n        private MiniNode _node;\r\n\r\n        [OneTimeSetUp]\r\n        public override void TestFixtureSetUp()\r\n        {\r\n            base.TestFixtureSetUp();\r\n            _node = new MiniNode(PathName);\r\n            _node.Start();\r\n        }\r\n\r\n        [OneTimeTearDown]\r\n        public override void TestFixtureTearDown()\r\n        {\r\n            _node.Shutdown();\r\n            base.TestFixtureTearDown();\r\n        }\r\n\r\n        virtual protected IEventStoreConnection BuildConnection(MiniNode node)\r\n        {\r\n            return TestConnection.Create(node.TcpEndPoint);\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void be_able_to_subscribe_to_non_existing_stream()\r\n        {\r\n            const string stream = \"be_able_to_subscribe_to_non_existing_stream\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                var appeared = new ManualResetEventSlim(false);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               null,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (_, x) =>\r\n                                                               {\r\n                                                                   appeared.Set();\r\n                                                                   return Task.CompletedTask;\r\n                                                               },\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (_, __, ___) => dropped.Signal());\r\n\r\n                Thread.Sleep(100); // give time for first pull phase\r\n                store.SubscribeToStreamAsync(stream, false, (s, x) => Task.CompletedTask, (s, r, e) => { }).Wait();\r\n                Thread.Sleep(100);\r\n                Assert.IsFalse(appeared.Wait(0), \"Some event appeared.\");\r\n                Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void be_able_to_subscribe_to_non_existing_stream_and_then_catch_event()\r\n        {\r\n            const string stream = \"be_able_to_subscribe_to_non_existing_stream_and_then_catch_event\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                var appeared = new CountdownEvent(1);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               null,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (_, x) =>\r\n                                                               {\r\n                                                                   appeared.Signal();\r\n                                                                   return Task.CompletedTask;\r\n                                                               },\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (_, __, ___) => dropped.Signal());\r\n\r\n                store.AppendToStreamAsync(stream, ExpectedVersion.EmptyStream, TestEvent.NewTestEvent()).Wait();\r\n\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Appeared countdown event timed out.\");\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void allow_multiple_subscriptions_to_same_stream()\r\n        {\r\n            const string stream = \"allow_multiple_subscriptions_to_same_stream\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                var appeared = new CountdownEvent(2);\r\n                var dropped1 = new ManualResetEventSlim(false);\r\n                var dropped2 = new ManualResetEventSlim(false);\r\n\r\n                var sub1 = store.SubscribeToStreamFrom(stream,\r\n                                                       null,\r\n                                                       CatchUpSubscriptionSettings.Default,\r\n                                                       (_, e) =>\r\n                                                       {\r\n                                                           appeared.Signal();\r\n                                                           return Task.CompletedTask;\r\n                                                       },\r\n                                                        _ => Log.Info(\"Live processing started.\"),\r\n                                                       (x, y, z) => dropped1.Set());\r\n                var sub2 = store.SubscribeToStreamFrom(stream,\r\n                                                       null,\r\n                                                       CatchUpSubscriptionSettings.Default,\r\n                                                       (_, e) =>\r\n                                                       {\r\n                                                           appeared.Signal();\r\n                                                           return Task.CompletedTask;\r\n                                                       },\r\n                                                        _ => Log.Info(\"Live processing started.\"),\r\n                                                       (x, y, z) => dropped2.Set());\r\n\r\n                store.AppendToStreamAsync(stream, ExpectedVersion.EmptyStream, TestEvent.NewTestEvent()).Wait();\r\n\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped1.Wait(0), \"Subscription1 was dropped prematurely.\");\r\n                    Assert.IsFalse(dropped2.Wait(0), \"Subscription2 was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n\r\n                Assert.IsFalse(dropped1.Wait(0));\r\n                sub1.Stop(Timeout);\r\n                Assert.IsTrue(dropped1.Wait(Timeout));\r\n\r\n                Assert.IsFalse(dropped2.Wait(0));\r\n                sub2.Stop(Timeout);\r\n                Assert.IsTrue(dropped2.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void call_dropped_callback_after_stop_method_call()\r\n        {\r\n            const string stream = \"call_dropped_callback_after_stop_method_call\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var dropped = new CountdownEvent(1);\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               null,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (x, y) => Task.CompletedTask,\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (x, y, z) => dropped.Signal());\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void call_dropped_callback_when_an_error_occurs_while_processing_an_event()\r\n        {\r\n            const string stream = \"call_dropped_callback_when_an_error_occurs_while_processing_an_event\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n                store.AppendToStreamAsync(stream, ExpectedVersion.Any, new EventData(Guid.NewGuid(), \"event\", false, new byte[3], null)).Wait();\r\n\r\n                var dropped = new CountdownEvent(1);\r\n                store.SubscribeToStreamFrom(stream, null,\r\n                                               CatchUpSubscriptionSettings.Default,\r\n                                               (x, y) => { throw new Exception(\"Error\"); },\r\n                                               _ => Log.Info(\"Live processing started.\"),\r\n                                               (x, y, z) => dropped.Signal());\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void read_all_existing_events_and_keep_listening_to_new_ones()\r\n        {\r\n            const string stream = \"read_all_existing_events_and_keep_listening_to_new_ones\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(20); // events\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(stream, i-1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               null,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (x, y) =>\r\n                                                               {\r\n                                                                   events.Add(y);\r\n                                                                   appeared.Signal();\r\n                                                                   return Task.CompletedTask;\r\n                                                               },\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (x, y, z) => dropped.Signal());\r\n                for (int i = 10; i < 20; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(stream, i-1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n\r\n                Assert.AreEqual(20, events.Count);\r\n                for (int i = 0; i < 20; ++i)\r\n                {\r\n                    Assert.AreEqual(\"et-\" + i.ToString(), events[i].OriginalEvent.EventType);\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void filter_events_and_keep_listening_to_new_ones()\r\n        {\r\n            const string stream = \"filter_events_and_keep_listening_to_new_ones\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(20); // skip first 10 events\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 20; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(stream, i-1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               9,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (x, y) =>\r\n                                                               {\r\n                                                                   events.Add(y);\r\n                                                                   appeared.Signal();\r\n                                                                   return Task.CompletedTask;\r\n                                                               },\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (x, y, z) => dropped.Signal());\r\n                for (int i = 20; i < 30; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(stream, i-1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n\r\n                Assert.AreEqual(20, events.Count);\r\n                for (int i = 0; i < 20; ++i)\r\n                {\r\n                    Assert.AreEqual(\"et-\" + (i + 10).ToString(), events[i].OriginalEvent.EventType);\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n\r\n                Assert.AreEqual(events.Last().OriginalEventNumber, subscription.LastProcessedEventNumber);\r\n\r\n                subscription.Stop(TimeSpan.FromSeconds(0));\r\n            }\r\n        }\r\n\r\n        [Test, Category(\"LongRunning\")]\r\n        public void filter_events_and_work_if_nothing_was_written_after_subscription()\r\n        {\r\n            const string stream = \"filter_events_and_work_if_nothing_was_written_after_subscription\";\r\n            using (var store = BuildConnection(_node))\r\n            {\r\n                store.ConnectAsync().Wait();\r\n\r\n                var events = new List<ResolvedEvent>();\r\n                var appeared = new CountdownEvent(10);\r\n                var dropped = new CountdownEvent(1);\r\n\r\n                for (int i = 0; i < 20; ++i)\r\n                {\r\n                    store.AppendToStreamAsync(stream, i-1, new EventData(Guid.NewGuid(), \"et-\" + i.ToString(), false, new byte[3], null)).Wait();\r\n                }\r\n\r\n                var subscription = store.SubscribeToStreamFrom(stream,\r\n                                                               9,\r\n                                                               CatchUpSubscriptionSettings.Default,\r\n                                                               (x, y) =>\r\n                                                               {\r\n                                                                   events.Add(y);\r\n                                                                   appeared.Signal();\r\n                                                                   return Task.CompletedTask;\r\n                                                               },\r\n                                                               _ => Log.Info(\"Live processing started.\"),\r\n                                                               (x, y, z) => dropped.Signal());\r\n                if (!appeared.Wait(Timeout))\r\n                {\r\n                    Assert.IsFalse(dropped.Wait(0), \"Subscription was dropped prematurely.\");\r\n                    Assert.Fail(\"Could not wait for all events.\");\r\n                }\r\n\r\n                Assert.AreEqual(10, events.Count);\r\n                for (int i = 0; i < 10; ++i)\r\n                {\r\n                    Assert.AreEqual(\"et-\" + (i + 10).ToString(), events[i].OriginalEvent.EventType);\r\n                }\r\n\r\n                Assert.IsFalse(dropped.Wait(0));\r\n                subscription.Stop(Timeout);\r\n                Assert.IsTrue(dropped.Wait(Timeout));\r\n\r\n                Assert.AreEqual(events.Last().OriginalEventNumber, subscription.LastProcessedEventNumber);\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+                "test_imports": [
+                    "using System;",
+                    "using System.Collections.Generic;",
+                    "using System.Linq;",
+                    "using System.Threading;",
+                    "using System.Threading.Tasks;",
+                    "using EventStore.ClientAPI;",
+                    "using EventStore.Common.Log;",
+                    "using EventStore.Core.Tests.ClientAPI.Helpers;",
+                    "using EventStore.Core.Tests.Helpers;",
+                    "using NUnit.Framework;"
+                ],
+                "test_namespace": "EventStore.Core.Tests.ClientAPI",
+                "test_class_name": "subscribe_to_stream_catching_up_should",
+                "test_file_path": "EventStore.Core.Tests/ClientAPI/subscribe_to_stream_catching_up_should.cs",
+                "test_runner": "NUnit",
+                "project_path": "EventStore.Core.Tests/EventStore.Core.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\n[Test]\npublic void Stop_Should_Set_ShouldStop_To_True()\n{\n    // Arrange\n    var mockConnection = new Mock<IEventStoreConnection>();\n    var mockLogger = new Mock<ILogger>();\n    var settings = new CatchUpSubscriptionSettings();\n    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, \"test-stream\", null, null, null, null, settings);\n\n    // Act\n    subscription.Stop();\n\n    // Assert\n    Assert.IsTrue(subscription.ShouldStop);\n}\n\n[Test]\npublic void Stop_Should_Set_Stopped_Event_To_Signaled()\n{\n    // Arrange\n    var mockConnection = new Mock<IEventStoreConnection>();\n    var mockLogger = new Mock<ILogger>();\n    var settings = new CatchUpSubscriptionSettings();\n    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, \"test-stream\", null, null, null, null, settings);\n\n    // Act\n    subscription.Stop();\n\n    // Assert\n    Assert.IsTrue(subscription._stopped.IsSet);\n}\n\n[Test]\npublic void Stop_Should_Not_Throw_Exception_When_Called_Multiple_Times()\n{\n    // Arrange\n    var mockConnection = new Mock<IEventStoreConnection>();\n    var mockLogger = new Mock<ILogger>();\n    var settings = new CatchUpSubscriptionSettings();\n    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, \"test-stream\", null, null, null, null, settings);\n\n    // Act & Assert\n    Assert.DoesNotThrow(() => \n    {\n        subscription.Stop();\n        subscription.Stop();\n    });\n}\n\n[Test]\npublic void Stop_Should_Set_IsDropped_To_1_When_Called()\n{\n    // Arrange\n    var mockConnection = new Mock<IEventStoreConnection>();\n    var mockLogger = new Mock<ILogger>();\n    var settings = new CatchUpSubscriptionSettings();\n    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, \"test-stream\", null, null, null, null, settings);\n\n    // Act\n    subscription.Stop();\n\n    // Assert\n    Assert.AreEqual(1, subscription._isDropped);\n}\n\n[Test]\npublic void Stop_Should_Call_SubscriptionDropped_Action_When_Stopped()\n{\n    // Arrange\n    var mockConnection = new Mock<IEventStoreConnection>();\n    var mockLogger = new Mock<ILogger>();\n    var settings = new CatchUpSubscriptionSettings();\n    bool wasCalled = false;\n    Action<EventStoreCatchUpSubscription, SubscriptionDropReason, Exception> subscriptionDropped = (s, reason, ex) => wasCalled = true;\n\n    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, \"test-stream\", null, null, null, subscriptionDropped, settings);\n\n    // Act\n    subscription.Stop();\n\n    // Assert\n    Assert.IsTrue(wasCalled);\n}}",
+        "new_code": "{\n    ShouldStop = true;\n    _stopped.Reset();\n\n    if (Interlocked.CompareExchange(ref _isDropped, 1, 0) == 0)\n    {\n        _subscription?.Drop();\n        _subscription = null;\n    }\n\n    var stopTask = Task.Run(async () =>\n    {\n        while (_isProcessing > 0 || !_liveQueue.IsEmpty)\n        {\n            await Task.Delay(100);\n        }\n    });\n\n    if (!stopTask.Wait(timeout))\n    {\n        throw new TimeoutException(\"The subscription failed to stop within the specified timeout period.\");\n    }\n\n    _stopped.Set();\n}"
+    }
+]

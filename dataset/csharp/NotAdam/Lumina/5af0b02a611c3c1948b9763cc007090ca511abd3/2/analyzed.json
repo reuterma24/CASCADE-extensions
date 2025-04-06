@@ -1,0 +1,308 @@
+[
+    {
+        "doc": "/// <summary>Loads an <see cref = \"ExcelSheet{T}\"/>. Returns <see langword=\"null\"/> if the sheet does not exist, has an invalid column hash or unsupported variant, or was requested with an unsupported language.</summary>\r\n/// <param name = \"language\">The requested sheet language. Leave <see langword=\"null\"/> or empty to use the default language.</param>\r\n/// <returns>An excel sheet corresponding to <typeparamref name = \"T\"/> and <paramref name = \"language\"/> that may be created anew or\r\n/// reused from a previous invocation of this method.</returns>\r\n/// <remarks>\r\n/// <para>If the requested language doesn't exist for the file where <paramref name = \"language\"/> is not <see cref = \"Language.None\"/>, the\r\n/// language-neutral sheet using <see cref = \"Language.None\"/> will be loaded instead. If the language-neutral sheet does not exist, then the function\r\n/// will return <see langword = \"null\"/>.</para>\r\n/// </remarks>\r\n/// <exception cref = \"InvalidCastException\">Sheet is not of the variant <see cref = \"ExcelVariant.Default\"/>.</exception>\r\n/// <exception cref = \"InvalidOperationException\"><typeparamref name = \"T\"/> does not have a valid <see cref = \"SheetAttribute\"/>.</exception>",
+        "signature": {
+            "name": "GetExcelSheet",
+            "returns": "ExcelSheet<T>?",
+            "params": [
+                "Language? language = null"
+            ],
+            "modifier": [
+                "public"
+            ],
+            "annotations": [],
+            "generics": [
+                "T"
+            ]
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "GameData",
+            "doc": "",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\r\n/// Parses a game filesystem path and extracts information and hashes the path provided. \r\n/// </summary>\r\n/// <param name = \"path\">A game filesystem path</param>\r\n/// <returns>A <see cref = \"ParsedFilePath\"/> which contains extracted info from the path, along with the hashes used to access the file index</returns>",
+                    "signature": {
+                        "name": "ParseFilePath",
+                        "returns": "ParsedFilePath?",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (string.IsNullOrWhiteSpace(path))\r\n                return null;\r\n\r\n            // validate path slightly\r\n            if (path[^1] == '/')\r\n                return null;\r\n\r\n            path = path.ToLowerInvariant().Trim();\r\n\r\n            var pathParts = path.Split('/');\r\n            var category = pathParts.First();\r\n\r\n            var hash = GetFileHash(path);\r\n            var hash2 = Crc32.Get(path);\r\n\r\n            var repo = pathParts[1];\r\n            // todo: supports up to ex9, so we've got another ~11 years before this breaks\r\n            if (repo[0] != 'e' || repo[1] != 'x' || !char.IsDigit(repo[2]))\r\n            {\r\n                repo = \"ffxiv\";\r\n            }\r\n\r\n            return new ParsedFilePath\r\n            {\r\n                Category = category,\r\n                IndexHash = hash,\r\n                Index2Hash = hash2,\r\n                Repository = repo,\r\n                Path = path\r\n            };\r\n        }"
+                },
+                {
+                    "doc": "/// <inheritdoc/>",
+                    "signature": {
+                        "name": "Dispose",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            Dispose(true);\r\n            GC.SuppressFinalize(this);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Load a raw file given a game file path\r\n/// </summary>\r\n/// <param name = \"path\">A path to a file located inside the game's filesystem</param>\r\n/// <returns>The base <see cref = \"FileResource\"/> if it was found, or null if it wasn't found</returns>",
+                    "signature": {
+                        "name": "GetFile",
+                        "returns": "FileResource?",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return GetFile<FileResource>(path);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Load a defined file given a game file path\r\n/// </summary>\r\n/// <param name = \"path\">A path to a file located inside the game's filesystem</param>\r\n/// <typeparam name = \"T\">The type of <see cref = \"FileResource\"/> to load the raw file in to</typeparam>\r\n/// <returns>Returns the requested file if found, null if not</returns>",
+                    "signature": {
+                        "name": "GetFile",
+                        "returns": "T?",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n            SetCurrentContext();\r\n\r\n            var parsed = ParseFilePath(path);\r\n            if (parsed == null)\r\n            {\r\n                return null;\r\n            }\r\n\r\n            if (Repositories.TryGetValue(parsed.Repository, out var repo))\r\n            {\r\n                return repo.GetFile<T>(parsed.Category, parsed);\r\n            }\r\n\r\n            return null;\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Load a defined file given a filesystem path\r\n/// </summary>\r\n/// <param name = \"path\">A relative or absolute path to the file to load</param>\r\n/// <param name = \"origPath\">The original file path in SqPack, required for reading some files (e.g. materials)</param>\r\n/// <typeparam name = \"T\">The type of <see cref = \"FileResource\"/> to load the raw file in to</typeparam>\r\n/// <returns>The requested file if found, null if not</returns>\r\n/// <exception cref = \"FileNotFoundException\">The path given doesn't point to an existing file</exception>",
+                    "signature": {
+                        "name": "GetFileFromDisk",
+                        "returns": "T",
+                        "params": [
+                            "string path",
+                            "string? origPath = null"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n            SetCurrentContext();\r\n\r\n            if (!File.Exists(path))\r\n            {\r\n                throw new FileNotFoundException(\"the file at the specified path doesn't exist\");\r\n            }\r\n\r\n            var fileContent = File.ReadAllBytes(path);\r\n\r\n            var file = Activator.CreateInstance<T>();\r\n            file.Data = fileContent;\r\n            if (origPath != null)\r\n            {\r\n                file.FilePath = ParseFilePath(origPath)!;\r\n            }\r\n            file.Reader = new LuminaBinaryReader(file.Data, Options.CurrentPlatform);\r\n            file.LoadFile();\r\n\r\n            return file;\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns file metadata pulled directly from the file header inside the SqPack\r\n/// </summary>\r\n/// <param name = \"path\">A path to a file located inside the game's filesystem</param>\r\n/// <returns>A <see cref = \"SqPackFileInfo\"/> if it was found, null if not</returns>",
+                    "signature": {
+                        "name": "GetFileMetadata",
+                        "returns": "SqPackFileInfo?",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            var parsed = ParseFilePath(path);\r\n            if (parsed == null)\r\n            {\r\n                return null;\r\n            }\r\n\r\n            if (Repositories.TryGetValue(parsed.Repository, out var repo))\r\n            {\r\n                return repo.GetFileMetadata(parsed.Category, parsed);\r\n            }\r\n\r\n            return null;\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Check if a file exists anywhere by checking whether the hash exists in any index\r\n/// </summary>\r\n/// <param name = \"path\">The full path of the file</param>\r\n/// <returns>True if the file exists</returns>",
+                    "signature": {
+                        "name": "FileExists",
+                        "returns": "bool",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            var parsedPath = ParseFilePath(path);\r\n            if (parsedPath == null)\r\n                return false;\r\n\r\n            if (Repositories.TryGetValue(parsedPath.Repository, out var repo))\r\n            {\r\n                return repo.FileExists(parsedPath.Category, parsedPath);\r\n            }\r\n\r\n            return false;\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns the index variant of a file hash\r\n/// </summary>\r\n/// <param name = \"path\">The full path of the file</param>\r\n/// <returns>A U64 containing a split hash of the folder and file CRC32s</returns>",
+                    "signature": {
+                        "name": "GetFileHash",
+                        "returns": "UInt64",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            var pathParts = path.Split('/');\r\n            var filename = pathParts[^1];\r\n            var folder = path.Substring(0, path.LastIndexOf('/'));\r\n\r\n            return (UInt64)Crc32.Get(folder) << 32 | Crc32.Get(filename);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>Loads an <see cref = \"SubrowExcelSheet{T}\"/>. Returns <see langword=\"null\"/> if the sheet does not exist, has an invalid column hash or unsupported variant, or was requested with an unsupported language.</summary>\r\n/// <param name = \"language\">The requested sheet language. Leave <see langword=\"null\"/> or empty to use the default language.</param>\r\n/// <returns>An excel sheet corresponding to <typeparamref name = \"T\"/> and <paramref name = \"language\"/> that may be created anew or\r\n/// reused from a previous invocation of this method.</returns>\r\n/// <remarks>\r\n/// <para>If the requested language doesn't exist for the file where <paramref name = \"language\"/> is not <see cref = \"Language.None\"/>, the\r\n/// language-neutral sheet using <see cref = \"Language.None\"/> will be loaded instead. If the language-neutral sheet does not exist, then the function\r\n/// will return <see langword=\"null\"/>.</para>\r\n/// </remarks>\r\n/// <exception cref = \"InvalidCastException\">Sheet is not of the variant <see cref = \"ExcelVariant.Subrows\"/>.</exception>\r\n/// <exception cref = \"InvalidOperationException\"><typeparamref name = \"T\"/> does not have a valid <see cref = \"SheetAttribute\"/>.</exception>",
+                    "signature": {
+                        "name": "GetSubrowExcelSheet",
+                        "returns": "SubrowExcelSheet<T>?",
+                        "params": [
+                            "Language? language = null"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n            try\r\n            {\r\n                return Excel.GetSubrowSheet<T>(language);\r\n            }\r\n            catch (ArgumentException)\r\n            {\r\n                return null;\r\n            }\r\n            catch (NotSupportedException)\r\n            {\r\n                return null;\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Creates a new handle to a game file but does not load it. You will need to call <see cref = \"ProcessFileHandleQueue\"/> yourself for these handles\r\n/// to be loaded, on a different thread.\r\n/// </summary>\r\n/// <param name = \"path\">The path to the file to load</param>\r\n/// <typeparam name = \"T\">The type of <see cref = \"FileResource\"/> to load</typeparam>\r\n/// <returns>A handle to the file to be loaded</returns>",
+                    "signature": {
+                        "name": "GetFileHandle",
+                        "returns": "FileHandle<T>",
+                        "params": [
+                            "string path"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n            return FileHandleManager.CreateHandle<T>(path);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Processes enqueued file handles that haven't been loaded yet. Call this on a different thread to process handles.\r\n/// </summary>",
+                    "signature": {
+                        "name": "ProcessFileHandleQueue",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            FileHandleManager.ProcessQueue();\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>Disposes this object.</summary>\r\n/// <param name = \"disposing\">Whether this function is being called from <see cref = \"Dispose\"/>.</param>",
+                    "signature": {
+                        "name": "Dispose",
+                        "returns": "void",
+                        "params": [
+                            "bool disposing"
+                        ],
+                        "modifier": [
+                            "protected",
+                            "virtual"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (disposing)\r\n            {\r\n                StreamPool?.Dispose();\r\n                StreamPool = null;\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "SetCurrentContext",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "internal"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            SetCurrentContext(this);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "SetCurrentContext",
+                        "returns": "void",
+                        "params": [
+                            "GameData gameData"
+                        ],
+                        "modifier": [
+                            "internal",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            CurrentContext = new(() => gameData);\r\n        }"
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.Collections.Generic;",
+                "using System.IO;",
+                "using System.Linq;",
+                "using System.Threading;",
+                "using System.Threading.Tasks;",
+                "using Lumina.Data;",
+                "using Lumina.Data.Structs;",
+                "using Lumina.Data.Structs.Excel;",
+                "using Lumina.Excel;",
+                "using Lumina.Misc;"
+            ],
+            "constructors": [
+                "/// <summary>\r\n/// Constructs a new Lumina object allowing access to game data.\r\n/// </summary>\r\n/// <param name = \"dataPath\">Path to the sqpack directory</param>\r\n/// <param name = \"options\">Options object to provide additional configuration</param>\r\n/// <exception cref = \"DirectoryNotFoundException\">Thrown when the sqpack directory supplied is missing.</exception>\r\npublic GameData(string dataPath, LuminaOptions? options = null !)\r\n{\r\n    Options = options ?? new LuminaOptions();\r\n    DataPath = new DirectoryInfo(dataPath);\r\n    if (!DataPath.Exists)\r\n    {\r\n        throw new DirectoryNotFoundException(\"DataPath provided is missing.\");\r\n    }\r\n\r\n    if (DataPath.Name != \"sqpack\")\r\n    {\r\n        throw new ArgumentException(\"the data path arg must point to the sqpack directory\", nameof(dataPath));\r\n    }\r\n\r\n    if (options?.LoadMultithreaded == true)\r\n    {\r\n        var repoTasks = DataPath.GetDirectories().Select(repo => Task.Run(() => new Repository(repo, this)));\r\n        Repositories = Task.WhenAll(repoTasks).GetAwaiter().GetResult().ToDictionary(x => x.Name.ToLowerInvariant(), x => x);\r\n    }\r\n    else\r\n    {\r\n        Repositories = new Dictionary<string, Repository>();\r\n        foreach (var repo in DataPath.GetDirectories())\r\n        {\r\n            Repositories[repo.Name.ToLowerInvariant()] = new Repository(repo, this);\r\n        }\r\n    }\r\n\r\n    Excel = new ExcelModule(this);\r\n    FileHandleManager = new FileHandleManager(this);\r\n}",
+                "/// <summary>\r\n/// Constructs a new Lumina object allowing access to game data.\r\n/// </summary>\r\n/// <param name = \"dataPath\">Path to the sqpack directory</param>\r\n/// <param name = \"logger\">An <see cref = \"ILogger\"/> implementation that Lumina can send log events to</param>\r\n/// <param name = \"options\">Options object to provide additional configuration</param>\r\n/// <exception cref = \"DirectoryNotFoundException\">Thrown when the sqpack directory supplied is missing.</exception>\r\npublic GameData(string dataPath, ILogger logger, LuminaOptions? options = null !) : this(dataPath, options)\r\n{\r\n    Logger = logger ?? throw new ArgumentNullException(nameof(logger));\r\n}"
+            ],
+            "extends": "IDisposable",
+            "implements": [],
+            "namespace": "Lumina"
+        },
+        "code": "{\r\n            try\r\n            {\r\n                return Excel.GetSheet<T>(language);\r\n            }\r\n            catch (ArgumentException)\r\n            {\r\n                return null;\r\n            }\r\n            catch (NotSupportedException)\r\n            {\r\n                return null;\r\n            }\r\n        }",
+        "code_file_path": "Lumina/GameData.cs",
+        "called_functions": [
+            "Excel.GetSheet<T>(language)"
+        ],
+        "id": 309,
+        "tests": [
+            {
+                "tests": "using Xunit;\r\nusing static Lumina.Tests.SeStringBuilderTests;\r\n\r\nnamespace Lumina.Tests;\r\n\r\npublic class LuminaTests\r\n{\r\n    [Theory]\r\n    [InlineData( \"bg\", \"ex3\", 13885885343001753777, \"bg/ex3/01_nvt_n4/twn/n4t1/bgparts/n4t1_a1_chr03.mdl\" )]\r\n    [InlineData( \"music\", \"ex2\", 16573140193792963234, \"music/ex2/bgm_ex2_system_title.scd\" )]\r\n    [InlineData( \"chara\", \"ffxiv\", 8982245735269998910, \"chara/weapon/w0501/obj/body/b0018/vfx/texture/uv_cryst_128s.atex\" )]\r\n    [InlineData( \"sound\", \"ffxiv\", 7568289509259556905, \"sound/vfx/ability/se_vfx_abi_berserk_c.scd\" )]\r\n    [InlineData( \"exd\", \"ffxiv\", 16400836168543909290, \"exd/exportedsg.exh\" )]\r\n    public void FilePathsAreParsedCorrectly( string category, string repo, ulong hash, string path )\r\n    {\r\n        var parsed = GameData.ParseFilePath( path )!;\r\n\r\n        Assert.Equal( category, parsed.Category );\r\n        Assert.Equal( repo, parsed.Repository );\r\n        Assert.Equal( hash, parsed.IndexHash );\r\n    }\r\n\r\n    [Theory]\r\n    [InlineData( \"bg\", \"ex3\", 13885885343001753777, \"bg/ex3/01_nvt_n4/twn/n4t1/bgparts/n4t1_a1_chr03.mdl\" )]\r\n    public void Dummy_Test( string category, string repo, ulong hash, string path )\r\n    {\r\n        var gameData = new GameData( @\"C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\" );\r\n\r\n        var dummy = gameData.GetExcelSheet<Addon>( Data.Language.English );\r\n        GameData.GetFileHash( \"\" );\r\n\r\n    }\r\n}",
+                "test_imports": [
+                    "using Xunit;",
+                    "using static Lumina.Tests.SeStringBuilderTests;"
+                ],
+                "test_namespace": "Lumina.Tests",
+                "test_class_name": "LuminaTests",
+                "test_file_path": "Lumina.Tests/LuminaTests.cs",
+                "test_runner": "xUnit",
+                "project_path": "Lumina.Tests/Lumina.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "using Lumina.Excel.Variants; // For ExcelVariant and related types\nusing Xunit;\nusing Xunit; // For the Xunit testing framework\nusing static Lumina.Tests.SeStringBuilderTests;\nusing Lumina.Excel; // For ExcelSheet and related types\nusing System; // For general types like Exception\nusing Lumina.Excel.Attributes; // For SheetAttribute and related attributes\nusing Lumina; // For the GameData class and related types\n\nnamespace Lumina.Tests\n{\n\npublic class LuminaTests\n{\n    [Fact]\n    public void GetExcelSheet_Test_1()\n{\n    // Arrange\n    var gameData = new GameData(\"path/to/sqpack\");\n    \n    // Act\n    var result = gameData.GetExcelSheet<SomeExcelType>(Language.English);\n    \n    // Assert\n    Assert.NotNull(result);\n    Assert.IsType<ExcelSheet<SomeExcelType>>(result);\n}\n\n[Fact]\npublic void GetExcelSheet_NonExistentSheet_ReturnsNull()\n{\n    // Arrange\n    var gameData = new GameData(\"path/to/sqpack\");\n    \n    // Act\n    var result = gameData.GetExcelSheet<NonExistentExcelType>(Language.English);\n    \n    // Assert\n    Assert.Null(result);\n}\n\n[Fact]\npublic void GetExcelSheet_InvalidLanguage_ReturnsDefaultSheet()\n{\n    // Arrange\n    var gameData = new GameData(\"path/to/sqpack\");\n    \n    // Act\n    var result = gameData.GetExcelSheet<SomeExcelType>(Language.None);\n    \n    // Assert\n    Assert.NotNull(result);\n    Assert.IsType<ExcelSheet<SomeExcelType>>(result);\n}\n\n[Fact]\npublic void GetExcelSheet_InvalidType_ThrowsInvalidOperationException()\n{\n    // Arrange\n    var gameData = new GameData(\"path/to/sqpack\");\n    \n    // Act & Assert\n    Assert.Throws<InvalidOperationException>(() => gameData.GetExcelSheet<InvalidExcelType>(Language.English));\n}\n\n[Fact]\npublic void GetExcelSheet_InvalidCast_ThrowsInvalidCastException()\n{\n    // Arrange\n    var gameData = new GameData(\"path/to/sqpack\");\n    \n    // Act & Assert\n    Assert.Throws<InvalidCastException>(() => gameData.GetExcelSheet<InvalidVariantExcelType>(Language.English));\n}}}",
+        "new_code": "{\n    var sheetAttribute = typeof(T).GetCustomAttributes(typeof(SheetAttribute), false).FirstOrDefault() as SheetAttribute;\n    if (sheetAttribute == null)\n    {\n        throw new InvalidOperationException($\"Type {typeof(T).Name} does not have a valid SheetAttribute.\");\n    }\n\n    var sheet = Excel.GetSheet<T>(sheetAttribute.SheetName, language ?? Language.None);\n    if (sheet == null)\n    {\n        return null;\n    }\n\n    if (sheet.Variant != ExcelVariant.Default)\n    {\n        throw new InvalidCastException($\"Sheet {sheetAttribute.SheetName} is not of the variant {ExcelVariant.Default}.\");\n    }\n\n    return sheet;}"
+    }
+]

@@ -1,0 +1,160 @@
+[
+    {
+        "doc": "/// <summary>\n/// Transform a windows directory name according to the Zip file naming conventions.\n/// </summary>\n/// <param name = \"name\">The directory name to transform.</param>\n/// <returns>The transformed name.</returns>",
+        "signature": {
+            "name": "TransformDirectory",
+            "returns": "string",
+            "params": [
+                "string name"
+            ],
+            "modifier": [
+                "public"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "ZipNameTransform",
+            "doc": "/// <summary>\n/// ZipNameTransform transforms names as per the Zip file naming convention.\n/// </summary>\n/// <remarks>The use of absolute names is supported although its use is not valid \n/// according to Zip naming conventions, and should not be used if maximum compatability is desired.</remarks>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Transform a windows file name according to the Zip file naming conventions.\n/// </summary>\n/// <param name = \"name\">The file name to transform.</param>\n/// <returns>The transformed name.</returns>",
+                    "signature": {
+                        "name": "TransformFile",
+                        "returns": "string",
+                        "params": [
+                            "string name"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tif (name != null) {\n\t\t\t\tstring lowerName = name.ToLower();\n\t\t\t\tif ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_) == 0) ) {\n\t\t\t\t\tname = name.Substring(trimPrefix_.Length);\n\t\t\t\t}\n\n\t\t\t\t// The following can throw exceptions when the name contains invalid characters\n\t\t\t\tif (Path.IsPathRooted(name) == true) {\n\t\t\t\t\t// NOTE:\n\t\t\t\t\t// for UNC names...  \\\\machine\\share\\zoom\\beet.txt gives \\zoom\\beet.txt\n\t\t\t\t\tname = name.Substring(Path.GetPathRoot(name).Length);\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tname = name.Replace(@\"\\\", \"/\");\n\n\t\t\t\twhile ( (name.Length > 0) && (name[0] == '/')) {\n\t\t\t\t\tname = name.Remove(0, 1);\n\t\t\t\t}\n\n\t\t\t\tname = MakeValidName(name, '_');\n\t\t\t}\n\t\t\telse {\n\t\t\t\tname = string.Empty;\n\t\t\t}\n\t\t\treturn name;\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Force a name to be valid by replacing invalid characters with a fixed value\n/// </summary>\n/// <param name = \"name\">The name to force valid</param>\n/// <param name = \"replacement\">The replacement character to use.</param>\n/// <returns>Returns a valid name</returns>",
+                    "signature": {
+                        "name": "MakeValidName",
+                        "returns": "string",
+                        "params": [
+                            "string name",
+                            "char replacement"
+                        ],
+                        "modifier": [
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tint index = name.IndexOfAny(InvalidEntryChars);\n\t\t\tif (index > 0) {\n\t\t\t\tStringBuilder builder = new StringBuilder(name);\n\n\t\t\t\twhile (index >= 0 ) {\n\t\t\t\t\tbuilder[index] = replacement;\n\n\t\t\t\t\tif (index >= name.Length) {\n\t\t\t\t\t\tindex = -1;\n\t\t\t\t\t}\n\t\t\t\t\telse {\n\t\t\t\t\t\tindex = name.IndexOfAny(InvalidEntryChars, index + 1);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tname = builder.ToString();\n\t\t\t}\n\t\t\treturn name;\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Test a name to see if it is a valid name for a zip entry.\n/// </summary>\n/// <param name = \"name\">The name to test.</param>\n/// <param name = \"relaxed\">If true checking is relaxed about windows file names and absolute paths.</param>\n/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>\n/// <remarks>Zip path names are actually in Unix format, and should only contain relative paths.\n/// This means that any path stored should not contain a drive or\n/// device letter, or a leading slash.  All slashes should forward slashes '/'.\n/// An empty name is valid for a file where the input comes from standard input.\n/// A null name is not considered valid.\n/// </remarks>",
+                    "signature": {
+                        "name": "IsValidName",
+                        "returns": "bool",
+                        "params": [
+                            "string name",
+                            "bool relaxed"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tbool result = (name != null);\n\n\t\t\tif ( result ) {\n\t\t\t\tif ( relaxed ) {\n\t\t\t\t\tresult = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;\n\t\t\t\t}\n\t\t\t\telse {\n\t\t\t\t\tresult = \n\t\t\t\t\t\t(name.IndexOfAny(InvalidEntryChars) < 0) &&\n\t\t\t\t\t\t(name.IndexOf('/') != 0);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\treturn result;\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Test a name to see if it is a valid name for a zip entry.\n/// </summary>\n/// <param name = \"name\">The name to test.</param>\n/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>\n/// <remarks>Zip path names are actually in unix format,\n/// and should only contain relative paths if a path is present.\n/// This means that the path stored should not contain a drive or\n/// device letter, or a leading slash.  All slashes should forward slashes '/'.\n/// An empty name is valid where the input comes from standard input.\n/// A null name is not considered valid.\n/// </remarks>",
+                    "signature": {
+                        "name": "IsValidName",
+                        "returns": "bool",
+                        "params": [
+                            "string name"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tbool result = \n\t\t\t\t(name != null) &&\n\t\t\t\t(name.IndexOfAny(InvalidEntryChars) < 0) &&\n\t\t\t\t(name.IndexOf('/') != 0)\n\t\t\t\t;\n\t\t\treturn result;\n\t\t}"
+                }
+            ],
+            "variables": [
+                "#region Instance Fields\r\nstring trimPrefix_;",
+                "#endregion\r\n#region Class Fields\r\nstatic readonly char[] InvalidEntryChars;",
+                "static readonly char[] InvalidEntryCharsRelaxed;"
+            ],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.IO;",
+                "using System.Text;",
+                "using ICSharpCode.SharpZipLib.Core;"
+            ],
+            "constructors": [
+                "#region Constructors\r\n/// <summary>\n/// Initialize a new instance of <see cref = \"ZipNameTransform\"></see>\n/// </summary>\npublic ZipNameTransform()\r\n{\r\n}",
+                "/// <summary>\n/// Initialize a new instance of <see cref = \"ZipNameTransform\"></see>\n/// </summary>\n/// <param name = \"trimPrefix\">The string to trim from the front of paths if found.</param>\npublic ZipNameTransform(string trimPrefix)\r\n{\r\n    TrimPrefix = trimPrefix;\r\n}",
+                "#endregion\r\n/// <summary>\n/// Static constructor.\n/// </summary>\nstatic ZipNameTransform()\r\n{\r\n    char[] invalidPathChars;\r\n#if NET_1_0 || NET_1_1 || NETCF_1_0\r\n\t\t\tinvalidPathChars = Path.InvalidPathChars;\n#else\r\n    invalidPathChars = Path.GetInvalidPathChars();\r\n#endif\r\n    int howMany = invalidPathChars.Length + 2;\r\n    InvalidEntryCharsRelaxed = new char[howMany];\r\n    Array.Copy(invalidPathChars, 0, InvalidEntryCharsRelaxed, 0, invalidPathChars.Length);\r\n    InvalidEntryCharsRelaxed[howMany - 1] = '*';\r\n    InvalidEntryCharsRelaxed[howMany - 2] = '?';\r\n    howMany = invalidPathChars.Length + 4;\r\n    InvalidEntryChars = new char[howMany];\r\n    Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);\r\n    InvalidEntryChars[howMany - 1] = ':';\r\n    InvalidEntryChars[howMany - 2] = '\\\\';\r\n    InvalidEntryChars[howMany - 3] = '*';\r\n    InvalidEntryChars[howMany - 4] = '?';\r\n}"
+            ],
+            "extends": "INameTransform",
+            "implements": [],
+            "namespace": "ICSharpCode.SharpZipLib.Zip"
+        },
+        "code": "{\n\t\t\tname = TransformFile(name);\n\t\t\tif (name.Length > 0) {\n\t\t\t\tif ( !name.EndsWith(\"/\") ) {\n\t\t\t\t\tname += \"/\";\n\t\t\t\t}\n\t\t\t}\n\t\t\telse {\n\t\t\t\tthrow new ZipException(\"Cannot have an empty directory name\");\n\t\t\t}\n\t\t\treturn name;\n\t\t}",
+        "code_file_path": "SharpZipLib/ZipNameTransform.cs",
+        "called_functions": [
+            "TransformFile(name)",
+            "name.EndsWith(\"/\")"
+        ],
+        "id": 506,
+        "tests": [
+            {
+                "tests": "namespace SharpZipLib.Tests;\r\n\r\npublic class ZipNameTransformTest\r\n{\r\n    [Fact]\r\n    public void Test1()\r\n    {\r\n        ZipNameTransform a = new();\r\n        var x = a.TransformDirectory(\"auzwdbawda\");\r\n        Assert.Empty(x);\r\n    }\r\n}",
+                "test_imports": [],
+                "test_namespace": "SharpZipLib.Tests",
+                "test_class_name": "ZipNameTransformTest",
+                "test_file_path": "SharpZipLib.Tests/ZipNameTransformTest.cs",
+                "test_runner": "xUnit",
+                "project_path": "SharpZipLib.Tests/SharpZipLib.Tests.csproj"
+            }
+        ],
+        "new_tests": "using SharpZipLib; // Assuming the ZipNameTransform class is in this namespace\nusing Xunit; // For the [Fact] attribute and assertion methods\n\nnamespace SharpZipLib.Tests\n{\n\npublic class ZipNameTransformTest\n{\n    [Fact]\n    public void TransformDirectory_Test_1()\n{\n    // Arrange\n    var transformer = new ZipNameTransform();\n    string input = \"C:\\\\Users\\\\Example\\\\Documents\\\\\";\n    string expected = \"Users/Example/Documents/\";\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Equal(expected, result);\n}\n\n[Fact]\npublic void TransformDirectory_Test_2()\n{\n    // Arrange\n    var transformer = new ZipNameTransform();\n    string input = \"C:\\\\Folder\\\\Subfolder\\\\\";\n    string expected = \"Folder/Subfolder/\";\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Equal(expected, result);\n}\n\n[Fact]\npublic void TransformDirectory_Test_3_EmptyInput()\n{\n    // Arrange\n    var transformer = new ZipNameTransform();\n    string input = \"\";\n    string expected = \"\";\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Equal(expected, result);\n}\n\n[Fact]\npublic void TransformDirectory_Test_4_NullInput()\n{\n    // Arrange\n    var transformer = new ZipNameTransform();\n    string input = null;\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Null(result);\n}\n\n[Fact]\npublic void TransformDirectory_Test_5_InvalidCharacters()\n{\n    // Arrange\n    var transformer = new ZipNameTransform();\n    string input = \"C:\\\\Folder\\\\Subfolder<>|?\";\n    string expected = \"Folder/Subfolder__\";\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Equal(expected, result);\n}\n\n[Fact]\npublic void TransformDirectory_Test_6_TrimPrefix()\n{\n    // Arrange\n    var transformer = new ZipNameTransform(\"C:\\\\\");\n    string input = \"C:\\\\Folder\\\\Subfolder\\\\\";\n    string expected = \"Folder/Subfolder/\";\n\n    // Act\n    string result = transformer.TransformDirectory(input);\n\n    // Assert\n    Assert.Equal(expected, result);\n}}}",
+        "new_code": "{\nif (string.IsNullOrEmpty(name))\n{\n    return string.Empty;\n}\n\n// Trim the prefix if specified\nif (!string.IsNullOrEmpty(trimPrefix_) && name.StartsWith(trimPrefix_, StringComparison.OrdinalIgnoreCase))\n{\n    name = name.Substring(trimPrefix_.Length);\n}\n\n// Replace backslashes with forward slashes\nname = name.Replace('\\\\', '/');\n\n// Remove any invalid characters\nname = MakeValidName(name, '_');\n\n// Ensure the name ends with a forward slash if it's a directory\nif (!name.EndsWith(\"/\"))\n{\n    name += \"/\";\n}\n\nreturn name;}",
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "TransformDirectory_Test_6_TrimPrefix"
+                ],
+                [
+                    "TransformDirectory_Test_5_InvalidCharacters",
+                    "TransformDirectory_Test_2",
+                    "TransformDirectory_Test_4_NullInput",
+                    "TransformDirectory_Test_3_EmptyInput",
+                    "TransformDirectory_Test_1"
+                ],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [
+                    "TransformDirectory_Test_3_EmptyInput",
+                    "TransformDirectory_Test_6_TrimPrefix"
+                ],
+                [
+                    "TransformDirectory_Test_1",
+                    "TransformDirectory_Test_4_NullInput",
+                    "TransformDirectory_Test_2",
+                    "TransformDirectory_Test_5_InvalidCharacters"
+                ],
+                []
+            ]
+        }
+    }
+]

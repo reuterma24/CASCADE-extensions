@@ -1,0 +1,384 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:37.07
+
+verify returned with:255
+
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void NotNull_Should_Fail_When_Value_Is_Null()
+    {
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+        var testInstance = new TestClass { Property = null };
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestClass.Property));
+    }
+
+    [Fact]
+    public void NotNull_Should_Pass_When_Value_Is_Not_Null()
+    {
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+        var testInstance = new TestClass { Property = "Valid Value" };
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+
+        // Assert
+        Assert.True(result.IsValid);
+    }
+
+    [Fact]
+    public void NotNull_Should_Throw_ArgumentNullException_When_RuleBuilder_Is_Null()
+    {
+        // Arrange
+        IRuleBuilder<TestClass, string> ruleBuilder = null;
+        var validator = new DefaultValidatorExtensions();
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => validator.NotNull(ruleBuilder));
+    }
+
+    private class TestClass
+    {
+        public string Property { get; set; }
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 11, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 14, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 5
+
+
+
+verify returned with:0
+using System.Collections.Generic;
+using FluentValidation.Results;
+using Validators;
+using System;
+using Moq;
+using Xunit;
+using System.Threading.Tasks;
+using System.Linq;
+using Internal;
+using FluentValidation;
+
+namespace FluentValidation.Tests
+{
+
+public class DefaultValidatorExtensionTester
+{
+    [Fact]
+    public void NotNull_Test_1()
+{
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void NotNull_Should_Fail_When_Value_Is_Null()
+    {
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+        var testInstance = new TestClass { Property = null };
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+
+        // Assert
+        Assert.False(result.IsValid);
+        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestClass.Property));
+    }
+
+    [Fact]
+    public void NotNull_Should_Pass_When_Value_Is_Not_Null()
+    {
+        // Arrange
+        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+        var validator = new DefaultValidatorExtensions();
+        var testInstance = new TestClass { Property = "Valid Value" };
+
+        // Act
+        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+
+        // Assert
+        Assert.True(result.IsValid);
+    }
+
+    [Fact]
+    public void NotNull_Should_Throw_ArgumentNullException_When_RuleBuilder_Is_Null()
+    {
+        // Arrange
+        IRuleBuilder<TestClass, string> ruleBuilder = null;
+        var validator = new DefaultValidatorExtensions();
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => validator.NotNull(ruleBuilder));
+    }
+
+    private class TestClass
+    {
+        public string Property { get; set; }
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 110
+Modification successful! - new_tests - code
+
+
+Command: cat -n src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test src/FluentValidation.Tests/FluentValidation.Tests.csproj --filter FluentValidation.Tests.DefaultValidatorExtensionTester --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Collections.Generic;
+     2	using FluentValidation.Results;
+     3	using Validators;
+     4	using System;
+     5	using Moq;
+     6	using Xunit;
+     7	using System.Threading.Tasks;
+     8	using System.Linq;
+     9	using Internal;
+    10	using FluentValidation;
+    11	
+    12	namespace FluentValidation.Tests
+    13	{
+    14	
+    15	public class DefaultValidatorExtensionTester
+    16	{
+    17	    [Fact]
+    18	    public void NotNull_Test_1()
+    19	{
+    20	        // Arrange
+    21	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    22	        var validator = new DefaultValidatorExtensions();
+    23	
+    24	        // Act
+    25	        var result = validator.NotNull(ruleBuilder.Object);
+    26	
+    27	        // Assert
+    28	        Assert.NotNull(result);
+    29	    }
+    30	
+    31	    [Fact]
+    32	    public void NotNull_Should_Fail_When_Value_Is_Null()
+    33	    {
+    34	        // Arrange
+    35	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    36	        var validator = new DefaultValidatorExtensions();
+    37	        var testInstance = new TestClass { Property = null };
+    38	
+    39	        // Act
+    40	        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+    41	
+    42	        // Assert
+    43	        Assert.False(result.IsValid);
+    44	        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestClass.Property));
+    45	    }
+    46	
+    47	    [Fact]
+    48	    public void NotNull_Should_Pass_When_Value_Is_Not_Null()
+    49	    {
+    50	        // Arrange
+    51	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    52	        var validator = new DefaultValidatorExtensions();
+    53	        var testInstance = new TestClass { Property = "Valid Value" };
+    54	
+    55	        // Act
+    56	        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+    57	
+    58	        // Assert
+    59	        Assert.True(result.IsValid);
+    60	    }
+    61	
+    62	    [Fact]
+    63	    public void NotNull_Should_Throw_ArgumentNullException_When_RuleBuilder_Is_Null()
+    64	    {
+    65	        // Arrange
+    66	        IRuleBuilder<TestClass, string> ruleBuilder = null;
+    67	        var validator = new DefaultValidatorExtensions();
+    68	
+    69	        // Act & Assert
+    70	        Assert.Throws<ArgumentNullException>(() => validator.NotNull(ruleBuilder));
+    71	    }
+    72	
+    73	    private class TestClass
+    74	    {
+    75	        public string Property { get; set; }
+    76	    }
+    77	}}  Determining projects to restore...
+  Restored /root/src/FluentValidation.ValidatorAttribute/FluentValidation.ValidatorAttribute.csproj (in 14.67 sec).
+  Restored /root/src/FluentValidation/FluentValidation.csproj (in 14.67 sec).
+  Restored /root/src/FluentValidation.Tests/FluentValidation.Tests.csproj (in 15.43 sec).
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(32,67): warning CS0612: 'IValidationResultTester' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/Validators/PropertyValidator.cs(110,27): warning CS0618: 'IStringSource.ResourceName' is obsolete: 'ResourceName will be removed from IStringSource in FluentValidation 9.' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(41,4): warning CS0618: 'TestValidationResult<T, TValue>.Result' is obsolete: 'Use properties on the parent class itself' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(42,4): warning CS0612: 'TestValidationResult<T, TValue>.MemberAccessor' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+  FluentValidation -> /root/src/FluentValidation/bin/Debug/netstandard2.0/FluentValidation.dll
+  FluentValidation.ValidatorAttribute -> /root/src/FluentValidation.ValidatorAttribute/bin/Debug/netstandard2.0/FluentValidation.ValidatorAttribute.dll
+/root/src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs(3,7): error CS0246: The type or namespace name 'Validators' could not be found (are you missing a using directive or an assembly reference?) [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs(9,7): error CS0246: The type or namespace name 'Internal' could not be found (are you missing a using directive or an assembly reference?) [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/MessageFormatterTests.cs(168,30): warning CS0672: Member 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)' overrides obsolete member 'MessageFormatter.ReplacePlaceholderWithValue(string, string, object)'. Add the Obsolete attribute to 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)'. [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 110
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test src/FluentValidation.Tests/FluentValidation.Tests.csproj --filter FluentValidation.Tests.DefaultValidatorExtensionTester --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Collections.Generic;
+     2	using FluentValidation.Results;
+     3	using Validators;
+     4	using System;
+     5	using Moq;
+     6	using Xunit;
+     7	using System.Threading.Tasks;
+     8	using System.Linq;
+     9	using Internal;
+    10	using FluentValidation;
+    11	
+    12	namespace FluentValidation.Tests
+    13	{
+    14	
+    15	public class DefaultValidatorExtensionTester
+    16	{
+    17	    [Fact]
+    18	    public void NotNull_Test_1()
+    19	{
+    20	        // Arrange
+    21	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    22	        var validator = new DefaultValidatorExtensions();
+    23	
+    24	        // Act
+    25	        var result = validator.NotNull(ruleBuilder.Object);
+    26	
+    27	        // Assert
+    28	        Assert.NotNull(result);
+    29	    }
+    30	
+    31	    [Fact]
+    32	    public void NotNull_Should_Fail_When_Value_Is_Null()
+    33	    {
+    34	        // Arrange
+    35	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    36	        var validator = new DefaultValidatorExtensions();
+    37	        var testInstance = new TestClass { Property = null };
+    38	
+    39	        // Act
+    40	        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+    41	
+    42	        // Assert
+    43	        Assert.False(result.IsValid);
+    44	        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestClass.Property));
+    45	    }
+    46	
+    47	    [Fact]
+    48	    public void NotNull_Should_Pass_When_Value_Is_Not_Null()
+    49	    {
+    50	        // Arrange
+    51	        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();
+    52	        var validator = new DefaultValidatorExtensions();
+    53	        var testInstance = new TestClass { Property = "Valid Value" };
+    54	
+    55	        // Act
+    56	        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);
+    57	
+    58	        // Assert
+    59	        Assert.True(result.IsValid);
+    60	    }
+    61	
+    62	    [Fact]
+    63	    public void NotNull_Should_Throw_ArgumentNullException_When_RuleBuilder_Is_Null()
+    64	    {
+    65	        // Arrange
+    66	        IRuleBuilder<TestClass, string> ruleBuilder = null;
+    67	        var validator = new DefaultValidatorExtensions();
+    68	
+    69	        // Act & Assert
+    70	        Assert.Throws<ArgumentNullException>(() => validator.NotNull(ruleBuilder));
+    71	    }
+    72	
+    73	    private class TestClass
+    74	    {
+    75	        public string Property { get; set; }
+    76	    }
+    77	}}  Determining projects to restore...
+  Restored /root/src/FluentValidation.ValidatorAttribute/FluentValidation.ValidatorAttribute.csproj (in 15.29 sec).
+  Restored /root/src/FluentValidation/FluentValidation.csproj (in 15.94 sec).
+  Restored /root/src/FluentValidation.Tests/FluentValidation.Tests.csproj (in 18.43 sec).
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(32,67): warning CS0612: 'IValidationResultTester' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/Validators/PropertyValidator.cs(110,27): warning CS0618: 'IStringSource.ResourceName' is obsolete: 'ResourceName will be removed from IStringSource in FluentValidation 9.' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(41,4): warning CS0618: 'TestValidationResult<T, TValue>.Result' is obsolete: 'Use properties on the parent class itself' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(42,4): warning CS0612: 'TestValidationResult<T, TValue>.MemberAccessor' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+  FluentValidation -> /root/src/FluentValidation/bin/Debug/netstandard2.0/FluentValidation.dll
+  FluentValidation.ValidatorAttribute -> /root/src/FluentValidation.ValidatorAttribute/bin/Debug/netstandard2.0/FluentValidation.ValidatorAttribute.dll
+/root/src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs(3,7): error CS0246: The type or namespace name 'Validators' could not be found (are you missing a using directive or an assembly reference?) [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs(9,7): error CS0246: The type or namespace name 'Internal' could not be found (are you missing a using directive or an assembly reference?) [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/MessageFormatterTests.cs(168,30): warning CS0672: Member 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)' overrides obsolete member 'MessageFormatter.ReplacePlaceholderWithValue(string, string, object)'. Add the Obsolete attribute to 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)'. [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

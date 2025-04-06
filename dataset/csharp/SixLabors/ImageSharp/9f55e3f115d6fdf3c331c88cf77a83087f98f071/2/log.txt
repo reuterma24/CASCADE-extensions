@@ -1,0 +1,271 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:13.77
+
+verify returned with:0
+
+using System;
+using Xunit;
+
+namespace ImageSharpIsolated.Tests
+{
+    public class DebugGuardTests
+    {
+        [Fact]
+        public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+        {
+            // Arrange
+            bool isDisposed = false;
+            string objectName = "TestObject";
+
+            // Act & Assert
+            DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+        }
+
+        [Fact]
+        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+        {
+            // Arrange
+            bool isDisposed = true;
+            string objectName = "TestObject";
+
+            // Act & Assert
+            var exception = Assert.Throws<ObjectDisposedException>(() => 
+                DebugGuard.NotDisposed(isDisposed, objectName));
+
+            Assert.Equal("TestObject", exception.ObjectName);
+        }
+
+        [Fact]
+        public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+        {
+            // Arrange
+            bool isDisposed = true;
+            string objectName = "TestObject";
+
+            // Act & Assert
+            var exception = Assert.Throws<ObjectDisposedException>(() => 
+                DebugGuard.NotDisposed(isDisposed, objectName));
+
+            Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+        }
+
+        [Fact]
+        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+        {
+            // Arrange
+            bool isDisposed = true;
+            string objectName = "AnotherObject";
+
+            // Act & Assert
+            var exception = Assert.Throws<ObjectDisposedException>(() => 
+                DebugGuard.NotDisposed(isDisposed, objectName));
+
+            Assert.Equal("AnotherObject", exception.ObjectName);
+        }
+    }
+}
+Syntactically correct
+
+
+Modifying context with id: 505
+Modification successful! - new_tests - code
+
+
+Command: cat -n ImageSharpIsolated.Tests/DebugGuardTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj --filter ImageSharpIsolated.Tests.DebugGuardTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	
+     2	using System;
+     3	using Xunit;
+     4	
+     5	namespace ImageSharpIsolated.Tests
+     6	{
+     7	    public class DebugGuardTests
+     8	    {
+     9	        [Fact]
+    10	        public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    11	        {
+    12	            // Arrange
+    13	            bool isDisposed = false;
+    14	            string objectName = "TestObject";
+    15	
+    16	            // Act & Assert
+    17	            DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    18	        }
+    19	
+    20	        [Fact]
+    21	        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    22	        {
+    23	            // Arrange
+    24	            bool isDisposed = true;
+    25	            string objectName = "TestObject";
+    26	
+    27	            // Act & Assert
+    28	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    29	                DebugGuard.NotDisposed(isDisposed, objectName));
+    30	
+    31	            Assert.Equal("TestObject", exception.ObjectName);
+    32	        }
+    33	
+    34	        [Fact]
+    35	        public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    36	        {
+    37	            // Arrange
+    38	            bool isDisposed = true;
+    39	            string objectName = "TestObject";
+    40	
+    41	            // Act & Assert
+    42	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    43	                DebugGuard.NotDisposed(isDisposed, objectName));
+    44	
+    45	            Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    46	        }
+    47	
+    48	        [Fact]
+    49	        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    50	        {
+    51	            // Arrange
+    52	            bool isDisposed = true;
+    53	            string objectName = "AnotherObject";
+    54	
+    55	            // Act & Assert
+    56	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    57	                DebugGuard.NotDisposed(isDisposed, objectName));
+    58	
+    59	            Assert.Equal("AnotherObject", exception.ObjectName);
+    60	        }
+    61	    }
+    62	}  Determining projects to restore...
+  Restored /root/ImageSharp/ImageSharp.csproj (in 8.06 sec).
+  Restored /root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj (in 10.21 sec).
+  ImageSharp -> /root/ImageSharp/bin/Debug/net9.0/ImageSharp.dll
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(17,13): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(29,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(43,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(57,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 505
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n ImageSharpIsolated.Tests/DebugGuardTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj --filter ImageSharpIsolated.Tests.DebugGuardTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	
+     2	using System;
+     3	using Xunit;
+     4	
+     5	namespace ImageSharpIsolated.Tests
+     6	{
+     7	    public class DebugGuardTests
+     8	    {
+     9	        [Fact]
+    10	        public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    11	        {
+    12	            // Arrange
+    13	            bool isDisposed = false;
+    14	            string objectName = "TestObject";
+    15	
+    16	            // Act & Assert
+    17	            DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    18	        }
+    19	
+    20	        [Fact]
+    21	        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    22	        {
+    23	            // Arrange
+    24	            bool isDisposed = true;
+    25	            string objectName = "TestObject";
+    26	
+    27	            // Act & Assert
+    28	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    29	                DebugGuard.NotDisposed(isDisposed, objectName));
+    30	
+    31	            Assert.Equal("TestObject", exception.ObjectName);
+    32	        }
+    33	
+    34	        [Fact]
+    35	        public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    36	        {
+    37	            // Arrange
+    38	            bool isDisposed = true;
+    39	            string objectName = "TestObject";
+    40	
+    41	            // Act & Assert
+    42	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    43	                DebugGuard.NotDisposed(isDisposed, objectName));
+    44	
+    45	            Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    46	        }
+    47	
+    48	        [Fact]
+    49	        public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    50	        {
+    51	            // Arrange
+    52	            bool isDisposed = true;
+    53	            string objectName = "AnotherObject";
+    54	
+    55	            // Act & Assert
+    56	            var exception = Assert.Throws<ObjectDisposedException>(() => 
+    57	                DebugGuard.NotDisposed(isDisposed, objectName));
+    58	
+    59	            Assert.Equal("AnotherObject", exception.ObjectName);
+    60	        }
+    61	    }
+    62	}  Determining projects to restore...
+  Restored /root/ImageSharp/ImageSharp.csproj (in 14.41 sec).
+  Restored /root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj (in 15.12 sec).
+  ImageSharp -> /root/ImageSharp/bin/Debug/net9.0/ImageSharp.dll
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(17,13): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(29,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(43,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/DebugGuardTests.cs(57,17): error CS0103: The name 'DebugGuard' does not exist in the current context [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

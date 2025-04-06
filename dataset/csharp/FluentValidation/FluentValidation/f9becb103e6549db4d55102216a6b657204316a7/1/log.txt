@@ -1,0 +1,456 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:33.81
+
+verify returned with:255
+
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "TestValue";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    Assert.NotNull(result);
+}
+
+[Fact]
+public void NotEmpty_Test_2_EmptyString()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_3_NullValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    string propertyValue = null;
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_4_DefaultValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, int>>();
+    int propertyValue = 0;
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyIntProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_5_ValidValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "ValidValue";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    var validationResult = result.Validate(new MyClass { MyProperty = propertyValue });
+    Assert.True(validationResult.IsValid);
+}
+
+// Sample class for testing
+public class MyClass
+{
+    public string MyProperty { get; set; }
+    public int MyIntProperty { get; set; }
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 11, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 14, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 29, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 44, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 59, Column: 1
+
+
+
+verify returned with:0
+using System;
+using Xunit;
+using FluentValidation;
+using System.Globalization;
+using FluentValidation.Results;
+using System.Linq;
+using Moq;
+using System.Collections.Generic;
+using System.Threading;
+
+namespace FluentValidation.Tests
+{
+
+public class NotEmptyTester
+{
+    [Fact]
+    public void NotEmpty_Test_1()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "TestValue";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    Assert.NotNull(result);
+}
+
+[Fact]
+public void NotEmpty_Test_2_EmptyString()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_3_NullValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    string propertyValue = null;
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_4_DefaultValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, int>>();
+    int propertyValue = 0;
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    // Assuming that the validation logic will throw an exception or return a failure result
+    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyIntProperty = propertyValue }));
+}
+
+[Fact]
+public void NotEmpty_Test_5_ValidValue()
+{
+    // Arrange
+    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    var propertyValue = "ValidValue";
+
+    // Act
+    var result = ruleBuilder.Object.NotEmpty();
+
+    // Assert
+    var validationResult = result.Validate(new MyClass { MyProperty = propertyValue });
+    Assert.True(validationResult.IsValid);
+}
+
+// Sample class for testing
+public class MyClass
+{
+    public string MyProperty { get; set; }
+    public int MyIntProperty { get; set; }
+}}}
+Syntactically correct
+
+
+Modifying context with id: 103
+Modification successful! - new_tests - code
+
+
+Command: cat -n src/FluentValidation.Tests/NotEmptyTester.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test src/FluentValidation.Tests/FluentValidation.Tests.csproj --filter FluentValidation.Tests.NotEmptyTester --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System;
+     2	using Xunit;
+     3	using FluentValidation;
+     4	using System.Globalization;
+     5	using FluentValidation.Results;
+     6	using System.Linq;
+     7	using Moq;
+     8	using System.Collections.Generic;
+     9	using System.Threading;
+    10	
+    11	namespace FluentValidation.Tests
+    12	{
+    13	
+    14	public class NotEmptyTester
+    15	{
+    16	    [Fact]
+    17	    public void NotEmpty_Test_1()
+    18	{
+    19	    // Arrange
+    20	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    21	    var propertyValue = "TestValue";
+    22	
+    23	    // Act
+    24	    var result = ruleBuilder.Object.NotEmpty();
+    25	
+    26	    // Assert
+    27	    Assert.NotNull(result);
+    28	}
+    29	
+    30	[Fact]
+    31	public void NotEmpty_Test_2_EmptyString()
+    32	{
+    33	    // Arrange
+    34	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    35	    var propertyValue = "";
+    36	
+    37	    // Act
+    38	    var result = ruleBuilder.Object.NotEmpty();
+    39	
+    40	    // Assert
+    41	    // Assuming that the validation logic will throw an exception or return a failure result
+    42	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+    43	}
+    44	
+    45	[Fact]
+    46	public void NotEmpty_Test_3_NullValue()
+    47	{
+    48	    // Arrange
+    49	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    50	    string propertyValue = null;
+    51	
+    52	    // Act
+    53	    var result = ruleBuilder.Object.NotEmpty();
+    54	
+    55	    // Assert
+    56	    // Assuming that the validation logic will throw an exception or return a failure result
+    57	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+    58	}
+    59	
+    60	[Fact]
+    61	public void NotEmpty_Test_4_DefaultValue()
+    62	{
+    63	    // Arrange
+    64	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, int>>();
+    65	    int propertyValue = 0;
+    66	
+    67	    // Act
+    68	    var result = ruleBuilder.Object.NotEmpty();
+    69	
+    70	    // Assert
+    71	    // Assuming that the validation logic will throw an exception or return a failure result
+    72	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyIntProperty = propertyValue }));
+    73	}
+    74	
+    75	[Fact]
+    76	public void NotEmpty_Test_5_ValidValue()
+    77	{
+    78	    // Arrange
+    79	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    80	    var propertyValue = "ValidValue";
+    81	
+    82	    // Act
+    83	    var result = ruleBuilder.Object.NotEmpty();
+    84	
+    85	    // Assert
+    86	    var validationResult = result.Validate(new MyClass { MyProperty = propertyValue });
+    87	    Assert.True(validationResult.IsValid);
+    88	}
+    89	
+    90	// Sample class for testing
+    91	public class MyClass
+    92	{
+    93	    public string MyProperty { get; set; }
+    94	    public int MyIntProperty { get; set; }
+    95	}}}  Determining projects to restore...
+  Restored /root/src/FluentValidation.ValidatorAttribute/FluentValidation.ValidatorAttribute.csproj (in 16.82 sec).
+  Restored /root/src/FluentValidation/FluentValidation.csproj (in 16.82 sec).
+  Restored /root/src/FluentValidation.Tests/FluentValidation.Tests.csproj (in 19.73 sec).
+MSBUILD : error MSB4166: Child node "3" exited prematurely. Shutting down. Diagnostic information may be found in files in "/tmp/MSBuildTemproot/" and will be named MSBuild_*.failure.txt. This location can be changed by setting the MSBUILDDEBUGPATH environment variable to a different directory.
+MSBUILD : error MSB4166: Child node "4" exited prematurely. Shutting down. Diagnostic information may be found in files in "/tmp/MSBuildTemproot/" and will be named MSBuild_*.failure.txt. This location can be changed by setting the MSBUILDDEBUGPATH environment variable to a different directory.
+MSBUILD : error MSB4166: Child node "2" exited prematurely. Shutting down. Diagnostic information may be found in files in "/tmp/MSBuildTemproot/" and will be named MSBuild_*.failure.txt. This location can be changed by setting the MSBUILDDEBUGPATH environment variable to a different directory.
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 103
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n src/FluentValidation.Tests/NotEmptyTester.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test src/FluentValidation.Tests/FluentValidation.Tests.csproj --filter FluentValidation.Tests.NotEmptyTester --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System;
+     2	using Xunit;
+     3	using FluentValidation;
+     4	using System.Globalization;
+     5	using FluentValidation.Results;
+     6	using System.Linq;
+     7	using Moq;
+     8	using System.Collections.Generic;
+     9	using System.Threading;
+    10	
+    11	namespace FluentValidation.Tests
+    12	{
+    13	
+    14	public class NotEmptyTester
+    15	{
+    16	    [Fact]
+    17	    public void NotEmpty_Test_1()
+    18	{
+    19	    // Arrange
+    20	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    21	    var propertyValue = "TestValue";
+    22	
+    23	    // Act
+    24	    var result = ruleBuilder.Object.NotEmpty();
+    25	
+    26	    // Assert
+    27	    Assert.NotNull(result);
+    28	}
+    29	
+    30	[Fact]
+    31	public void NotEmpty_Test_2_EmptyString()
+    32	{
+    33	    // Arrange
+    34	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    35	    var propertyValue = "";
+    36	
+    37	    // Act
+    38	    var result = ruleBuilder.Object.NotEmpty();
+    39	
+    40	    // Assert
+    41	    // Assuming that the validation logic will throw an exception or return a failure result
+    42	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+    43	}
+    44	
+    45	[Fact]
+    46	public void NotEmpty_Test_3_NullValue()
+    47	{
+    48	    // Arrange
+    49	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    50	    string propertyValue = null;
+    51	
+    52	    // Act
+    53	    var result = ruleBuilder.Object.NotEmpty();
+    54	
+    55	    // Assert
+    56	    // Assuming that the validation logic will throw an exception or return a failure result
+    57	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyProperty = propertyValue }));
+    58	}
+    59	
+    60	[Fact]
+    61	public void NotEmpty_Test_4_DefaultValue()
+    62	{
+    63	    // Arrange
+    64	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, int>>();
+    65	    int propertyValue = 0;
+    66	
+    67	    // Act
+    68	    var result = ruleBuilder.Object.NotEmpty();
+    69	
+    70	    // Assert
+    71	    // Assuming that the validation logic will throw an exception or return a failure result
+    72	    Assert.Throws<ValidationException>(() => result.Validate(new MyClass { MyIntProperty = propertyValue }));
+    73	}
+    74	
+    75	[Fact]
+    76	public void NotEmpty_Test_5_ValidValue()
+    77	{
+    78	    // Arrange
+    79	    var ruleBuilder = new Mock<IRuleBuilder<MyClass, string>>();
+    80	    var propertyValue = "ValidValue";
+    81	
+    82	    // Act
+    83	    var result = ruleBuilder.Object.NotEmpty();
+    84	
+    85	    // Assert
+    86	    var validationResult = result.Validate(new MyClass { MyProperty = propertyValue });
+    87	    Assert.True(validationResult.IsValid);
+    88	}
+    89	
+    90	// Sample class for testing
+    91	public class MyClass
+    92	{
+    93	    public string MyProperty { get; set; }
+    94	    public int MyIntProperty { get; set; }
+    95	}}}  Determining projects to restore...
+  Restored /root/src/FluentValidation/FluentValidation.csproj (in 15.22 sec).
+  Restored /root/src/FluentValidation.ValidatorAttribute/FluentValidation.ValidatorAttribute.csproj (in 15.22 sec).
+  Restored /root/src/FluentValidation.Tests/FluentValidation.Tests.csproj (in 15.26 sec).
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(32,67): warning CS0612: 'IValidationResultTester' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/Validators/PropertyValidator.cs(110,27): warning CS0618: 'IStringSource.ResourceName' is obsolete: 'ResourceName will be removed from IStringSource in FluentValidation 9.' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(41,4): warning CS0618: 'TestValidationResult<T, TValue>.Result' is obsolete: 'Use properties on the parent class itself' [/root/src/FluentValidation/FluentValidation.csproj]
+/root/src/FluentValidation/TestHelper/TestValidationResult.cs(42,4): warning CS0612: 'TestValidationResult<T, TValue>.MemberAccessor' is obsolete [/root/src/FluentValidation/FluentValidation.csproj]
+  FluentValidation -> /root/src/FluentValidation/bin/Debug/netstandard2.0/FluentValidation.dll
+  FluentValidation.ValidatorAttribute -> /root/src/FluentValidation.ValidatorAttribute/bin/Debug/netstandard2.0/FluentValidation.ValidatorAttribute.dll
+/root/src/FluentValidation.Tests/MessageFormatterTests.cs(168,30): warning CS0672: Member 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)' overrides obsolete member 'MessageFormatter.ReplacePlaceholderWithValue(string, string, object)'. Add the Obsolete attribute to 'MessageFormatterTests.FormatterMock.ReplacePlaceholderWithValue(string, string, object)'. [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/NotEmptyTester.cs(21,9): warning CS0219: The variable 'propertyValue' is assigned but its value is never used [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/NotEmptyTester.cs(42,46): error CS1929: 'IRuleBuilderOptions<NotEmptyTester.MyClass, string>' does not contain a definition for 'Validate' and the best extension method overload 'DefaultValidatorExtensions.Validate<NotEmptyTester.MyClass>(IValidator<NotEmptyTester.MyClass>, NotEmptyTester.MyClass, params Expression<Func<NotEmptyTester.MyClass, object>>[])' requires a receiver of type 'IValidator<NotEmptyTester.MyClass>' [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/NotEmptyTester.cs(57,46): error CS1929: 'IRuleBuilderOptions<NotEmptyTester.MyClass, string>' does not contain a definition for 'Validate' and the best extension method overload 'DefaultValidatorExtensions.Validate<NotEmptyTester.MyClass>(IValidator<NotEmptyTester.MyClass>, NotEmptyTester.MyClass, params Expression<Func<NotEmptyTester.MyClass, object>>[])' requires a receiver of type 'IValidator<NotEmptyTester.MyClass>' [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/NotEmptyTester.cs(72,46): error CS1929: 'IRuleBuilderOptions<NotEmptyTester.MyClass, int>' does not contain a definition for 'Validate' and the best extension method overload 'DefaultValidatorExtensions.Validate<NotEmptyTester.MyClass>(IValidator<NotEmptyTester.MyClass>, NotEmptyTester.MyClass, params Expression<Func<NotEmptyTester.MyClass, object>>[])' requires a receiver of type 'IValidator<NotEmptyTester.MyClass>' [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+/root/src/FluentValidation.Tests/NotEmptyTester.cs(86,28): error CS1929: 'IRuleBuilderOptions<NotEmptyTester.MyClass, string>' does not contain a definition for 'Validate' and the best extension method overload 'DefaultValidatorExtensions.Validate<NotEmptyTester.MyClass>(IValidator<NotEmptyTester.MyClass>, NotEmptyTester.MyClass, params Expression<Func<NotEmptyTester.MyClass, object>>[])' requires a receiver of type 'IValidator<NotEmptyTester.MyClass>' [/root/src/FluentValidation.Tests/FluentValidation.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

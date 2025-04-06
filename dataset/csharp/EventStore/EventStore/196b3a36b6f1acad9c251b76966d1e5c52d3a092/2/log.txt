@@ -1,0 +1,313 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+1
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.BufferManagement/EventStore.BufferManagement.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core/EventStore.Core.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.OtlpExporterPlugin/EventStore.OtlpExporterPlugin.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.BufferManagement.Tests/EventStore.BufferManagement.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SystemRuntime/EventStore.SystemRuntime.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Common/EventStore.Common.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.NETCore.Compatibility/EventStore.NETCore.Compatibility.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core.Tests/EventStore.Core.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.Tests/EventStore.Projections.Core.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core/EventStore.Projections.Core.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.PluginHosting/EventStore.PluginHosting.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Tcp/EventStore.Transport.Tcp.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.MicroBenchmarks/EventStore.MicroBenchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Licensing/EventStore.Licensing.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Http/EventStore.Transport.Http.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Common.Tests/EventStore.Common.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogV3/EventStore.LogV3.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Licensing.Tests/EventStore.Licensing.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Native/EventStore.Native.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/KurrentDB/KurrentDB.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/KurrentDB.TestClient/KurrentDB.TestClient.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogV3.Tests/EventStore.LogV3.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.Javascript.Tests/EventStore.Projections.Core.Javascript.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core.XUnit.Tests/EventStore.Core.XUnit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SourceGenerators.Tests/EventStore.SourceGenerators.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SystemRuntime.Tests/EventStore.SystemRuntime.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.XUnit.Tests/EventStore.Projections.Core.XUnit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Plugins.TestHelpers/EventStore.Plugins.TestHelpers.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogCommon/EventStore.LogCommon.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.ClusterNode.Web/EventStore.ClusterNode.Web.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.OtlpExporterPlugin.Tests/EventStore.OtlpExporterPlugin.Tests.csproj]
+
+Build FAILED.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.BufferManagement/EventStore.BufferManagement.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core/EventStore.Core.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.OtlpExporterPlugin/EventStore.OtlpExporterPlugin.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.BufferManagement.Tests/EventStore.BufferManagement.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SystemRuntime/EventStore.SystemRuntime.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Common/EventStore.Common.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.NETCore.Compatibility/EventStore.NETCore.Compatibility.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core.Tests/EventStore.Core.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.Tests/EventStore.Projections.Core.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core/EventStore.Projections.Core.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.PluginHosting/EventStore.PluginHosting.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Tcp/EventStore.Transport.Tcp.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.MicroBenchmarks/EventStore.MicroBenchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Licensing/EventStore.Licensing.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Http/EventStore.Transport.Http.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Common.Tests/EventStore.Common.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogV3/EventStore.LogV3.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Licensing.Tests/EventStore.Licensing.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Native/EventStore.Native.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/KurrentDB/KurrentDB.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/KurrentDB.TestClient/KurrentDB.TestClient.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogV3.Tests/EventStore.LogV3.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.Javascript.Tests/EventStore.Projections.Core.Javascript.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core.XUnit.Tests/EventStore.Core.XUnit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SourceGenerators.Tests/EventStore.SourceGenerators.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SystemRuntime.Tests/EventStore.SystemRuntime.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Projections.Core.XUnit.Tests/EventStore.Projections.Core.XUnit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Plugins.TestHelpers/EventStore.Plugins.TestHelpers.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogCommon/EventStore.LogCommon.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.ClusterNode.Web/EventStore.ClusterNode.Web.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.OtlpExporterPlugin.Tests/EventStore.OtlpExporterPlugin.Tests.csproj]
+    0 Warning(s)
+    31 Error(s)
+
+Time Elapsed 00:00:03.54
+
+verify returned with:255
+
+[Test]
+public void Stop_Should_Set_ShouldStop_To_True()
+{
+    // Arrange
+    var mockConnection = new Mock<IEventStoreConnection>();
+    var mockLogger = new Mock<ILogger>();
+    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+
+    // Act
+    subscription.Stop();
+
+    // Assert
+    Assert.IsTrue(subscription.ShouldStop);
+}
+
+[Test]
+public void Stop_Should_Set_Stopped_Event_To_Signaled()
+{
+    // Arrange
+    var mockConnection = new Mock<IEventStoreConnection>();
+    var mockLogger = new Mock<ILogger>();
+    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+
+    // Act
+    subscription.Stop();
+
+    // Assert
+    Assert.IsTrue(subscription.Stopped.IsSet);
+}
+
+[Test]
+public void Stop_Should_Not_Throw_Exception_When_Called_Multiple_Times()
+{
+    // Arrange
+    var mockConnection = new Mock<IEventStoreConnection>();
+    var mockLogger = new Mock<ILogger>();
+    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+
+    // Act & Assert
+    Assert.DoesNotThrow(() => {
+        subscription.Stop();
+        subscription.Stop();
+    });
+}
+
+[Test]
+public void Stop_Should_Set_IsDropped_When_Called()
+{
+    // Arrange
+    var mockConnection = new Mock<IEventStoreConnection>();
+    var mockLogger = new Mock<ILogger>();
+    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+
+    // Act
+    subscription.Stop();
+
+    // Assert
+    Assert.AreEqual(1, subscription.IsDropped);
+}
+
+[Test]
+public void Stop_Should_Call_SubscriptionDropped_Action_When_Provided()
+{
+    // Arrange
+    var mockConnection = new Mock<IEventStoreConnection>();
+    var mockLogger = new Mock<ILogger>();
+    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    bool wasCalled = false;
+    Action<EventStoreCatchUpSubscription, SubscriptionDropReason, Exception> subscriptionDropped = (sub, reason, ex) => wasCalled = true;
+    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, subscriptionDropped, new CatchUpSubscriptionSettings());
+
+    // Act
+    subscription.Stop();
+
+    // Assert
+    Assert.IsTrue(wasCalled);
+}
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 3, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 19, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 35, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 51, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 67, Column: 1
+
+
+
+Modifying context with id: 4250
+Modification successful! - new_tests - code
+
+
+Command: cat -n EventStore.Core.Tests/ClientAPI/subscribe_to_all_catching_up_should.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test EventStore.Core.Tests/EventStore.Core.Tests.csproj --filter EventStore.Core.Tests.ClientAPI.subscribe_to_all_catching_up_should --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	
+     2	[Test]
+     3	public void Stop_Should_Set_ShouldStop_To_True()
+     4	{
+     5	    // Arrange
+     6	    var mockConnection = new Mock<IEventStoreConnection>();
+     7	    var mockLogger = new Mock<ILogger>();
+     8	    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+     9	    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+    10	
+    11	    // Act
+    12	    subscription.Stop();
+    13	
+    14	    // Assert
+    15	    Assert.IsTrue(subscription.ShouldStop);
+    16	}
+    17	
+    18	[Test]
+    19	public void Stop_Should_Set_Stopped_Event_To_Signaled()
+    20	{
+    21	    // Arrange
+    22	    var mockConnection = new Mock<IEventStoreConnection>();
+    23	    var mockLogger = new Mock<ILogger>();
+    24	    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    25	    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+    26	
+    27	    // Act
+    28	    subscription.Stop();
+    29	
+    30	    // Assert
+    31	    Assert.IsTrue(subscription.Stopped.IsSet);
+    32	}
+    33	
+    34	[Test]
+    35	public void Stop_Should_Not_Throw_Exception_When_Called_Multiple_Times()
+    36	{
+    37	    // Arrange
+    38	    var mockConnection = new Mock<IEventStoreConnection>();
+    39	    var mockLogger = new Mock<ILogger>();
+    40	    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    41	    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+    42	
+    43	    // Act & Assert
+    44	    Assert.DoesNotThrow(() => {
+    45	        subscription.Stop();
+    46	        subscription.Stop();
+    47	    });
+    48	}
+    49	
+    50	[Test]
+    51	public void Stop_Should_Set_IsDropped_When_Called()
+    52	{
+    53	    // Arrange
+    54	    var mockConnection = new Mock<IEventStoreConnection>();
+    55	    var mockLogger = new Mock<ILogger>();
+    56	    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    57	    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, null, new CatchUpSubscriptionSettings());
+    58	
+    59	    // Act
+    60	    subscription.Stop();
+    61	
+    62	    // Assert
+    63	    Assert.AreEqual(1, subscription.IsDropped);
+    64	}
+    65	
+    66	[Test]
+    67	public void Stop_Should_Call_SubscriptionDropped_Action_When_Provided()
+    68	{
+    69	    // Arrange
+    70	    var mockConnection = new Mock<IEventStoreConnection>();
+    71	    var mockLogger = new Mock<ILogger>();
+    72	    var mockEventAppeared = new Func<EventStoreCatchUpSubscription, ResolvedEvent, Task>((sub, evt) => Task.CompletedTask);
+    73	    bool wasCalled = false;
+    74	    Action<EventStoreCatchUpSubscription, SubscriptionDropReason, Exception> subscriptionDropped = (sub, reason, ex) => wasCalled = true;
+    75	    var subscription = new EventStoreCatchUpSubscription(mockConnection.Object, mockLogger.Object, "test-stream", null, mockEventAppeared, null, subscriptionDropped, new CatchUpSubscriptionSettings());
+    76	
+    77	    // Act
+    78	    subscription.Stop();
+    79	
+    80	    // Assert
+    81	    Assert.IsTrue(wasCalled);
+    82	}}  Determining projects to restore...
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Common/EventStore.Common.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core/EventStore.Core.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Tcp/EventStore.Transport.Tcp.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.SystemRuntime/EventStore.SystemRuntime.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Transport.Http/EventStore.Transport.Http.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Licensing/EventStore.Licensing.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.OtlpExporterPlugin/EventStore.OtlpExporterPlugin.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Native/EventStore.Native.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.NETCore.Compatibility/EventStore.NETCore.Compatibility.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.BufferManagement/EventStore.BufferManagement.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.Core.Tests/EventStore.Core.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.PluginHosting/EventStore.PluginHosting.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogV3/EventStore.LogV3.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 8.0. [/root/EventStore.LogCommon/EventStore.LogCommon.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 4250
+
+Unhandled exception. System.IO.DirectoryNotFoundException: Could not find a part of the path '/var/folders/84/pm3zvl915yxcx6mlr7twzxhr0000gn/T/tmp2umjkqjz/EventStore.ClientAPI/EventStoreCatchUpSubscription.cs'.
+   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Encoding encoding, Int32 bufferSize)
+   at System.IO.File.ReadAllText(String path, Encoding encoding)
+   at Modifier.ReplaceMethodBody(Context context, String methodBody, String projectDir) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 56
+   at Modifier.ReplaceMethod(String projectDir, Context context) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 51
+   at Modifier.Modify(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 33
+   at Program.Main(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Program.cs:line 19
+   at Program.<Main>(String[] args)
+

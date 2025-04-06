@@ -1,0 +1,479 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Unhandled exception: Microsoft.Build.Exceptions.InvalidProjectFileException: The imported project "/Microsoft.Cpp.Default.props" was not found. Confirm that the expression in the Import declaration "/Microsoft.Cpp.Default.props" is correct, and that the file exists on disk.  /root/test/TestBinaries/Native/SimpleDll/SimpleDll.vcxproj
+   at Microsoft.Build.Shared.ProjectErrorUtilities.ThrowInvalidProject(String errorSubCategoryResourceName, IElementLocation elementLocation, String resourceName, Object[] args)
+   at Microsoft.Build.Shared.ProjectErrorUtilities.ThrowInvalidProject[T1,T2](IElementLocation elementLocation, String resourceName, T1 arg0, T2 arg1)
+   at Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImportsFromUnescapedImportExpression(String directoryOfImportingFile, ProjectImportElement importElement, String unescapedExpression, Boolean throwOnFileNotExistsError, List`1& imports)
+   at Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImportsFromUnescapedImportExpressionConditioned(String directoryOfImportingFile, ProjectImportElement importElement, List`1& projects, SdkResult& sdkResult, Boolean throwOnFileNotExistsError)
+   at Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImports(String directoryOfImportingFile, ProjectImportElement importElement, SdkResult& sdkResult)
+   at Microsoft.Build.Evaluation.Evaluator`4.EvaluateImportElement(String directoryOfImportingFile, ProjectImportElement importElement)
+   at Microsoft.Build.Evaluation.Evaluator`4.PerformDepthFirstPass(ProjectRootElement currentProjectOrImport)
+   at Microsoft.Build.Evaluation.Evaluator`4.Evaluate()
+   at Microsoft.Build.Evaluation.Evaluator`4.Evaluate(IEvaluatorData`4 data, Project project, ProjectRootElement root, ProjectLoadSettings loadSettings, Int32 maxNodeCount, PropertyDictionary`1 environmentProperties, ILoggingService loggingService, IItemFactory`2 itemFactory, IToolsetProvider toolsetProvider, ProjectRootElementCacheBase projectRootElementCache, BuildEventContext buildEventContext, ISdkResolverService sdkResolverService, Int32 submissionId, EvaluationContext evaluationContext, Boolean interactive)
+   at Microsoft.Build.Execution.ProjectInstance.Initialize(ProjectRootElement xml, IDictionary`2 globalProperties, String explicitToolsVersion, String explicitSubToolsetVersion, Int32 visualStudioVersionFromSolution, BuildParameters buildParameters, ILoggingService loggingService, BuildEventContext buildEventContext, ISdkResolverService sdkResolverService, Int32 submissionId, Nullable`1 projectLoadSettings, EvaluationContext evaluationContext)
+   at Microsoft.Build.Execution.ProjectInstance..ctor(String projectFile, IDictionary`2 globalProperties, String toolsVersion, String subToolsetVersion, ProjectCollection projectCollection, Nullable`1 projectLoadSettings, EvaluationContext evaluationContext)
+   at Microsoft.Build.Execution.ProjectInstance..ctor(String projectFile, IDictionary`2 globalProperties, String toolsVersion)
+   at Microsoft.DotNet.Workloads.Workload.Restore.WorkloadRestoreCommand.RunTargetToGetWorkloadIds(IEnumerable`1 allProjects)
+   at Microsoft.DotNet.Workloads.Workload.Restore.WorkloadRestoreCommand.Execute()
+   at Microsoft.DotNet.Cli.WorkloadRestoreCommandParser.<>c.<ConstructCommand>b__2_0(ParseResult parseResult)
+   at Microsoft.DotNet.Cli.ParseResultCommandHandler.Invoke(InvocationContext context)
+   at System.CommandLine.Invocation.InvocationPipeline.<>c__DisplayClass4_0.<<BuildInvocationChain>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.CommandLine.CommandLineBuilderExtensions.<>c__DisplayClass12_0.<<UseHelp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.CommandLine.CommandLineBuilderExtensions.<>c.<<UseSuggestDirective>b__18_0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.CommandLine.CommandLineBuilderExtensions.<>c__DisplayClass16_0.<<UseParseDirective>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.CommandLine.CommandLineBuilderExtensions.<>c__DisplayClass8_0.<<UseExceptionHandler>b__0>d.MoveNext()
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/test/TestBinaries/DotNet/HelloWorld/HelloWorld.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/test/TestBinaries/DotNet/HelloWorld/HelloWorld.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/test/TestBinaries/DotNet/HelloWorld/HelloWorld.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/test/TestBinaries/DotNet/HelloWorld/HelloWorld.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:46.87
+
+verify returned with:255
+
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    
+    // Act
+    moduleDefinition.Write(filePath);
+    
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_2_With_ImageBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(filePath, imageBuilder);
+
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_3_With_OutputStream()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(memoryStream, imageBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_4_With_FileBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(filePath, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_5_With_Stream_FileBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(memoryStream, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_6_With_BinaryStreamWriter()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var writer = new BinaryStreamWriter(memoryStream); // Assuming a constructor exists
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(writer, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_7_Throws_AggregateException()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var invalidFilePath = ""; // Invalid path to trigger exception
+
+    // Act & Assert
+    Assert.Throws<AggregateException>(() => moduleDefinition.Write(invalidFilePath));
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 31, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 46, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 63, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 79, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 96, Column: 1
+
+
+
+verify returned with:0
+using AsmResolver.DotNet; // For ModuleDefinition and related classes
+using System.IO;
+using AsmResolver.PE.DotNet.Metadata.Tables;
+using AsmResolver.PE.DotNet.Metadata; // For metadata-related classes
+using AsmResolver.PE.DotNet.Metadata.Tables; // For tables related to metadata
+using Xunit; // For the Xunit testing framework
+using AsmResolver.PE.DotNet.Metadata;
+using System.Linq;
+using AsmResolver.PE;
+using System;
+using AsmResolver.DotNet.Builder;
+using Xunit;
+using AsmResolver.DotNet.Builder.Metadata;
+using AsmResolver.DotNet.Builder; // For ManagedPEImageBuilder and PEFileBuilder
+using AsmResolver.PE; // For IPEImage and related classes
+
+namespace AsmResolver.DotNet.Tests.Builder
+{
+
+public class ManagedPEImageBuilderTest
+{
+    [Fact]
+    public void Write_Test_1()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    
+    // Act
+    moduleDefinition.Write(filePath);
+    
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_2_With_ImageBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(filePath, imageBuilder);
+
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_3_With_OutputStream()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(memoryStream, imageBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_4_With_FileBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var filePath = "TestModule.dll";
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(filePath, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(File.Exists(filePath));
+    File.Delete(filePath); // Clean up after test
+}
+
+[Fact]
+public void Write_Test_5_With_Stream_FileBuilder()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(memoryStream, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_6_With_BinaryStreamWriter()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    using var memoryStream = new MemoryStream();
+    var writer = new BinaryStreamWriter(memoryStream); // Assuming a constructor exists
+    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+
+    // Act
+    moduleDefinition.Write(writer, imageBuilder, fileBuilder);
+
+    // Assert
+    Assert.True(memoryStream.Length > 0);
+}
+
+[Fact]
+public void Write_Test_7_Throws_AggregateException()
+{
+    // Arrange
+    var moduleDefinition = new ModuleDefinition("TestModule");
+    var invalidFilePath = ""; // Invalid path to trigger exception
+
+    // Act & Assert
+    Assert.Throws<AggregateException>(() => moduleDefinition.Write(invalidFilePath));
+}}}
+Syntactically correct
+
+
+Modifying context with id: 2007
+Modification successful! - new_tests - code
+
+
+Command: cat -n test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj --filter AsmResolver.DotNet.Tests.Builder.ManagedPEImageBuilderTest --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using AsmResolver.DotNet; // For ModuleDefinition and related classes
+     2	using System.IO;
+     3	using AsmResolver.PE.DotNet.Metadata.Tables;
+     4	using AsmResolver.PE.DotNet.Metadata; // For metadata-related classes
+     5	using AsmResolver.PE.DotNet.Metadata.Tables; // For tables related to metadata
+     6	using Xunit; // For the Xunit testing framework
+     7	using AsmResolver.PE.DotNet.Metadata;
+     8	using System.Linq;
+     9	using AsmResolver.PE;
+    10	using System;
+    11	using AsmResolver.DotNet.Builder;
+    12	using Xunit;
+    13	using AsmResolver.DotNet.Builder.Metadata;
+    14	using AsmResolver.DotNet.Builder; // For ManagedPEImageBuilder and PEFileBuilder
+    15	using AsmResolver.PE; // For IPEImage and related classes
+    16	
+    17	namespace AsmResolver.DotNet.Tests.Builder
+    18	{
+    19	
+    20	public class ManagedPEImageBuilderTest
+    21	{
+    22	    [Fact]
+    23	    public void Write_Test_1()
+    24	{
+    25	    // Arrange
+    26	    var moduleDefinition = new ModuleDefinition("TestModule");
+    27	    var filePath = "TestModule.dll";
+    28	    
+    29	    // Act
+    30	    moduleDefinition.Write(filePath);
+    31	    
+    32	    // Assert
+    33	    Assert.True(File.Exists(filePath));
+    34	    File.Delete(filePath); // Clean up after test
+    35	}
+    36	
+    37	[Fact]
+    38	public void Write_Test_2_With_ImageBuilder()
+    39	{
+    40	    // Arrange
+    41	    var moduleDefinition = new ModuleDefinition("TestModule");
+    42	    var filePath = "TestModule.dll";
+    43	    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    44	
+    45	    // Act
+    46	    moduleDefinition.Write(filePath, imageBuilder);
+    47	
+    48	    // Assert
+    49	    Assert.True(File.Exists(filePath));
+    50	    File.Delete(filePath); // Clean up after test
+    51	}
+    52	
+    53	[Fact]
+    54	public void Write_Test_3_With_OutputStream()
+    55	{
+    56	    // Arrange
+    57	    var moduleDefinition = new ModuleDefinition("TestModule");
+    58	    using var memoryStream = new MemoryStream();
+    59	    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    60	
+    61	    // Act
+    62	    moduleDefinition.Write(memoryStream, imageBuilder);
+    63	
+    64	    // Assert
+    65	    Assert.True(memoryStream.Length > 0);
+    66	}
+    67	
+    68	[Fact]
+    69	public void Write_Test_4_With_FileBuilder()
+    70	{
+    71	    // Arrange
+    72	    var moduleDefinition = new ModuleDefinition("TestModule");
+    73	    var filePath = "TestModule.dll";
+    74	    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    75	    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+    76	
+    77	    // Act
+    78	    moduleDefinition.Write(filePath, imageBuilder, fileBuilder);
+    79	
+    80	    // Assert
+    81	    Assert.True(File.Exists(filePath));
+    82	    File.Delete(filePath); // Clean up after test
+    83	}
+    84	
+    85	[Fact]
+    86	public void Write_Test_5_With_Stream_FileBuilder()
+    87	{
+    88	    // Arrange
+    89	    var moduleDefinition = new ModuleDefinition("TestModule");
+    90	    using var memoryStream = new MemoryStream();
+    91	    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+    92	    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+    93	
+    94	    // Act
+    95	    moduleDefinition.Write(memoryStream, imageBuilder, fileBuilder);
+    96	
+    97	    // Assert
+    98	    Assert.True(memoryStream.Length > 0);
+    99	}
+   100	
+   101	[Fact]
+   102	public void Write_Test_6_With_BinaryStreamWriter()
+   103	{
+   104	    // Arrange
+   105	    var moduleDefinition = new ModuleDefinition("TestModule");
+   106	    using var memoryStream = new MemoryStream();
+   107	    var writer = new BinaryStreamWriter(memoryStream); // Assuming a constructor exists
+   108	    var imageBuilder = new ManagedPEImageBuilder(); // Assuming a default constructor exists
+   109	    var fileBuilder = new PEFileBuilder(); // Assuming a default constructor exists
+   110	
+   111	    // Act
+   112	    moduleDefinition.Write(writer, imageBuilder, fileBuilder);
+   113	
+   114	    // Assert
+   115	    Assert.True(memoryStream.Length > 0);
+   116	}
+   117	
+   118	[Fact]
+   119	public void Write_Test_7_Throws_AggregateException()
+   120	{
+   121	    // Arrange
+   122	    var moduleDefinition = new ModuleDefinition("TestModule");
+   123	    var invalidFilePath = ""; // Invalid path to trigger exception
+   124	
+   125	    // Act & Assert
+   126	    Assert.Throws<AggregateException>(() => moduleDefinition.Write(invalidFilePath));
+   127	}}}  Determining projects to restore...
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Resources/AsmResolver.DotNet.TestCases.Resources.csproj (in 2.95 sec).
+  Restored /root/src/AsmResolver/AsmResolver.csproj (in 2.95 sec).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Types/AsmResolver.DotNet.TestCases.Types.csproj (in 2.95 sec).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Generics/AsmResolver.DotNet.TestCases.Generics.csproj (in 2.95 sec).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Fields/AsmResolver.DotNet.TestCases.Fields.csproj (in 8 ms).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.NestedClasses/AsmResolver.DotNet.TestCases.NestedClasses.csproj (in 9 ms).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Properties/AsmResolver.DotNet.TestCases.Properties.csproj (in 8 ms).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Events/AsmResolver.DotNet.TestCases.Events.csproj (in 3 ms).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.CustomAttributes/AsmResolver.DotNet.TestCases.CustomAttributes.csproj (in 3 ms).
+  Restored /root/src/AsmResolver.PE/AsmResolver.PE.csproj (in 12 ms).
+  Restored /root/src/AsmResolver.PE.File/AsmResolver.PE.File.csproj (in 13 ms).
+  Restored /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Methods/AsmResolver.DotNet.TestCases.Methods.csproj (in 1.17 sec).
+  Restored /root/src/AsmResolver.DotNet/AsmResolver.DotNet.csproj (in 3.76 sec).
+  Restored /root/test/AsmResolver.Tests/AsmResolver.Tests.csproj (in 10.03 sec).
+  Restored /root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj (in 10.29 sec).
+  AsmResolver.DotNet.TestCases.Events -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Events/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Events.dll
+  AsmResolver.DotNet.TestCases.CustomAttributes -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.CustomAttributes/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.CustomAttributes.dll
+  AsmResolver -> /root/src/AsmResolver/bin/Debug/netstandard2.0/AsmResolver.dll
+  AsmResolver.DotNet.TestCases.Fields -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Fields/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Fields.dll
+  AsmResolver.DotNet.TestCases.Generics -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Generics/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Generics.dll
+  AsmResolver.DotNet.TestCases.Methods -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Methods/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Methods.dll
+  AsmResolver.DotNet.TestCases.NestedClasses -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.NestedClasses/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.NestedClasses.dll
+  AsmResolver.DotNet.TestCases.Properties -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Properties/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Properties.dll
+  Successfully created package '/root/src/AsmResolver/bin/Debug/AsmResolver.4.5.0.nupkg'.
+  AsmResolver.PE.File -> /root/src/AsmResolver.PE.File/bin/Debug/netstandard2.0/AsmResolver.PE.File.dll
+  AsmResolver.DotNet.TestCases.Resources -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Resources/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Resources.dll
+  AsmResolver.DotNet.TestCases.Types -> /root/test/TestBinaries/DotNet/AsmResolver.DotNet.TestCases.Types/bin/Debug/netstandard2.0/AsmResolver.DotNet.TestCases.Types.dll
+  Successfully created package '/root/src/AsmResolver.PE.File/bin/Debug/AsmResolver.PE.File.4.5.0.nupkg'.
+  AsmResolver.Tests -> /root/test/AsmResolver.Tests/bin/Debug/netcoreapp3.1/AsmResolver.Tests.dll
+  AsmResolver.PE -> /root/src/AsmResolver.PE/bin/Debug/netstandard2.0/AsmResolver.PE.dll
+  Successfully created package '/root/src/AsmResolver.PE/bin/Debug/AsmResolver.PE.4.5.0.nupkg'.
+  AsmResolver.DotNet -> /root/src/AsmResolver.DotNet/bin/Debug/netstandard2.0/AsmResolver.DotNet.dll
+  Successfully created package '/root/src/AsmResolver.DotNet/bin/Debug/AsmResolver.DotNet.4.5.0.nupkg'.
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(5,7): warning CS0105: The using directive for 'AsmResolver.PE.DotNet.Metadata.Tables' appeared previously in this namespace [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(7,7): warning CS0105: The using directive for 'AsmResolver.PE.DotNet.Metadata' appeared previously in this namespace [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(12,7): warning CS0105: The using directive for 'Xunit' appeared previously in this namespace [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(14,7): warning CS0105: The using directive for 'AsmResolver.DotNet.Builder' appeared previously in this namespace [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(15,7): warning CS0105: The using directive for 'AsmResolver.PE' appeared previously in this namespace [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(75,27): error CS0246: The type or namespace name 'PEFileBuilder' could not be found (are you missing a using directive or an assembly reference?) [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(92,27): error CS0246: The type or namespace name 'PEFileBuilder' could not be found (are you missing a using directive or an assembly reference?) [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+/root/test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs(109,27): error CS0246: The type or namespace name 'PEFileBuilder' could not be found (are you missing a using directive or an assembly reference?) [/root/test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

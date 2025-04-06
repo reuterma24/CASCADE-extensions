@@ -1,0 +1,184 @@
+verify returned with:255
+
+        // Arrange
+        var parser = new HtmlParser("<html><body><div></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the appropriate actions were taken, e.g., check if the stack of open elements is correct
+        Assert.IsTrue(parser.TagCurrentlyOpen("div"), "The div tag should still be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("span", HtmlTokenType.EndTag); // Non-matching end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser raised an error or handled the non-matching end tag correctly
+        Assert.Throws<ParseException>(() => parser.InBodyEndTagAnythingElse(tag), "Expected a parse error for non-matching end tag.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><ul><li></li></ul></body></html>");
+        var tag = new HtmlTagToken("li", HtmlTokenType.EndTag); // Valid end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the list item is closed correctly
+        Assert.IsFalse(parser.TagCurrentlyOpen("li"), "The li tag should be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><h1></h1></body></html>");
+        var tag = new HtmlTagToken("h1", HtmlTokenType.EndTag); // Valid end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser correctly closed the h1 tag
+        Assert.IsFalse(parser.TagCurrentlyOpen("h1"), "The h1 tag should be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><div><span></span></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag); // Closing a parent tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Ensure that the div tag is closed and the span is still valid
+        Assert.IsFalse(parser.TagCurrentlyOpen("div"), "The div tag should be closed.");
+        Assert.IsTrue(parser.TagCurrentlyOpen("span"), "The span tag should still be open.");
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 5
+
+
+
+verify returned with:0
+using AngleSharp.Parser.Html;
+using AngleSharp.Dom;
+using System;
+using NUnit.Framework;
+using AngleSharp.Core.Tests.Mocks;
+
+namespace AngleSharp.Core.Tests
+{
+
+[TestFixture]
+public class HtmlScript
+{
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_1()
+{
+        // Arrange
+        var parser = new HtmlParser("<html><body><div></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the appropriate actions were taken, e.g., check if the stack of open elements is correct
+        Assert.IsTrue(parser.TagCurrentlyOpen("div"), "The div tag should still be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("span", HtmlTokenType.EndTag); // Non-matching end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser raised an error or handled the non-matching end tag correctly
+        Assert.Throws<ParseException>(() => parser.InBodyEndTagAnythingElse(tag), "Expected a parse error for non-matching end tag.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><ul><li></li></ul></body></html>");
+        var tag = new HtmlTagToken("li", HtmlTokenType.EndTag); // Valid end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the list item is closed correctly
+        Assert.IsFalse(parser.TagCurrentlyOpen("li"), "The li tag should be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><h1></h1></body></html>");
+        var tag = new HtmlTagToken("h1", HtmlTokenType.EndTag); // Valid end tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser correctly closed the h1 tag
+        Assert.IsFalse(parser.TagCurrentlyOpen("h1"), "The h1 tag should be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><div><span></span></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag); // Closing a parent tag
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Ensure that the div tag is closed and the span is still valid
+        Assert.IsFalse(parser.TagCurrentlyOpen("div"), "The div tag should be closed.");
+        Assert.IsTrue(parser.TagCurrentlyOpen("span"), "The span tag should still be open.");
+    }
+}}
+Syntactically correct
+
+

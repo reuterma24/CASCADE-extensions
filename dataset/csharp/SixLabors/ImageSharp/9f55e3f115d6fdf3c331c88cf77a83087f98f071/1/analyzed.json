@@ -1,0 +1,147 @@
+[
+    {
+        "doc": "/// <summary>\n/// Verifies whether a condition (indicating disposed state) is met, throwing an ObjectDisposedException if it's false.\n/// </summary>\n/// <param name = \"isDisposed\">Whether the object is disposed.</param>\n/// <param name = \"objectName\">The name of the object.</param>",
+        "signature": {
+            "name": "NotDisposed",
+            "returns": "void",
+            "params": [
+                "bool isDisposed",
+                "string objectName"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [
+                "Conditional"
+            ],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "DebugGuard",
+            "doc": "/// <summary>\n/// Provides methods to protect against invalid parameters for a DEBUG build.\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Verifies whether a specific condition is met, throwing an exception if it's false.\n/// </summary>\n/// <param name = \"target\">The condition</param>\n/// <param name = \"message\">The error message</param>",
+                    "signature": {
+                        "name": "IsTrue",
+                        "returns": "void",
+                        "params": [
+                            "bool target",
+                            "string message"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [
+                            "Conditional"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            if (!target)\n            {\n                throw new InvalidOperationException(message);\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Verifies, that the target span is of same size than the 'other' span.\n/// </summary>\n/// <typeparam name = \"T\">The element type of the spans</typeparam>\n/// <param name = \"target\">The target span.</param>\n/// <param name = \"other\">The 'other' span to compare 'target' to.</param>\n/// <param name = \"parameterName\">The name of the parameter that is to be checked.</param>\n/// <exception cref = \"ArgumentException\">\n/// <paramref name = \"target\"/> has a different size than <paramref name = \"other\"/>\n/// </exception>",
+                    "signature": {
+                        "name": "MustBeSameSized",
+                        "returns": "void",
+                        "params": [
+                            "ReadOnlySpan<T> target",
+                            "ReadOnlySpan<T> other",
+                            "string parameterName"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [
+                            "Conditional"
+                        ],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\n            if (target.Length != other.Length)\n            {\n                throw new ArgumentException(\"Span-s must be the same size!\", parameterName);\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Verifies, that the `target` span has the length of 'minSpan', or longer.\n/// </summary>\n/// <typeparam name = \"T\">The element type of the spans</typeparam>\n/// <param name = \"target\">The target span.</param>\n/// <param name = \"minSpan\">The 'minSpan' span to compare 'target' to.</param>\n/// <param name = \"parameterName\">The name of the parameter that is to be checked.</param>\n/// <exception cref = \"ArgumentException\">\n/// <paramref name = \"target\"/> has less items than <paramref name = \"minSpan\"/>\n/// </exception>",
+                    "signature": {
+                        "name": "MustBeSizedAtLeast",
+                        "returns": "void",
+                        "params": [
+                            "ReadOnlySpan<T> target",
+                            "ReadOnlySpan<T> minSpan",
+                            "string parameterName"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [
+                            "Conditional"
+                        ],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\n            if (target.Length < minSpan.Length)\n            {\n                throw new ArgumentException($\"Span-s must be at least of length {minSpan.Length}!\", parameterName);\n            }\n        }"
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.Diagnostics;"
+            ],
+            "constructors": [],
+            "extends": "",
+            "implements": [],
+            "namespace": "SixLabors"
+        },
+        "code": "{\n            if (isDisposed)\n            {\n                throw new ObjectDisposedException(objectName);\n            }\n        }",
+        "code_file_path": "ImageSharp/DebugGuard.cs",
+        "called_functions": [],
+        "id": 505,
+        "tests": [
+            {
+                "tests": "using ImageSharp;\r\n\r\nnamespace ImageSharpIsolated.Tests;\r\n\r\npublic class DebugGuardTests\r\n{\r\n    [Fact]\r\n    public void Test1()\r\n    {\r\n        Assert.Throws<ObjectDisposedException>(() => DebugGuard.NotDisposed(true, \"Test\"));\r\n    }\r\n}\r\n",
+                "test_imports": [
+                    "using ImageSharp;"
+                ],
+                "test_namespace": "ImageSharpIsolated.Tests",
+                "test_class_name": "DebugGuardTests",
+                "test_file_path": "ImageSharpIsolated.Tests/DebugGuardTests.cs",
+                "test_runner": "xUnit",
+                "project_path": "ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed",
+                    "NotDisposed_ShouldNotThrow_WhenNotDisposed",
+                    "NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName"
+                ],
+                [
+                    "NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed"
+                ],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [
+                    "NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed",
+                    "NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName",
+                    "NotDisposed_ShouldNotThrow_WhenNotDisposed"
+                ],
+                [
+                    "NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed"
+                ],
+                []
+            ]
+        },
+        "new_tests": "using Xunit; // For the Xunit testing framework\nusing ImageSharp;\nusing System;\n\nnamespace ImageSharpIsolated.Tests\n{\n\npublic class DebugGuardTests\n{\n    [Fact]\n    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()\n    {\n        // Arrange\n        bool isDisposed = false;\n        string objectName = \"TestObject\";\n\n        // Act & Assert\n        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw\n    }\n\n    [Fact]\n    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()\n    {\n        // Arrange\n        bool isDisposed = true;\n        string objectName = \"TestObject\";\n\n        // Act & Assert\n        var exception = Assert.Throws<ObjectDisposedException>(() => \n            DebugGuard.NotDisposed(isDisposed, objectName));\n        Assert.Equal(\"TestObject\", exception.ObjectName);\n    }\n\n    [Fact]\n    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()\n    {\n        // Arrange\n        bool isDisposed = true;\n        string objectName = \"TestObject\";\n\n        // Act & Assert\n        var exception = Assert.Throws<ObjectDisposedException>(() => \n            DebugGuard.NotDisposed(isDisposed, objectName));\n        Assert.Contains(\"The object 'TestObject' has been disposed.\", exception.Message);\n    }\n\n    [Fact]\n    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()\n    {\n        // Arrange\n        bool isDisposed = true;\n        string objectName = \"AnotherTestObject\";\n\n        // Act & Assert\n        var exception = Assert.Throws<ObjectDisposedException>(() => \n            DebugGuard.NotDisposed(isDisposed, objectName));\n        Assert.Equal(\"AnotherTestObject\", exception.ObjectName);\n    }\n}}",
+        "new_code": "{\nif (isDisposed)\n{\n    throw new ObjectDisposedException(objectName);\n}}"
+    }
+]

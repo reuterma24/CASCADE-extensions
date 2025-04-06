@@ -1,0 +1,408 @@
+﻿public struct ByteSize
+{
+    public long BitsInByte;
+    public string BitSymbol;
+    public long BytesInGigabyte;
+    public long BytesInKilobyte;
+    public long BytesInMegabyte;
+    public long BytesInTerabyte;
+    public string ByteSymbol;
+    public string GigabyteSymbol;
+    public string KilobyteSymbol;
+    public Humanizer.Bytes.ByteSize MaxValue;
+    public string MegabyteSymbol;
+    public Humanizer.Bytes.ByteSize MinValue;
+    public string TerabyteSymbol;
+    public ByteSize(double byteSize) { }
+    public long Bits { get; set; }
+    public double Bytes { get; set; }
+    public double Gigabytes { get; set; }
+    public double Kilobytes { get; set; }
+    public string LargestWholeNumberSymbol { get; }
+    public double LargestWholeNumberValue { get; }
+    public double Megabytes { get; set; }
+    public double Terabytes { get; set; }
+    public Humanizer.Bytes.ByteSize Add(Humanizer.Bytes.ByteSize bs) { }
+    public Humanizer.Bytes.ByteSize AddBits(long value) { }
+    public Humanizer.Bytes.ByteSize AddBytes(double value) { }
+    public Humanizer.Bytes.ByteSize AddGigabytes(double value) { }
+    public Humanizer.Bytes.ByteSize AddKilobytes(double value) { }
+    public Humanizer.Bytes.ByteSize AddMegabytes(double value) { }
+    public Humanizer.Bytes.ByteSize AddTerabytes(double value) { }
+    public int CompareTo(Humanizer.Bytes.ByteSize other) { }
+    public bool Equals(object value) { }
+    public bool Equals(Humanizer.Bytes.ByteSize value) { }
+    public Humanizer.Bytes.ByteSize FromBits(long value) { }
+    public Humanizer.Bytes.ByteSize FromBytes(double value) { }
+    public Humanizer.Bytes.ByteSize FromGigabytes(double value) { }
+    public Humanizer.Bytes.ByteSize FromKilobytes(double value) { }
+    public Humanizer.Bytes.ByteSize FromMegabytes(double value) { }
+    public Humanizer.Bytes.ByteSize FromTerabytes(double value) { }
+    public int GetHashCode() { }
+    public Humanizer.Bytes.ByteSize Parse(string s) { }
+    public Humanizer.Bytes.ByteSize Subtract(Humanizer.Bytes.ByteSize bs) { }
+    public string ToString() { }
+    public string ToString(string format) { }
+    public bool TryParse(string s, Humanizer.Bytes.ByteSize& result) { }
+}
+
+public class ByteSizeExtensions
+{
+    public Humanizer.Bytes.ByteSize Bits(long input) { }
+    public Humanizer.Bytes.ByteSize Bits(int input) { }
+    public Humanizer.Bytes.ByteSize Bytes(double input) { }
+    public Humanizer.Bytes.ByteSize Gigabytes(double input) { }
+    public string Humanize(Humanizer.Bytes.ByteSize input, string format) { }
+    public Humanizer.Bytes.ByteSize Kilobytes(double input) { }
+    public Humanizer.Bytes.ByteSize Megabytes(double input) { }
+    public Humanizer.Bytes.ByteSize Terabytes(double input) { }
+}
+
+public class CasingExtensions
+{
+    public string ApplyCase(string input, Humanizer.LetterCasing casing) { }
+}
+
+public class CollectionHumanizeExtensions
+{
+    public string Humanize(System.Collections.Generic.IEnumerable<> collection) { }
+    public string Humanize(System.Collections.Generic.IEnumerable<> collection, System.Func<, > displayFormatter) { }
+    public string Humanize(System.Collections.Generic.IEnumerable<> collection, string separator) { }
+    public string Humanize(System.Collections.Generic.IEnumerable<> collection, System.Func<, > displayFormatter, string separator) { }
+}
+
+public class Configurator
+{
+    public Humanizer.Configuration.LocaliserRegistry<Humanizer.Localisation.CollectionFormatters.ICollectionFormatter> CollectionFormatters { get; }
+    public Humanizer.DateTimeHumanizeStrategy.IDateTimeHumanizeStrategy DateTimeHumanizeStrategy { get; set; }
+    public System.Func<System.Reflection.PropertyInfo, bool> EnumDescriptionPropertyLocator { get; set; }
+    public Humanizer.Configuration.LocaliserRegistry<Humanizer.Localisation.Formatters.IFormatter> Formatters { get; }
+    public Humanizer.Configuration.LocaliserRegistry<Humanizer.Localisation.NumberToWords.INumberToWordsConverter> NumberToWordsConverters { get; }
+    public Humanizer.Configuration.LocaliserRegistry<Humanizer.Localisation.Ordinalizers.IOrdinalizer> Ordinalizers { get; }
+}
+
+public class LocaliserRegistry`1
+{
+    public LocaliserRegistry`1(TLocaliser defaultLocaliser) { }
+    public void Register(string localeCode) { }
+    public void Register(System.Func<> localiserFactory, string localeCode) { }
+    public void RegisterDefault(TLocaliser defaultLocaliser) { }
+    public TLocaliser ResolveForCulture(System.Globalization.CultureInfo culture) { }
+    public TLocaliser ResolveForUiCulture() { }
+}
+
+public class DateHumanizeExtensions
+{
+    public string Humanize(System.DateTime input, bool utcDate, System.Nullable<System.DateTime> dateToCompareAgainst, System.Globalization.CultureInfo culture) { }
+}
+
+public class DefaultDateTimeHumanizeStrategy
+{
+    public DefaultDateTimeHumanizeStrategy() { }
+    public string Humanize(System.DateTime input, System.DateTime comparisonBase, System.Globalization.CultureInfo culture) { }
+}
+
+public interface IDateTimeHumanizeStrategy
+{
+    string Humanize(System.DateTime input, System.DateTime comparisonBase, System.Globalization.CultureInfo culture);
+}
+
+public class PrecisionDateTimeHumanizeStrategy
+{
+    public PrecisionDateTimeHumanizeStrategy(double precision) { }
+    public string Humanize(System.DateTime input, System.DateTime comparisonBase, System.Globalization.CultureInfo culture) { }
+}
+
+public class EnumDehumanizeExtensions
+{
+    public TTargetEnum DehumanizeTo(string input) { }
+    public System.Enum DehumanizeTo(string input, System.Type targetEnum, Humanizer.OnNoMatch onNoMatch) { }
+}
+
+public class EnumHumanizeExtensions
+{
+    public string Humanize(System.Enum input) { }
+    public string Humanize(System.Enum input, Humanizer.LetterCasing casing) { }
+}
+
+public enum GrammaticalCase
+{
+    Accusative,
+    Dative,
+    Genitive,
+    Instrumental,
+    Nominative,
+    Prepositional,
+    value__,
+}
+
+public enum GrammaticalGender
+{
+    Feminine,
+    Masculine,
+    Neuter,
+    value__,
+}
+
+public class In
+{
+    public In() { }
+    public System.DateTime April { get; }
+    public System.DateTime August { get; }
+    public System.DateTime December { get; }
+    public System.DateTime February { get; }
+    public System.DateTime January { get; }
+    public System.DateTime July { get; }
+    public System.DateTime June { get; }
+    public System.DateTime March { get; }
+    public System.DateTime May { get; }
+    public System.DateTime November { get; }
+    public System.DateTime October { get; }
+    public System.DateTime September { get; }
+    public System.DateTime AprilOf(int year) { }
+    public System.DateTime AugustOf(int year) { }
+    public System.DateTime DecemberOf(int year) { }
+    public System.DateTime FebruaryOf(int year) { }
+    public System.DateTime JanuaryOf(int year) { }
+    public System.DateTime JulyOf(int year) { }
+    public System.DateTime JuneOf(int year) { }
+    public System.DateTime MarchOf(int year) { }
+    public System.DateTime MayOf(int year) { }
+    public System.DateTime NovemberOf(int year) { }
+    public System.DateTime OctoberOf(int year) { }
+    public System.DateTime SeptemberOf(int year) { }
+    public System.DateTime TheYear(int year) { }
+}
+
+public class InflectorExtensions
+{
+    public string Camelize(string input) { }
+    public string Dasherize(string underscoredWord) { }
+    public string Hyphenate(string underscoredWord) { }
+    public string Pascalize(string input) { }
+    public string Pluralize(string word, Humanizer.Plurality plurality) { }
+    public string Singularize(string word, Humanizer.Plurality plurality) { }
+    public string Titleize(string input) { }
+    public string Underscore(string input) { }
+}
+
+public interface IStringTransformer
+{
+    string Transform(string input);
+}
+
+public interface ITruncator
+{
+    string Truncate(string value, int length, string truncationString, Humanizer.TruncateFrom truncateFrom);
+}
+
+public enum LetterCasing
+{
+    AllCaps,
+    LowerCase,
+    Sentence,
+    Title,
+    value__,
+}
+
+public interface ICollectionFormatter
+{
+    string Humanize(System.Collections.Generic.IEnumerable<> collection);
+    string Humanize(System.Collections.Generic.IEnumerable<> collection, System.Func<, > objectFormatter);
+    string Humanize(System.Collections.Generic.IEnumerable<> collection, string separator);
+    string Humanize(System.Collections.Generic.IEnumerable<> collection, System.Func<, > objectFormatter, string separator);
+}
+
+public class DefaultFormatter
+{
+    public DefaultFormatter() { }
+    public string DateHumanize(Humanizer.Localisation.TimeUnit timeUnit, Humanizer.Localisation.Tense timeUnitTense, int unit, System.Globalization.CultureInfo culture) { }
+    public string DateHumanize_Now(System.Globalization.CultureInfo culture) { }
+    public string TimeSpanHumanize(Humanizer.Localisation.TimeUnit timeUnit, int unit) { }
+    public string TimeSpanHumanize_Zero() { }
+}
+
+public interface IFormatter
+{
+    string DateHumanize(Humanizer.Localisation.TimeUnit timeUnit, Humanizer.Localisation.Tense timeUnitTense, int unit, System.Globalization.CultureInfo culture);
+    string DateHumanize_Now(System.Globalization.CultureInfo culture);
+    string TimeSpanHumanize(Humanizer.Localisation.TimeUnit timeUnit, int unit);
+    string TimeSpanHumanize_Zero();
+}
+
+public interface INumberToWordsConverter
+{
+    string Convert(int number);
+    string Convert(int number, Humanizer.GrammaticalGender gender);
+    string ConvertToOrdinal(int number);
+    string ConvertToOrdinal(int number, Humanizer.GrammaticalGender gender);
+}
+
+public interface IOrdinalizer
+{
+    string Convert(int number, string numberString);
+    string Convert(int number, string numberString, Humanizer.GrammaticalGender gender);
+}
+
+public class ResourceKeys
+{
+    public ResourceKeys() { }
+}
+
+public class Resources
+{
+    public string GetResource(string resourceKey, System.Globalization.CultureInfo culture) { }
+}
+
+public enum Tense
+{
+    Future,
+    Past,
+    value__,
+}
+
+public enum TimeUnit
+{
+    Day,
+    Hour,
+    Millisecond,
+    Minute,
+    Month,
+    Second,
+    value__,
+    Week,
+    Year,
+}
+
+public class NoMatchFoundException
+{
+    public NoMatchFoundException() { }
+    public NoMatchFoundException(string message) { }
+    public NoMatchFoundException(string message, System.Exception inner) { }
+}
+
+public class NumberToTimeSpanExtensions
+{
+    public System.TimeSpan Days(int days) { }
+    public System.TimeSpan Hours(int hours) { }
+    public System.TimeSpan Milliseconds(int ms) { }
+    public System.TimeSpan Minutes(int minutes) { }
+    public System.TimeSpan Seconds(int seconds) { }
+    public System.TimeSpan Weeks(int input) { }
+}
+
+public class NumberToWordsExtension
+{
+    public string ToOrdinalWords(int number) { }
+    public string ToOrdinalWords(int number, Humanizer.GrammaticalGender gender) { }
+    public string ToWords(int number) { }
+    public string ToWords(int number, Humanizer.GrammaticalGender gender) { }
+}
+
+public class On
+{
+    public On() { }
+}
+
+public enum OnNoMatch
+{
+    ReturnsNull,
+    ThrowsException,
+    value__,
+}
+
+public class OrdinalizeExtensions
+{
+    public string Ordinalize(string numberString) { }
+    public string Ordinalize(string numberString, Humanizer.GrammaticalGender gender) { }
+    public string Ordinalize(int number) { }
+    public string Ordinalize(int number, Humanizer.GrammaticalGender gender) { }
+}
+
+public enum Plurality
+{
+    CouldBeEither,
+    Plural,
+    Singular,
+    value__,
+}
+
+public class PrepositionsExtensions
+{
+    public System.DateTime At(System.DateTime date, int hour, int min, int second, int millisecond) { }
+    public System.DateTime AtMidnight(System.DateTime date) { }
+    public System.DateTime AtNoon(System.DateTime date) { }
+    public System.DateTime In(System.DateTime date, int year) { }
+}
+
+public class RomanNumeralExtensions
+{
+    public int FromRoman(string input) { }
+    public string ToRoman(int input) { }
+}
+
+public enum ShowQuantityAs
+{
+    None,
+    Numeric,
+    value__,
+    Words,
+}
+
+public class StringDehumanizeExtensions
+{
+    public string Dehumanize(string input) { }
+}
+
+public class StringExentions
+{
+    public string FormatWith(string format, object[] args) { }
+}
+
+public class StringHumanizeExtensions
+{
+    public string Humanize(string input) { }
+    public string Humanize(string input, Humanizer.LetterCasing casing) { }
+}
+
+public class TimeSpanHumanizeExtensions
+{
+    public string Humanize(System.TimeSpan timeSpan, int precision) { }
+}
+
+public class To
+{
+    public Humanizer.IStringTransformer LowerCase { get; }
+    public Humanizer.IStringTransformer SentenceCase { get; }
+    public Humanizer.IStringTransformer TitleCase { get; }
+    public Humanizer.IStringTransformer UpperCase { get; }
+    public string Transform(string input, Humanizer.IStringTransformer[] transformers) { }
+}
+
+public class ToQuantityExtensions
+{
+    public string ToQuantity(string input, int quantity, Humanizer.ShowQuantityAs showQuantityAs) { }
+    public string ToQuantity(string input, int quantity, string format, System.IFormatProvider formatProvider) { }
+}
+
+public class TruncateExtensions
+{
+    public string Truncate(string input, int length) { }
+    public string Truncate(string input, int length, Humanizer.ITruncator truncator, Humanizer.TruncateFrom from) { }
+    public string Truncate(string input, int length, string truncationString, Humanizer.TruncateFrom from) { }
+    public string Truncate(string input, int length, string truncationString, Humanizer.ITruncator truncator, Humanizer.TruncateFrom from) { }
+}
+
+public enum TruncateFrom
+{
+    Left,
+    Right,
+    value__,
+}
+
+public class Truncator
+{
+    public Humanizer.ITruncator FixedLength { get; }
+    public Humanizer.ITruncator FixedNumberOfCharacters { get; }
+    public Humanizer.ITruncator FixedNumberOfWords { get; }
+}

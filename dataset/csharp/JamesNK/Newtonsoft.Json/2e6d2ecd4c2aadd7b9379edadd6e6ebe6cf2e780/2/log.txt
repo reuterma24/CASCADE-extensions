@@ -1,0 +1,476 @@
+verify returned with:255
+
+    // Test reading a valid double value
+    var json = "[1.23, 4.56, 7.89]";
+    using (var reader = new JsonTextReader(new StringReader(json)))
+    {
+        reader.Read(); // Move to the start of the array
+        var result = reader.ReadAsDouble();
+        Assert.AreEqual(1.23, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(4.56, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(7.89, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.IsNull(result); // End of array
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_2()
+    {
+        // Test reading a null value
+        var json = "[null]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.IsNull(result); // Should return null
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_3()
+    {
+        // Test reading a double in scientific notation
+        var json = "[1e2, 2.5e-3]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(100.0, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.AreEqual(0.0025, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.IsNull(result); // End of array
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_4()
+    {
+        // Test reading a malformed double
+        var json = "[\"not_a_double\"]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            Assert.Throws<JsonReaderException>(() => reader.ReadAsDouble());
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_5()
+    {
+        // Test reading a negative double
+        var json = "[-1.23]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(-1.23, result);
+        }
+    }
+}
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 21, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 34, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 53, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 65, Column: 5
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 76, Column: 1
+
+
+
+verify returned with:255
+using System.Numerics;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Tests.Serialization;
+using NUnit.Framework;
+using Newtonsoft.Json.Linq;
+using System;
+using Newtonsoft.Json.Tests.TestObjects;
+
+namespace Newtonsoft.Json.Tests.Linq
+{
+
+[TestFixture]
+public class JTokenReaderTest
+{
+    [Test]
+    public void ReadAsDouble_Test_1()
+{
+    // Test reading a valid double value
+    var json = "[1.23, 4.56, 7.89]";
+    using (var reader = new JsonTextReader(new StringReader(json)))
+    {
+        reader.Read(); // Move to the start of the array
+        var result = reader.ReadAsDouble();
+        Assert.AreEqual(1.23, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(4.56, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(7.89, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.IsNull(result); // End of array
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_2()
+    {
+        // Test reading a null value
+        var json = "[null]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.IsNull(result); // Should return null
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_3()
+    {
+        // Test reading a double in scientific notation
+        var json = "[1e2, 2.5e-3]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(100.0, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.AreEqual(0.0025, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.IsNull(result); // End of array
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_4()
+    {
+        // Test reading a malformed double
+        var json = "[\"not_a_double\"]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            Assert.Throws<JsonReaderException>(() => reader.ReadAsDouble());
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_5()
+    {
+        // Test reading a negative double
+        var json = "[-1.23]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(-1.23, result);
+        }
+    }
+}}}
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 40, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 53, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 72, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 84, Column: 5
+
+
+
+verify returned with:255
+using System.Numerics;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Tests.Serialization;
+using NUnit.Framework;
+using Newtonsoft.Json.Linq;
+using System;
+using Newtonsoft.Json.Tests.TestObjects;
+
+namespace Newtonsoft.Json.Tests.Linq
+{
+
+[TestFixture]
+public class JTokenReaderTest
+{
+    // Test reading a valid double value
+    var json = "[1.23, 4.56, 7.89]";
+    using (var reader = new JsonTextReader(new StringReader(json)))
+    {
+        reader.Read(); // Move to the start of the array
+        var result = reader.ReadAsDouble();
+        Assert.AreEqual(1.23, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(4.56, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.AreEqual(7.89, result);
+        
+        result = reader.ReadAsDouble();
+        Assert.IsNull(result); // End of array
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_2()
+    {
+        // Test reading a null value
+        var json = "[null]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.IsNull(result); // Should return null
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_3()
+    {
+        // Test reading a double in scientific notation
+        var json = "[1e2, 2.5e-3]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(100.0, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.AreEqual(0.0025, result);
+            
+            result = reader.ReadAsDouble();
+            Assert.IsNull(result); // End of array
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_4()
+    {
+        // Test reading a malformed double
+        var json = "[\"not_a_double\"]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            Assert.Throws<JsonReaderException>(() => reader.ReadAsDouble());
+        }
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_5()
+    {
+        // Test reading a negative double
+        var json = "[-1.23]";
+        using (var reader = new JsonTextReader(new StringReader(json)))
+        {
+            reader.Read(); // Move to the start of the array
+            var result = reader.ReadAsDouble();
+            Assert.AreEqual(-1.23, result);
+        }
+    }
+}}
+Error: } erwartet.
+Line: 19, Column: 37
+
+Error: ; erwartet.
+Line: 20, Column: 11
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 20, Column: 23
+
+Error: ) erwartet.
+Line: 20, Column: 23
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 20, Column: 23
+
+Error: ) erwartet.
+Line: 20, Column: 44
+
+Error: ; erwartet.
+Line: 20, Column: 44
+
+Error: Bezeichner erwartet.
+Line: 20, Column: 65
+
+Error: ; erwartet.
+Line: 20, Column: 66
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 20, Column: 66
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 22, Column: 16
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 22, Column: 21
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 22, Column: 22
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 24, Column: 16
+
+Error: Typ erwartet.
+Line: 24, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 24, Column: 25
+
+Error: ) erwartet.
+Line: 24, Column: 25
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 24, Column: 25
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 24, Column: 31
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 24, Column: 37
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 26, Column: 9
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 26, Column: 16
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 26, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 26, Column: 38
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 26, Column: 39
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 27, Column: 16
+
+Error: Typ erwartet.
+Line: 27, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 27, Column: 25
+
+Error: ) erwartet.
+Line: 27, Column: 25
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 27, Column: 25
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 27, Column: 31
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 27, Column: 37
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 29, Column: 9
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 29, Column: 16
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 29, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 29, Column: 38
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 29, Column: 39
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 30, Column: 16
+
+Error: Typ erwartet.
+Line: 30, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 30, Column: 25
+
+Error: ) erwartet.
+Line: 30, Column: 25
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 30, Column: 25
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 30, Column: 31
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 30, Column: 37
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 32, Column: 9
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 32, Column: 16
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 32, Column: 25
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 32, Column: 38
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 32, Column: 39
+
+Error: Member, wie z. B. Felder, Methoden oder Anweisungen können nicht direkt in einem Namespace enthalten sein.
+Line: 33, Column: 16
+
+Error: Das Tupel muss mindestens zwei Elemente enthalten.
+Line: 33, Column: 29
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 33, Column: 30
+
+Error: Anweisungen der obersten Ebene müssen vor Namespace- und Typdeklarationen stehen.
+Line: 36, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 37, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 50, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 69, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 81, Column: 5
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 92, Column: 1
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 92, Column: 2
+
+
+

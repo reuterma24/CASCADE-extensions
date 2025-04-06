@@ -1,0 +1,397 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:14.85
+
+verify returned with:255
+
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 10;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(5, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_2()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 0;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(-5, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_3()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 5;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_4()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = -5;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(-10, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_5()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 5;
+        int amount = -5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(10, result);
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 5
+
+
+
+verify returned with:0
+using SemanticKernel; //to use the MathPlugin
+using Xunit; // For the [Fact] attribute and assertion methods
+using SemanticKernel; // To use the MathPlugin class
+
+namespace SemanticKernel.Tests
+{
+
+public class SemanticKernelTest
+{
+    [Fact]
+    public void Subtract_Test_1()
+{
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 10;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(5, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_2()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 0;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(-5, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_3()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 5;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_4()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = -5;
+        int amount = 5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(-10, result);
+    }
+
+    [Fact]
+    public void Subtract_Test_5()
+    {
+        // Arrange
+        var mathPlugin = new MathPlugin();
+        int value = 5;
+        int amount = -5;
+
+        // Act
+        int result = mathPlugin.Subtract(value, amount);
+
+        // Assert
+        Assert.Equal(10, result);
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 2198
+Modification successful! - new_tests - code
+
+
+Command: cat -n SemanticKernel.Tests/SemanticKernelTest.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test SemanticKernel.Tests/SemanticKernel.Tests.csproj --filter SemanticKernel.Tests.SemanticKernelTest --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using SemanticKernel; //to use the MathPlugin
+     2	using Xunit; // For the [Fact] attribute and assertion methods
+     3	using SemanticKernel; // To use the MathPlugin class
+     4	
+     5	namespace SemanticKernel.Tests
+     6	{
+     7	
+     8	public class SemanticKernelTest
+     9	{
+    10	    [Fact]
+    11	    public void Subtract_Test_1()
+    12	{
+    13	        // Arrange
+    14	        var mathPlugin = new MathPlugin();
+    15	        int value = 10;
+    16	        int amount = 5;
+    17	
+    18	        // Act
+    19	        int result = mathPlugin.Subtract(value, amount);
+    20	
+    21	        // Assert
+    22	        Assert.Equal(5, result);
+    23	    }
+    24	
+    25	    [Fact]
+    26	    public void Subtract_Test_2()
+    27	    {
+    28	        // Arrange
+    29	        var mathPlugin = new MathPlugin();
+    30	        int value = 0;
+    31	        int amount = 5;
+    32	
+    33	        // Act
+    34	        int result = mathPlugin.Subtract(value, amount);
+    35	
+    36	        // Assert
+    37	        Assert.Equal(-5, result);
+    38	    }
+    39	
+    40	    [Fact]
+    41	    public void Subtract_Test_3()
+    42	    {
+    43	        // Arrange
+    44	        var mathPlugin = new MathPlugin();
+    45	        int value = 5;
+    46	        int amount = 5;
+    47	
+    48	        // Act
+    49	        int result = mathPlugin.Subtract(value, amount);
+    50	
+    51	        // Assert
+    52	        Assert.Equal(0, result);
+    53	    }
+    54	
+    55	    [Fact]
+    56	    public void Subtract_Test_4()
+    57	    {
+    58	        // Arrange
+    59	        var mathPlugin = new MathPlugin();
+    60	        int value = -5;
+    61	        int amount = 5;
+    62	
+    63	        // Act
+    64	        int result = mathPlugin.Subtract(value, amount);
+    65	
+    66	        // Assert
+    67	        Assert.Equal(-10, result);
+    68	    }
+    69	
+    70	    [Fact]
+    71	    public void Subtract_Test_5()
+    72	    {
+    73	        // Arrange
+    74	        var mathPlugin = new MathPlugin();
+    75	        int value = 5;
+    76	        int amount = -5;
+    77	
+    78	        // Act
+    79	        int result = mathPlugin.Subtract(value, amount);
+    80	
+    81	        // Assert
+    82	        Assert.Equal(10, result);
+    83	    }
+    84	}}  Determining projects to restore...
+  Restored /root/SemanticKernel/SemanticKernel.csproj (in 6.9 sec).
+  Restored /root/SemanticKernel.Tests/SemanticKernel.Tests.csproj (in 6.9 sec).
+  SemanticKernel -> /root/SemanticKernel/bin/Debug/net9.0/SemanticKernel.dll
+/root/SemanticKernel.Tests/SemanticKernelTest.cs(3,7): warning CS0105: The using directive for 'SemanticKernel' appeared previously in this namespace [/root/SemanticKernel.Tests/SemanticKernel.Tests.csproj]
+  SemanticKernel.Tests -> /root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll
+Test run for /root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /root/test_result.trx
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 23 ms - SemanticKernel.Tests.dll (net9.0)
+
+Eval Command: cat $HOME/test_result.trx
+0
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f06026e7-ed24-4f89-b056-52971a26c87b" name="@8f1c6d56a5b0 2025-02-05 11:37:25" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-02-05T11:37:25.5058724+00:00" queuing="2025-02-05T11:37:25.5058725+00:00" start="2025-02-05T11:37:22.9355712+00:00" finish="2025-02-05T11:37:25.5209012+00:00" />
+  <TestSettings name="default" id="d6de3a21-7782-40b9-86c1-d49bee5347e1">
+    <Deployment runDeploymentRoot="_8f1c6d56a5b0_2025-02-05_11_37_25" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="94b2c4bb-7f35-41a2-b03b-ce73e33d2e6a" testId="683b3892-1ee3-eb49-607e-8a74f03e5653" testName="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_4" computerName="8f1c6d56a5b0" duration="00:00:00.0001137" startTime="2025-02-05T11:37:25.2492566+00:00" endTime="2025-02-05T11:37:25.2492567+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94b2c4bb-7f35-41a2-b03b-ce73e33d2e6a" />
+    <UnitTestResult executionId="5b61d74b-b26e-4f09-85a4-c22f5a00fce3" testId="37ce4a9f-0f2d-c9cd-78d6-eefdbf152060" testName="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_3" computerName="8f1c6d56a5b0" duration="00:00:00.0001670" startTime="2025-02-05T11:37:25.2483411+00:00" endTime="2025-02-05T11:37:25.2483412+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b61d74b-b26e-4f09-85a4-c22f5a00fce3" />
+    <UnitTestResult executionId="f8526881-20bf-4205-a7a1-e2bda008fe07" testId="a982aa69-4f22-23ae-7da9-97bfaa46e9a7" testName="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_5" computerName="8f1c6d56a5b0" duration="00:00:00.0001934" startTime="2025-02-05T11:37:25.2489214+00:00" endTime="2025-02-05T11:37:25.2489214+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8526881-20bf-4205-a7a1-e2bda008fe07" />
+    <UnitTestResult executionId="50200eb8-3436-4170-bf68-4a9fed691700" testId="4ad25a39-2151-c020-db2a-92672d85c819" testName="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_1" computerName="8f1c6d56a5b0" duration="00:00:00.0001171" startTime="2025-02-05T11:37:25.2491579+00:00" endTime="2025-02-05T11:37:25.2491580+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="50200eb8-3436-4170-bf68-4a9fed691700" />
+    <UnitTestResult executionId="cebd7069-266c-477e-841c-7248171f7916" testId="18b835c3-0994-15e8-4842-7622a0047a2b" testName="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_2" computerName="8f1c6d56a5b0" duration="00:00:00.0106623" startTime="2025-02-05T11:37:25.2359476+00:00" endTime="2025-02-05T11:37:25.2359923+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cebd7069-266c-477e-841c-7248171f7916" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_4" storage="/root/semantickernel.tests/bin/debug/net9.0/semantickernel.tests.dll" id="683b3892-1ee3-eb49-607e-8a74f03e5653">
+      <Execution id="94b2c4bb-7f35-41a2-b03b-ce73e33d2e6a" />
+      <TestMethod codeBase="/root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SemanticKernel.Tests.SemanticKernelTest" name="Subtract_Test_4" />
+    </UnitTest>
+    <UnitTest name="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_2" storage="/root/semantickernel.tests/bin/debug/net9.0/semantickernel.tests.dll" id="18b835c3-0994-15e8-4842-7622a0047a2b">
+      <Execution id="cebd7069-266c-477e-841c-7248171f7916" />
+      <TestMethod codeBase="/root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SemanticKernel.Tests.SemanticKernelTest" name="Subtract_Test_2" />
+    </UnitTest>
+    <UnitTest name="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_5" storage="/root/semantickernel.tests/bin/debug/net9.0/semantickernel.tests.dll" id="a982aa69-4f22-23ae-7da9-97bfaa46e9a7">
+      <Execution id="f8526881-20bf-4205-a7a1-e2bda008fe07" />
+      <TestMethod codeBase="/root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SemanticKernel.Tests.SemanticKernelTest" name="Subtract_Test_5" />
+    </UnitTest>
+    <UnitTest name="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_1" storage="/root/semantickernel.tests/bin/debug/net9.0/semantickernel.tests.dll" id="4ad25a39-2151-c020-db2a-92672d85c819">
+      <Execution id="50200eb8-3436-4170-bf68-4a9fed691700" />
+      <TestMethod codeBase="/root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SemanticKernel.Tests.SemanticKernelTest" name="Subtract_Test_1" />
+    </UnitTest>
+    <UnitTest name="SemanticKernel.Tests.SemanticKernelTest.Subtract_Test_3" storage="/root/semantickernel.tests/bin/debug/net9.0/semantickernel.tests.dll" id="37ce4a9f-0f2d-c9cd-78d6-eefdbf152060">
+      <Execution id="5b61d74b-b26e-4f09-85a4-c22f5a00fce3" />
+      <TestMethod codeBase="/root/SemanticKernel.Tests/bin/Debug/net9.0/SemanticKernel.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SemanticKernel.Tests.SemanticKernelTest" name="Subtract_Test_3" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="683b3892-1ee3-eb49-607e-8a74f03e5653" executionId="94b2c4bb-7f35-41a2-b03b-ce73e33d2e6a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37ce4a9f-0f2d-c9cd-78d6-eefdbf152060" executionId="5b61d74b-b26e-4f09-85a4-c22f5a00fce3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a982aa69-4f22-23ae-7da9-97bfaa46e9a7" executionId="f8526881-20bf-4205-a7a1-e2bda008fe07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ad25a39-2151-c020-db2a-92672d85c819" executionId="50200eb8-3436-4170-bf68-4a9fed691700" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="18b835c3-0994-15e8-4842-7622a0047a2b" executionId="cebd7069-266c-477e-841c-7248171f7916" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.1)
+[xUnit.net 00:00:00.20]   Discovering: SemanticKernel.Tests
+[xUnit.net 00:00:00.39]   Discovered:  SemanticKernel.Tests
+[xUnit.net 00:00:00.43]   Starting:    SemanticKernel.Tests
+[xUnit.net 00:00:00.56]   Finished:    SemanticKernel.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
+Modifying context with id: 2198
+
+Unhandled exception. System.InvalidOperationException: Sequence contains no elements
+   at System.Linq.ThrowHelper.ThrowNoElementsException()
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Modifier.ReplaceMethodBody(Context context, String methodBody, String projectDir) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 66
+   at Modifier.ReplaceMethod(String projectDir, Context context) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 51
+   at Modifier.Modify(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 33
+   at Program.Main(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Program.cs:line 19
+   at Program.<Main>(String[] args)
+

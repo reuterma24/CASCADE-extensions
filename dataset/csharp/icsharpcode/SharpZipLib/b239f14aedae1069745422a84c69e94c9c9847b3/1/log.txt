@@ -1,0 +1,943 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:12.70
+
+verify returned with:255
+
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Users\\Example\\Documents\\";
+    string expected = "Users/Example/Documents/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_2()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Folder\\Subfolder\\";
+    string expected = "Folder/Subfolder/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_3_EmptyString()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "";
+    string expected = "";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_4_NullInput()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = null;
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Null(result);
+}
+
+[Fact]
+public void TransformDirectory_Test_5_InvalidCharacters()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Folder\\Subfolder*?";
+    string expected = "Folder/Subfolder__"; // Assuming __ is the replacement for invalid chars
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_6_LeadingSlash()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "/Folder/Subfolder/";
+    string expected = "Folder/Subfolder/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 59, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 74, Column: 1
+
+
+
+verify returned with:0
+using SharpZipLib; // Assuming the ZipNameTransform class is in this namespace
+using Xunit; // For the [Fact] attribute and assertion methods
+
+namespace SharpZipLib.Tests
+{
+
+public class ZipNameTransformTest
+{
+    [Fact]
+    public void TransformDirectory_Test_1()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Users\\Example\\Documents\\";
+    string expected = "Users/Example/Documents/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_2()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Folder\\Subfolder\\";
+    string expected = "Folder/Subfolder/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_3_EmptyString()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "";
+    string expected = "";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_4_NullInput()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = null;
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Null(result);
+}
+
+[Fact]
+public void TransformDirectory_Test_5_InvalidCharacters()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "C:\\Folder\\Subfolder*?";
+    string expected = "Folder/Subfolder__"; // Assuming __ is the replacement for invalid chars
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}
+
+[Fact]
+public void TransformDirectory_Test_6_LeadingSlash()
+{
+    // Arrange
+    var transformer = new ZipNameTransform();
+    string input = "/Folder/Subfolder/";
+    string expected = "Folder/Subfolder/";
+
+    // Act
+    string result = transformer.TransformDirectory(input);
+
+    // Assert
+    Assert.Equal(expected, result);
+}}}
+Syntactically correct
+
+
+Modifying context with id: 506
+Modification successful! - new_tests - code
+
+
+Command: cat -n SharpZipLib.Tests/ZipNameTransformTest.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test SharpZipLib.Tests/SharpZipLib.Tests.csproj --filter SharpZipLib.Tests.ZipNameTransformTest --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using SharpZipLib; // Assuming the ZipNameTransform class is in this namespace
+     2	using Xunit; // For the [Fact] attribute and assertion methods
+     3	
+     4	namespace SharpZipLib.Tests
+     5	{
+     6	
+     7	public class ZipNameTransformTest
+     8	{
+     9	    [Fact]
+    10	    public void TransformDirectory_Test_1()
+    11	{
+    12	    // Arrange
+    13	    var transformer = new ZipNameTransform();
+    14	    string input = "C:\\Users\\Example\\Documents\\";
+    15	    string expected = "Users/Example/Documents/";
+    16	
+    17	    // Act
+    18	    string result = transformer.TransformDirectory(input);
+    19	
+    20	    // Assert
+    21	    Assert.Equal(expected, result);
+    22	}
+    23	
+    24	[Fact]
+    25	public void TransformDirectory_Test_2()
+    26	{
+    27	    // Arrange
+    28	    var transformer = new ZipNameTransform();
+    29	    string input = "C:\\Folder\\Subfolder\\";
+    30	    string expected = "Folder/Subfolder/";
+    31	
+    32	    // Act
+    33	    string result = transformer.TransformDirectory(input);
+    34	
+    35	    // Assert
+    36	    Assert.Equal(expected, result);
+    37	}
+    38	
+    39	[Fact]
+    40	public void TransformDirectory_Test_3_EmptyString()
+    41	{
+    42	    // Arrange
+    43	    var transformer = new ZipNameTransform();
+    44	    string input = "";
+    45	    string expected = "";
+    46	
+    47	    // Act
+    48	    string result = transformer.TransformDirectory(input);
+    49	
+    50	    // Assert
+    51	    Assert.Equal(expected, result);
+    52	}
+    53	
+    54	[Fact]
+    55	public void TransformDirectory_Test_4_NullInput()
+    56	{
+    57	    // Arrange
+    58	    var transformer = new ZipNameTransform();
+    59	    string input = null;
+    60	
+    61	    // Act
+    62	    string result = transformer.TransformDirectory(input);
+    63	
+    64	    // Assert
+    65	    Assert.Null(result);
+    66	}
+    67	
+    68	[Fact]
+    69	public void TransformDirectory_Test_5_InvalidCharacters()
+    70	{
+    71	    // Arrange
+    72	    var transformer = new ZipNameTransform();
+    73	    string input = "C:\\Folder\\Subfolder*?";
+    74	    string expected = "Folder/Subfolder__"; // Assuming __ is the replacement for invalid chars
+    75	
+    76	    // Act
+    77	    string result = transformer.TransformDirectory(input);
+    78	
+    79	    // Assert
+    80	    Assert.Equal(expected, result);
+    81	}
+    82	
+    83	[Fact]
+    84	public void TransformDirectory_Test_6_LeadingSlash()
+    85	{
+    86	    // Arrange
+    87	    var transformer = new ZipNameTransform();
+    88	    string input = "/Folder/Subfolder/";
+    89	    string expected = "Folder/Subfolder/";
+    90	
+    91	    // Act
+    92	    string result = transformer.TransformDirectory(input);
+    93	
+    94	    // Assert
+    95	    Assert.Equal(expected, result);
+    96	}}}[xUnit.net 00:00:00.71]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [FAIL]
+[xUnit.net 00:00:00.73]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [FAIL]
+[xUnit.net 00:00:00.73]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [FAIL]
+[xUnit.net 00:00:00.74]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [FAIL]
+[xUnit.net 00:00:00.74]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString [FAIL]
+  Determining projects to restore...
+  Restored /root/SharpZipLib/SharpZipLib.csproj (in 2.34 sec).
+  Restored /root/SharpZipLib.Tests/SharpZipLib.Tests.csproj (in 4.2 sec).
+/root/SharpZipLib/ZipNameTransform.cs(55,12): warning CS8618: Non-nullable field 'trimPrefix_' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/DependsOn/SharpZipBaseException.cs(62,13): warning SYSLIB0051: 'ApplicationException.ApplicationException(SerializationInfo, StreamingContext)' is obsolete: 'This API supports obsolete formatter-based serialization. It should not be called or extended by application code.' (https://aka.ms/dotnet-warnings/SYSLIB0051) [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(63,12): warning CS8618: Non-nullable field 'trimPrefix_' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(138,39): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(226,26): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(231,22): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+  SharpZipLib -> /root/SharpZipLib/bin/Debug/net9.0/SharpZipLib.dll
+/root/SharpZipLib.Tests/ZipNameTransformTest.cs(59,20): warning CS8600: Converting null literal or possible null value to non-nullable type. [/root/SharpZipLib.Tests/SharpZipLib.Tests.csproj]
+/root/SharpZipLib.Tests/ZipNameTransformTest.cs(62,52): warning CS8604: Possible null reference argument for parameter 'name' in 'string ZipNameTransform.TransformDirectory(string name)'. [/root/SharpZipLib.Tests/SharpZipLib.Tests.csproj]
+  SharpZipLib.Tests -> /root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll
+Test run for /root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [11 ms]
+  Error Message:
+   SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name
+  Stack Trace:
+     at SharpZipLib.ZipNameTransform.TransformDirectory(String name) in /root/SharpZipLib/ZipNameTransform.cs:line 113
+   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 62
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [3 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder__"
+Actual:   "C_/Folder/Subfolder__/"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder/"
+Actual:   "C_/Folder/Subfolder/"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Users/Example/Documents/"
+Actual:   "C_/Users/Example/Documents/"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 21
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString [< 1 ms]
+  Error Message:
+   SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name
+  Stack Trace:
+     at SharpZipLib.ZipNameTransform.TransformDirectory(String name) in /root/SharpZipLib/ZipNameTransform.cs:line 113
+   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 48
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /root/test_result.trx
+
+Failed!  - Failed:     5, Passed:     1, Skipped:     0, Total:     6, Duration: 37 ms - SharpZipLib.Tests.dll (net9.0)
+
+Eval Command: cat $HOME/test_result.trx
+0
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c1fadf60-da09-4bfe-8cdc-7beeaf429796" name="@c0aa2f375512 2025-02-05 11:04:46" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-02-05T11:04:46.9878745+00:00" queuing="2025-02-05T11:04:46.9878746+00:00" start="2025-02-05T11:04:44.5838841+00:00" finish="2025-02-05T11:04:47.0030555+00:00" />
+  <TestSettings name="default" id="a46d8221-dc6e-4c09-a863-258669d1c9bd">
+    <Deployment runDeploymentRoot="_c0aa2f375512_2025-02-05_11_04_46" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ffb19893-6bc9-4ec7-b874-7be095069b52" testId="19d5dede-763c-0b0d-07f5-08165f50feb9" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2" computerName="c0aa2f375512" duration="00:00:00.0003773" startTime="2025-02-05T11:04:46.7287561+00:00" endTime="2025-02-05T11:04:46.7287562+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffb19893-6bc9-4ec7-b874-7be095069b52">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder/"
+Actual:   "C_/Folder/Subfolder/"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9b0f6034-8bd0-4ad9-b300-6073e7c27ae6" testId="64c07c53-4846-ffc6-6bee-ea3e9e14fea7" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput" computerName="c0aa2f375512" duration="00:00:00.0119790" startTime="2025-02-05T11:04:46.7118179+00:00" endTime="2025-02-05T11:04:46.7118534+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9b0f6034-8bd0-4ad9-b300-6073e7c27ae6">
+      <Output>
+        <ErrorInfo>
+          <Message>SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name</Message>
+          <StackTrace>   at SharpZipLib.ZipNameTransform.TransformDirectory(String name) in /root/SharpZipLib/ZipNameTransform.cs:line 113
+   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 62
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f9baaf0e-0abf-4db9-bb3c-0a20ed751719" testId="1ffce793-733a-61ed-8a04-2008dd539d72" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters" computerName="c0aa2f375512" duration="00:00:00.0032883" startTime="2025-02-05T11:04:46.7274106+00:00" endTime="2025-02-05T11:04:46.7274106+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9baaf0e-0abf-4db9-bb3c-0a20ed751719">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder__"
+Actual:   "C_/Folder/Subfolder__/"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0dd3bdb3-e281-4e5a-b31c-e495fd32e8e2" testId="3f6fe824-956d-efd8-8687-738de5124e89" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString" computerName="c0aa2f375512" duration="00:00:00.0002546" startTime="2025-02-05T11:04:46.7378088+00:00" endTime="2025-02-05T11:04:46.7378089+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0dd3bdb3-e281-4e5a-b31c-e495fd32e8e2">
+      <Output>
+        <ErrorInfo>
+          <Message>SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name</Message>
+          <StackTrace>   at SharpZipLib.ZipNameTransform.TransformDirectory(String name) in /root/SharpZipLib/ZipNameTransform.cs:line 113
+   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 48
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="76b185bc-fcb3-4f18-ae53-7f245e235453" testId="246a8d58-cc02-a28a-e648-4851850d906a" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1" computerName="c0aa2f375512" duration="00:00:00.0004793" startTime="2025-02-05T11:04:46.7357673+00:00" endTime="2025-02-05T11:04:46.7357674+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76b185bc-fcb3-4f18-ae53-7f245e235453">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Users/Example/Documents/"
+Actual:   "C_/Users/Example/Documents/"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 21
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="17832af5-8bdc-4fca-b8c8-fff9aba0a29f" testId="cc584ff0-3d4f-08a9-c759-402e0e5b4c12" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_6_LeadingSlash" computerName="c0aa2f375512" duration="00:00:00.0020476" startTime="2025-02-05T11:04:46.7370951+00:00" endTime="2025-02-05T11:04:46.7370953+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17832af5-8bdc-4fca-b8c8-fff9aba0a29f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="3f6fe824-956d-efd8-8687-738de5124e89">
+      <Execution id="0dd3bdb3-e281-4e5a-b31c-e495fd32e8e2" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_3_EmptyString" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="19d5dede-763c-0b0d-07f5-08165f50feb9">
+      <Execution id="ffb19893-6bc9-4ec7-b874-7be095069b52" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_2" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="64c07c53-4846-ffc6-6bee-ea3e9e14fea7">
+      <Execution id="9b0f6034-8bd0-4ad9-b300-6073e7c27ae6" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_4_NullInput" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_6_LeadingSlash" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="cc584ff0-3d4f-08a9-c759-402e0e5b4c12">
+      <Execution id="17832af5-8bdc-4fca-b8c8-fff9aba0a29f" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_6_LeadingSlash" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="246a8d58-cc02-a28a-e648-4851850d906a">
+      <Execution id="76b185bc-fcb3-4f18-ae53-7f245e235453" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_1" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="1ffce793-733a-61ed-8a04-2008dd539d72">
+      <Execution id="f9baaf0e-0abf-4db9-bb3c-0a20ed751719" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_5_InvalidCharacters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="19d5dede-763c-0b0d-07f5-08165f50feb9" executionId="ffb19893-6bc9-4ec7-b874-7be095069b52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64c07c53-4846-ffc6-6bee-ea3e9e14fea7" executionId="9b0f6034-8bd0-4ad9-b300-6073e7c27ae6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1ffce793-733a-61ed-8a04-2008dd539d72" executionId="f9baaf0e-0abf-4db9-bb3c-0a20ed751719" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f6fe824-956d-efd8-8687-738de5124e89" executionId="0dd3bdb3-e281-4e5a-b31c-e495fd32e8e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="246a8d58-cc02-a28a-e648-4851850d906a" executionId="76b185bc-fcb3-4f18-ae53-7f245e235453" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cc584ff0-3d4f-08a9-c759-402e0e5b4c12" executionId="17832af5-8bdc-4fca-b8c8-fff9aba0a29f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="6" executed="6" passed="1" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.1)
+[xUnit.net 00:00:00.16]   Discovering: SharpZipLib.Tests
+[xUnit.net 00:00:00.40]   Discovered:  SharpZipLib.Tests
+[xUnit.net 00:00:00.42]   Starting:    SharpZipLib.Tests
+[xUnit.net 00:00:00.71]       SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name
+[xUnit.net 00:00:00.72]       Stack Trace:
+[xUnit.net 00:00:00.72]         /root/SharpZipLib/ZipNameTransform.cs(113,0): at SharpZipLib.ZipNameTransform.TransformDirectory(String name)
+[xUnit.net 00:00:00.72]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(62,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput()
+[xUnit.net 00:00:00.72]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.72]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.73]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.73]                  ↓ (pos 0)
+[xUnit.net 00:00:00.73]       Expected: "Folder/Subfolder__"
+[xUnit.net 00:00:00.73]       Actual:   "C_/Folder/Subfolder__/"
+[xUnit.net 00:00:00.73]                  ↑ (pos 0)
+[xUnit.net 00:00:00.73]       Stack Trace:
+[xUnit.net 00:00:00.73]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(80,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters()
+[xUnit.net 00:00:00.73]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.73]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.73]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.73]                  ↓ (pos 0)
+[xUnit.net 00:00:00.73]       Expected: "Folder/Subfolder/"
+[xUnit.net 00:00:00.73]       Actual:   "C_/Folder/Subfolder/"
+[xUnit.net 00:00:00.73]                  ↑ (pos 0)
+[xUnit.net 00:00:00.73]       Stack Trace:
+[xUnit.net 00:00:00.73]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(36,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2()
+[xUnit.net 00:00:00.73]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.73]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.74]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.74]                  ↓ (pos 0)
+[xUnit.net 00:00:00.74]       Expected: "Users/Example/Documents/"
+[xUnit.net 00:00:00.74]       Actual:   "C_/Users/Example/Documents/"
+[xUnit.net 00:00:00.74]                  ↑ (pos 0)
+[xUnit.net 00:00:00.74]       Stack Trace:
+[xUnit.net 00:00:00.74]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(21,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1()
+[xUnit.net 00:00:00.74]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.74]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.74]       SharpZipLib.DependsOn.ZipException : Cannot have an empty directory name
+[xUnit.net 00:00:00.74]       Stack Trace:
+[xUnit.net 00:00:00.74]         /root/SharpZipLib/ZipNameTransform.cs(113,0): at SharpZipLib.ZipNameTransform.TransformDirectory(String name)
+[xUnit.net 00:00:00.74]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(48,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString()
+[xUnit.net 00:00:00.74]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.74]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.75]   Finished:    SharpZipLib.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="c0aa2f375512" outcome="Error" timestamp="2025-02-05T11:04:46.7151295+00:00">
+        <Text>[xUnit.net 00:00:00.71]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="c0aa2f375512" outcome="Error" timestamp="2025-02-05T11:04:46.7254826+00:00">
+        <Text>[xUnit.net 00:00:00.73]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="c0aa2f375512" outcome="Error" timestamp="2025-02-05T11:04:46.7309046+00:00">
+        <Text>[xUnit.net 00:00:00.73]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="c0aa2f375512" outcome="Error" timestamp="2025-02-05T11:04:46.7329041+00:00">
+        <Text>[xUnit.net 00:00:00.74]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="c0aa2f375512" outcome="Error" timestamp="2025-02-05T11:04:46.7399946+00:00">
+        <Text>[xUnit.net 00:00:00.74]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
+Modifying context with id: 506
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n SharpZipLib.Tests/ZipNameTransformTest.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test SharpZipLib.Tests/SharpZipLib.Tests.csproj --filter SharpZipLib.Tests.ZipNameTransformTest --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using SharpZipLib; // Assuming the ZipNameTransform class is in this namespace
+     2	using Xunit; // For the [Fact] attribute and assertion methods
+     3	
+     4	namespace SharpZipLib.Tests
+     5	{
+     6	
+     7	public class ZipNameTransformTest
+     8	{
+     9	    [Fact]
+    10	    public void TransformDirectory_Test_1()
+    11	{
+    12	    // Arrange
+    13	    var transformer = new ZipNameTransform();
+    14	    string input = "C:\\Users\\Example\\Documents\\";
+    15	    string expected = "Users/Example/Documents/";
+    16	
+    17	    // Act
+    18	    string result = transformer.TransformDirectory(input);
+    19	
+    20	    // Assert
+    21	    Assert.Equal(expected, result);
+    22	}
+    23	
+    24	[Fact]
+    25	public void TransformDirectory_Test_2()
+    26	{
+    27	    // Arrange
+    28	    var transformer = new ZipNameTransform();
+    29	    string input = "C:\\Folder\\Subfolder\\";
+    30	    string expected = "Folder/Subfolder/";
+    31	
+    32	    // Act
+    33	    string result = transformer.TransformDirectory(input);
+    34	
+    35	    // Assert
+    36	    Assert.Equal(expected, result);
+    37	}
+    38	
+    39	[Fact]
+    40	public void TransformDirectory_Test_3_EmptyString()
+    41	{
+    42	    // Arrange
+    43	    var transformer = new ZipNameTransform();
+    44	    string input = "";
+    45	    string expected = "";
+    46	
+    47	    // Act
+    48	    string result = transformer.TransformDirectory(input);
+    49	
+    50	    // Assert
+    51	    Assert.Equal(expected, result);
+    52	}
+    53	
+    54	[Fact]
+    55	public void TransformDirectory_Test_4_NullInput()
+    56	{
+    57	    // Arrange
+    58	    var transformer = new ZipNameTransform();
+    59	    string input = null;
+    60	
+    61	    // Act
+    62	    string result = transformer.TransformDirectory(input);
+    63	
+    64	    // Assert
+    65	    Assert.Null(result);
+    66	}
+    67	
+    68	[Fact]
+    69	public void TransformDirectory_Test_5_InvalidCharacters()
+    70	{
+    71	    // Arrange
+    72	    var transformer = new ZipNameTransform();
+    73	    string input = "C:\\Folder\\Subfolder*?";
+    74	    string expected = "Folder/Subfolder__"; // Assuming __ is the replacement for invalid chars
+    75	
+    76	    // Act
+    77	    string result = transformer.TransformDirectory(input);
+    78	
+    79	    // Assert
+    80	    Assert.Equal(expected, result);
+    81	}
+    82	
+    83	[Fact]
+    84	public void TransformDirectory_Test_6_LeadingSlash()
+    85	{
+    86	    // Arrange
+    87	    var transformer = new ZipNameTransform();
+    88	    string input = "/Folder/Subfolder/";
+    89	    string expected = "Folder/Subfolder/";
+    90	
+    91	    // Act
+    92	    string result = transformer.TransformDirectory(input);
+    93	
+    94	    // Assert
+    95	    Assert.Equal(expected, result);
+    96	}}}[xUnit.net 00:00:00.41]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [FAIL]
+[xUnit.net 00:00:00.47]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [FAIL]
+[xUnit.net 00:00:00.48]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [FAIL]
+[xUnit.net 00:00:00.49]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [FAIL]
+  Determining projects to restore...
+  Restored /root/SharpZipLib/SharpZipLib.csproj (in 2.18 sec).
+  Restored /root/SharpZipLib.Tests/SharpZipLib.Tests.csproj (in 4.32 sec).
+/root/SharpZipLib/ZipNameTransform.cs(52,12): warning CS8618: Non-nullable field 'trimPrefix_' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/DependsOn/SharpZipBaseException.cs(62,13): warning SYSLIB0051: 'ApplicationException.ApplicationException(SerializationInfo, StreamingContext)' is obsolete: 'This API supports obsolete formatter-based serialization. It should not be called or extended by application code.' (https://aka.ms/dotnet-warnings/SYSLIB0051) [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(60,12): warning CS8618: Non-nullable field 'trimPrefix_' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(133,39): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(224,26): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+/root/SharpZipLib/ZipNameTransform.cs(228,27): warning CS8602: Dereference of a possibly null reference. [/root/SharpZipLib/SharpZipLib.csproj]
+  SharpZipLib -> /root/SharpZipLib/bin/Debug/net9.0/SharpZipLib.dll
+/root/SharpZipLib.Tests/ZipNameTransformTest.cs(59,20): warning CS8600: Converting null literal or possible null value to non-nullable type. [/root/SharpZipLib.Tests/SharpZipLib.Tests.csproj]
+/root/SharpZipLib.Tests/ZipNameTransformTest.cs(62,52): warning CS8604: Possible null reference argument for parameter 'name' in 'string ZipNameTransform.TransformDirectory(string name)'. [/root/SharpZipLib.Tests/SharpZipLib.Tests.csproj]
+  SharpZipLib.Tests -> /root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll
+Test run for /root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [13 ms]
+  Error Message:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   ""
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 65
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [5 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder__"
+Actual:   "C:/Folder/Subfolder*?"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder/"
+Actual:   "C:/Folder/Subfolder/"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Users/Example/Documents/"
+Actual:   "C:/Users/Example/Documents/"
+           ↑ (pos 0)
+  Stack Trace:
+     at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 21
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /root/test_result.trx
+
+Failed!  - Failed:     4, Passed:     2, Skipped:     0, Total:     6, Duration: 54 ms - SharpZipLib.Tests.dll (net9.0)
+
+Eval Command: cat $HOME/test_result.trx
+0
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="91c6ff97-b615-4c79-9239-e5f8a623d579" name="@a85ef7396af3 2025-02-05 11:05:08" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-02-05T11:05:08.3391389+00:00" queuing="2025-02-05T11:05:08.3391390+00:00" start="2025-02-05T11:05:06.0917126+00:00" finish="2025-02-05T11:05:08.3711027+00:00" />
+  <TestSettings name="default" id="8e0291f1-e326-41aa-9bef-ef55dd4fa235">
+    <Deployment runDeploymentRoot="_a85ef7396af3_2025-02-05_11_05_08" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2b77cad4-f2dd-41a6-8c6b-8a810b1918be" testId="64c07c53-4846-ffc6-6bee-ea3e9e14fea7" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput" computerName="a85ef7396af3" duration="00:00:00.0131559" startTime="2025-02-05T11:05:07.9278817+00:00" endTime="2025-02-05T11:05:07.9279162+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b77cad4-f2dd-41a6-8c6b-8a810b1918be">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   ""</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 65
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="06bb95d4-a54f-40fa-967a-17d2bbb98fa8" testId="3f6fe824-956d-efd8-8687-738de5124e89" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString" computerName="a85ef7396af3" duration="00:00:00.0001343" startTime="2025-02-05T11:05:07.9697434+00:00" endTime="2025-02-05T11:05:07.9697435+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06bb95d4-a54f-40fa-967a-17d2bbb98fa8" />
+    <UnitTestResult executionId="f1f8eec1-6059-43bf-9761-7d53b82a8766" testId="cc584ff0-3d4f-08a9-c759-402e0e5b4c12" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_6_LeadingSlash" computerName="a85ef7396af3" duration="00:00:00.0533611" startTime="2025-02-05T11:05:07.9694059+00:00" endTime="2025-02-05T11:05:07.9694060+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1f8eec1-6059-43bf-9761-7d53b82a8766" />
+    <UnitTestResult executionId="2947250f-a9bb-4580-95f5-dfa741a3db60" testId="1ffce793-733a-61ed-8a04-2008dd539d72" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters" computerName="a85ef7396af3" duration="00:00:00.0059745" startTime="2025-02-05T11:05:07.9461161+00:00" endTime="2025-02-05T11:05:07.9461162+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2947250f-a9bb-4580-95f5-dfa741a3db60">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder__"
+Actual:   "C:/Folder/Subfolder*?"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="15c3ce41-5e2f-41ea-95c7-212569e03f14" testId="19d5dede-763c-0b0d-07f5-08165f50feb9" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2" computerName="a85ef7396af3" duration="00:00:00.0004803" startTime="2025-02-05T11:05:07.9523564+00:00" endTime="2025-02-05T11:05:07.9523565+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15c3ce41-5e2f-41ea-95c7-212569e03f14">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Folder/Subfolder/"
+Actual:   "C:/Folder/Subfolder/"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="80dc2439-6971-4e6a-8eaf-58549cbc466f" testId="246a8d58-cc02-a28a-e648-4851850d906a" testName="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1" computerName="a85ef7396af3" duration="00:00:00.0003992" startTime="2025-02-05T11:05:07.9683772+00:00" endTime="2025-02-05T11:05:07.9683773+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80dc2439-6971-4e6a-8eaf-58549cbc466f">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Users/Example/Documents/"
+Actual:   "C:/Users/Example/Documents/"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1() in /root/SharpZipLib.Tests/ZipNameTransformTest.cs:line 21
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_3_EmptyString" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="3f6fe824-956d-efd8-8687-738de5124e89">
+      <Execution id="06bb95d4-a54f-40fa-967a-17d2bbb98fa8" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_3_EmptyString" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="19d5dede-763c-0b0d-07f5-08165f50feb9">
+      <Execution id="15c3ce41-5e2f-41ea-95c7-212569e03f14" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_2" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="64c07c53-4846-ffc6-6bee-ea3e9e14fea7">
+      <Execution id="2b77cad4-f2dd-41a6-8c6b-8a810b1918be" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_4_NullInput" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_6_LeadingSlash" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="cc584ff0-3d4f-08a9-c759-402e0e5b4c12">
+      <Execution id="f1f8eec1-6059-43bf-9761-7d53b82a8766" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_6_LeadingSlash" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="246a8d58-cc02-a28a-e648-4851850d906a">
+      <Execution id="80dc2439-6971-4e6a-8eaf-58549cbc466f" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_1" />
+    </UnitTest>
+    <UnitTest name="SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters" storage="/root/sharpziplib.tests/bin/debug/net9.0/sharpziplib.tests.dll" id="1ffce793-733a-61ed-8a04-2008dd539d72">
+      <Execution id="2947250f-a9bb-4580-95f5-dfa741a3db60" />
+      <TestMethod codeBase="/root/SharpZipLib.Tests/bin/Debug/net9.0/SharpZipLib.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SharpZipLib.Tests.ZipNameTransformTest" name="TransformDirectory_Test_5_InvalidCharacters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="64c07c53-4846-ffc6-6bee-ea3e9e14fea7" executionId="2b77cad4-f2dd-41a6-8c6b-8a810b1918be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f6fe824-956d-efd8-8687-738de5124e89" executionId="06bb95d4-a54f-40fa-967a-17d2bbb98fa8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cc584ff0-3d4f-08a9-c759-402e0e5b4c12" executionId="f1f8eec1-6059-43bf-9761-7d53b82a8766" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1ffce793-733a-61ed-8a04-2008dd539d72" executionId="2947250f-a9bb-4580-95f5-dfa741a3db60" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19d5dede-763c-0b0d-07f5-08165f50feb9" executionId="15c3ce41-5e2f-41ea-95c7-212569e03f14" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="246a8d58-cc02-a28a-e648-4851850d906a" executionId="80dc2439-6971-4e6a-8eaf-58549cbc466f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="6" executed="6" passed="2" failed="4" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.1)
+[xUnit.net 00:00:00.16]   Discovering: SharpZipLib.Tests
+[xUnit.net 00:00:00.22]   Discovered:  SharpZipLib.Tests
+[xUnit.net 00:00:00.23]   Starting:    SharpZipLib.Tests
+[xUnit.net 00:00:00.42]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:00.42]       Expected: null
+[xUnit.net 00:00:00.42]       Actual:   ""
+[xUnit.net 00:00:00.42]       Stack Trace:
+[xUnit.net 00:00:00.45]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(65,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput()
+[xUnit.net 00:00:00.45]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.45]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.47]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.47]                  ↓ (pos 0)
+[xUnit.net 00:00:00.47]       Expected: "Folder/Subfolder__"
+[xUnit.net 00:00:00.47]       Actual:   "C:/Folder/Subfolder*?"
+[xUnit.net 00:00:00.47]                  ↑ (pos 0)
+[xUnit.net 00:00:00.47]       Stack Trace:
+[xUnit.net 00:00:00.47]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(80,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters()
+[xUnit.net 00:00:00.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.48]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.48]                  ↓ (pos 0)
+[xUnit.net 00:00:00.48]       Expected: "Folder/Subfolder/"
+[xUnit.net 00:00:00.48]       Actual:   "C:/Folder/Subfolder/"
+[xUnit.net 00:00:00.48]                  ↑ (pos 0)
+[xUnit.net 00:00:00.48]       Stack Trace:
+[xUnit.net 00:00:00.48]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(36,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2()
+[xUnit.net 00:00:00.48]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.48]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.49]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.49]                  ↓ (pos 0)
+[xUnit.net 00:00:00.49]       Expected: "Users/Example/Documents/"
+[xUnit.net 00:00:00.49]       Actual:   "C:/Users/Example/Documents/"
+[xUnit.net 00:00:00.49]                  ↑ (pos 0)
+[xUnit.net 00:00:00.49]       Stack Trace:
+[xUnit.net 00:00:00.49]         /root/SharpZipLib.Tests/ZipNameTransformTest.cs(21,0): at SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1()
+[xUnit.net 00:00:00.49]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.49]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.52]   Finished:    SharpZipLib.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="a85ef7396af3" outcome="Error" timestamp="2025-02-05T11:05:07.8830062+00:00">
+        <Text>[xUnit.net 00:00:00.41]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_4_NullInput [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="a85ef7396af3" outcome="Error" timestamp="2025-02-05T11:05:07.9414200+00:00">
+        <Text>[xUnit.net 00:00:00.47]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_5_InvalidCharacters [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="a85ef7396af3" outcome="Error" timestamp="2025-02-05T11:05:07.9515469+00:00">
+        <Text>[xUnit.net 00:00:00.48]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_2 [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="a85ef7396af3" outcome="Error" timestamp="2025-02-05T11:05:07.9703069+00:00">
+        <Text>[xUnit.net 00:00:00.49]     SharpZipLib.Tests.ZipNameTransformTest.TransformDirectory_Test_1 [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

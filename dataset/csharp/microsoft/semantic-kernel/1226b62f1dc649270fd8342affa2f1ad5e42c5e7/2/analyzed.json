@@ -1,0 +1,97 @@
+[
+    {
+        "doc": "/// <summary>\n/// Returns the subtraction result of initial and amount values provided.\n/// </summary>\n/// <param name = \"value\">Initial value from which to subtract the specified amount.</param>\n/// <param name = \"amount\">The amount to subtract as a string.</param>\n/// <returns>The resulting subtraction as a string.</returns>",
+        "signature": {
+            "name": "Subtract",
+            "returns": "int",
+            "params": [
+                "[Description(\"The value to subtract\")] int value",
+                "[Description(\"Amount to subtract\")] int amount"
+            ],
+            "modifier": [
+                "public"
+            ],
+            "annotations": [
+                "KernelFunction",
+                "Description",
+                "Description"
+            ],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "MathPlugin",
+            "doc": "/// <summary>\n/// MathPlugin provides a set of functions to make Math calculations.\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Returns the addition result of initial and amount values provided.\n/// </summary>\n/// <param name = \"value\">Initial value to which to add the specified amount.</param>\n/// <param name = \"amount\">The amount to add as a string.</param>\n/// <returns>The resulting sum as a string.</returns>",
+                    "signature": {
+                        "name": "Add",
+                        "returns": "int",
+                        "params": [
+                            "[Description(\"The value to add\")] int value",
+                            "[Description(\"Amount to add\")] int amount"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [
+                            "KernelFunction",
+                            "Description",
+                            "Description"
+                        ],
+                        "generics": []
+                    },
+                    "code": ""
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [
+                "using System.ComponentModel;"
+            ],
+            "constructors": [],
+            "extends": "",
+            "implements": [],
+            "namespace": "Microsoft.SemanticKernel.Plugins.Core"
+        },
+        "code": "",
+        "code_file_path": "SemanticKernel/MathPlugin.cs",
+        "called_functions": [],
+        "id": 2198,
+        "tests": [
+            {
+                "tests": "namespace SemanticKernel.Tests;\r\n\r\npublic class SemanticKernelTest\r\n{\r\n    [Fact]\r\n    public void Test1()\r\n    {\r\n        MathPlugin m = new();\r\n        Assert.Equal(5, m.Subtract(10, 5));\r\n    }\r\n}\r\n",
+                "test_imports": [
+                    "using SemanticKernel; //to use the MathPlugin"
+                ],
+                "test_namespace": "SemanticKernel.Tests",
+                "test_class_name": "SemanticKernelTest",
+                "test_file_path": "SemanticKernel.Tests/SemanticKernelTest.cs",
+                "test_runner": "xUnit",
+                "project_path": "SemanticKernel.Tests/SemanticKernel.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [
+                    "Subtract_Test_1",
+                    "Subtract_Test_4",
+                    "Subtract_Test_2",
+                    "Subtract_Test_3",
+                    "Subtract_Test_6",
+                    "Subtract_Test_5"
+                ],
+                [],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "using SemanticKernel; //to use the MathPlugin\nusing Xunit; // For the [Fact] attribute and assertion methods\nusing SemanticKernel; // To use the MathPlugin class\n\nnamespace SemanticKernel.Tests\n{\n\npublic class SemanticKernelTest\n{\n    [Fact]\n    public void Subtract_Test_1()\n{\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = 10;\n        int amount = 5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(5, result);\n    }\n\n    [Fact]\n    public void Subtract_Test_2()\n    {\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = 0;\n        int amount = 5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(-5, result);\n    }\n\n    [Fact]\n    public void Subtract_Test_3()\n    {\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = 5;\n        int amount = 5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void Subtract_Test_4()\n    {\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = -5;\n        int amount = -5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(0, result);\n    }\n\n    [Fact]\n    public void Subtract_Test_5()\n    {\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = -10;\n        int amount = 5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(-15, result);\n    }\n\n    [Fact]\n    public void Subtract_Test_6()\n    {\n        // Arrange\n        var mathPlugin = new MathPlugin();\n        int value = 10;\n        int amount = -5;\n\n        // Act\n        int result = mathPlugin.Subtract(value, amount);\n\n        // Assert\n        Assert.Equal(15, result);\n    }\n}}",
+        "new_code": "{\nreturn value - amount;}"
+    }
+]

@@ -1,0 +1,987 @@
+{
+  "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to the file system.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022outputStream\u0022\u003EThe output stream of the manifest module file.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+  "signature": {
+    "name": "Write",
+    "returns": "void",
+    "params": [
+      "Stream outputStream"
+    ],
+    "modifier": [
+      "public"
+    ],
+    "annotations": [],
+    "generics": []
+  },
+  "language": "csharp",
+  "parent": {
+    "name": "ModuleDefinition",
+    "doc": "/// \u003Csummary\u003E\r\n/// Represents a single module in a .NET assembly. A module definition is the root object of any .NET module and\r\n/// defines types, as well as any resources and referenced assemblies.\r\n/// \u003C/summary\u003E",
+    "other_methods": [
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input buffer.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022buffer\u0022\u003EThe raw contents of the executable file to load.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromBytes",
+          "returns": "ModuleDefinition",
+          "params": [
+            "byte[] buffer"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input buffer.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022buffer\u0022\u003EThe raw contents of the executable file to load.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022readerParameters\u0022\u003EThe parameters to use while reading the module.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromBytes",
+          "returns": "ModuleDefinition",
+          "params": [
+            "byte[] buffer",
+            "ModuleReaderParameters readerParameters"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input file.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022filePath\u0022\u003EThe file path to the input executable to load.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromFile",
+          "returns": "ModuleDefinition",
+          "params": [
+            "string filePath"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input file.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022filePath\u0022\u003EThe file path to the input executable to load.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022readerParameters\u0022\u003EThe parameters to use while reading the module.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromFile",
+          "returns": "ModuleDefinition",
+          "params": [
+            "string filePath",
+            "ModuleReaderParameters readerParameters"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input file.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022file\u0022\u003EThe portable executable file to load.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromFile",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IPEFile file"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from the provided input file.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022file\u0022\u003EThe portable executable file to load.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022readerParameters\u0022\u003EThe parameters to use while reading the module.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromFile",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IPEFile file",
+            "ModuleReaderParameters readerParameters"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from an input stream.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022reader\u0022\u003EThe input stream pointing at the beginning of the executable to load.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022mode\u0022\u003EIndicates the input PE is mapped or unmapped.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromReader",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IBinaryStreamReader reader",
+            "PEMappingMode mode = PEMappingMode.Unmapped"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Reads a .NET module from an input stream.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022reader\u0022\u003EThe input stream pointing at the beginning of the executable to load.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022mode\u0022\u003EIndicates the input PE is mapped or unmapped.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022readerParameters\u0022\u003EThe parameters to use while reading the module.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromReader",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IBinaryStreamReader reader",
+            "PEMappingMode mode",
+            "ModuleReaderParameters readerParameters"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Initializes a .NET module from a PE image.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022peImage\u0022\u003EThe image containing the .NET metadata.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET metadata directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromImage",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IPEImage peImage"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Initializes a .NET module from a PE image.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022peImage\u0022\u003EThe image containing the .NET metadata.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022readerParameters\u0022\u003EThe parameters to use while reading the module.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe module.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022BadImageFormatException\u0022\u003EOccurs when the image does not contain a valid .NET data directory.\u003C/exception\u003E",
+        "signature": {
+          "name": "FromImage",
+          "returns": "ModuleDefinition",
+          "params": [
+            "IPEImage peImage",
+            "ModuleReaderParameters readerParameters"
+          ],
+          "modifier": [
+            "public",
+            "static"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Looks up a member by its metadata token.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022token\u0022\u003EThe token of the member to lookup.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe member.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022InvalidOperationException\u0022\u003E\r\n/// Occurs when the module does not support looking up members by its token.\r\n/// \u003C/exception\u003E\r\n/// \u003Cexception cref = \u0022NotSupportedException\u0022\u003E\r\n/// Occurs when a metadata token indexes a table that cannot be converted to a metadata member.\r\n/// \u003C/exception\u003E",
+        "signature": {
+          "name": "LookupMember",
+          "returns": "IMetadataMember",
+          "params": [
+            "MetadataToken token"
+          ],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Attempts to look up a member by its metadata token.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022token\u0022\u003EThe token of the member to lookup.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022member\u0022\u003EThe member, or \u003Cc\u003Enull\u003C/c\u003E if the lookup failed.\u003C/param\u003E\r\n/// \u003Creturns\u003E\u003Cc\u003Etrue\u003C/c\u003E if the member was successfully looked up, false otherwise.\u003C/returns\u003E",
+        "signature": {
+          "name": "TryLookupMember",
+          "returns": "bool",
+          "params": [
+            "MetadataToken token",
+            "out IMetadataMember member"
+          ],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            member = null;\r\n            return false;\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Looks up a user string by its string token.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022token\u0022\u003EThe token of the string to lookup.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe member.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022InvalidOperationException\u0022\u003E\r\n/// Occurs when the module does not support looking up string by its token.\r\n/// \u003C/exception\u003E\r\n/// \u003Cexception cref = \u0022ArgumentOutOfRangeException\u0022\u003E\r\n/// Occurs when a metadata token indexes an invalid string.\r\n/// \u003C/exception\u003E",
+        "signature": {
+          "name": "LookupString",
+          "returns": "string",
+          "params": [
+            "MetadataToken token"
+          ],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Attempts to look up a user string by its metadata token.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022token\u0022\u003EThe token of the member to lookup.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022value\u0022\u003EThe string, or \u003Cc\u003Enull\u003C/c\u003E if the lookup failed.\u003C/param\u003E\r\n/// \u003Creturns\u003E\u003Cc\u003Etrue\u003C/c\u003E if the string was successfully looked up, false otherwise.\u003C/returns\u003E",
+        "signature": {
+          "name": "TryLookupString",
+          "returns": "bool",
+          "params": [
+            "MetadataToken token",
+            "out string value"
+          ],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            value = null;\r\n            return false;\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains an object that can be used to decode coded indices to metadata tokens.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022codedIndex\u0022\u003EThe type of indices to get the encoder for.\u003C/param\u003E\r\n/// \u003Creturns\u003EThe index encoder.\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022InvalidOperationException\u0022\u003E\r\n/// Occurs when the module does not support index encoders.\r\n/// \u003C/exception\u003E",
+        "signature": {
+          "name": "GetIndexEncoder",
+          "returns": "IndexEncoder",
+          "params": [
+            "CodedIndex codedIndex"
+          ],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains a list of type references that were imported into the module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe type references.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// The return value of this method does not update when the \u003Csee cref = \u0022ReferenceImporter\u0022/\u003E class is used to\r\n/// import new type references into the module. This method only serves as a way to easily get all the type\r\n/// references that were imported during the last compilation or assembly process.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetImportedTypeReferences",
+          "returns": "IEnumerable\u003CTypeReference\u003E",
+          "params": [],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains a list of member references that were imported into the module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe type references.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// The return value of this method does not update when the \u003Csee cref = \u0022ReferenceImporter\u0022/\u003E class is used to\r\n/// import new member references into the module. This method only serves as a way to easily get all the member\r\n/// references that were imported during the last compilation or assembly process.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetImportedMemberReferences",
+          "returns": "IEnumerable\u003CMemberReference\u003E",
+          "params": [],
+          "modifier": [
+            "public",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Enumerates all types (including nested types) defined in the module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe types.\u003C/returns\u003E",
+        "signature": {
+          "name": "GetAllTypes",
+          "returns": "IEnumerable\u003CTypeDefinition\u003E",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            var agenda = new Queue\u003CTypeDefinition\u003E();\r\n            foreach (var type in TopLevelTypes)\r\n                agenda.Enqueue(type);\r\n\r\n            while (agenda.Count \u003E 0)\r\n            {\r\n                var currentType = agenda.Dequeue();\r\n                yield return currentType;\r\n\r\n                foreach (var nestedType in currentType.NestedTypes)\r\n                    agenda.Enqueue(nestedType);\r\n            }\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Gets the module static constructor of this metadata image. That is, the first method that is executed\r\n/// upon loading the .NET module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe module constructor, or \u003Cc\u003Enull\u003C/c\u003E if none is present.\u003C/returns\u003E",
+        "signature": {
+          "name": "GetModuleConstructor",
+          "returns": "MethodDefinition",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Gets or creates the module static constructor of this metadata image. That is, the first method that is\r\n/// executed upon loading the .NET module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe module constructor.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// If the static constructor was not present in the image, the new one is automatically added.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetOrCreateModuleConstructor",
+          "returns": "MethodDefinition",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the global scope type of the .NET module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe module type.\u003C/returns\u003E",
+        "signature": {
+          "name": "GetModuleType",
+          "returns": "TypeDefinition",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains or creates the global scope type of the .NET module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe module type.\u003C/returns\u003E",
+        "signature": {
+          "name": "GetOrCreateModuleType",
+          "returns": "TypeDefinition",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            if (TopLevelTypes.Count == 0 || TopLevelTypes[0].Name != \u0022\u003CModule\u003E\u0022)\r\n            {\r\n                var moduleType = new TypeDefinition(null, \u0022\u003CModule\u003E\u0022, 0);\r\n                TopLevelTypes.Insert(0, moduleType);\r\n            }\r\n\r\n            return TopLevelTypes[0];\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the name of the module definition.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe name.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022Name\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetName",
+          "returns": "string",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the MVID of the module definition.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe MVID.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022Mvid\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetMvid",
+          "returns": "Guid",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the edit-and-continue identifier of the module definition.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe identifier.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022EncId\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetEncId",
+          "returns": "Guid",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the edit-and-continue base identifier of the module definition.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe identifier.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022EncBaseId\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetEncBaseId",
+          "returns": "Guid",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of top-level types the module defines.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe types.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022TopLevelTypes\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetTopLevelTypes",
+          "returns": "IList\u003CTypeDefinition\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of references to .NET assemblies that the module uses.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe references to the assemblies..\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022AssemblyReferences\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetAssemblyReferences",
+          "returns": "IList\u003CAssemblyReference\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of references to external modules that the module uses.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe references to the modules.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022ModuleReferences\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetModuleReferences",
+          "returns": "IList\u003CModuleReference\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of references to external files that the module uses.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe references to the files.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022FileReferences\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetFileReferences",
+          "returns": "IList\u003CFileReference\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of resources stored in the module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe resources.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022Resources\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetResources",
+          "returns": "IList\u003CManifestResource\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of types that are redirected to another external module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe exported types.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022ExportedTypes\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetExportedTypes",
+          "returns": "IList\u003CExportedType\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the list of custom attributes assigned to the member.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe attributes\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022CustomAttributes\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetCustomAttributes",
+          "returns": "IList\u003CCustomAttribute\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "",
+        "signature": {
+          "name": "GetAssembly",
+          "returns": "AssemblyDescriptor",
+          "params": [],
+          "modifier": [],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the version string of the runtime.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe runtime version.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022RuntimeVersion\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetRuntimeVersion",
+          "returns": "string",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the managed entrypoint of this module.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe entrypoint.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022ManagedEntrypoint\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetManagedEntrypoint",
+          "returns": "IManagedEntrypoint",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the native win32 resources directory of the underlying PE image (if available).\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe resources directory.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022NativeResourceDirectory\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetNativeResources",
+          "returns": "IResourceDirectory",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Obtains the native debug data directory of the underlying PE image (if available).\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe debug directory.\u003C/returns\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called upon initialization of the \u003Csee cref = \u0022DebugData\u0022/\u003E property.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "GetDebugData",
+          "returns": "IList\u003CDebugDataEntry\u003E",
+          "params": [],
+          "modifier": [
+            "protected",
+            "virtual"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Detects the runtime that this module targets.\r\n/// \u003C/summary\u003E\r\n/// \u003Cremarks\u003E\r\n/// This method is called to initialize the \u003Csee cref = \u0022OriginalTargetRuntime\u0022/\u003E property.\r\n/// It should be called before the assembly resolver is initialized.\r\n/// \u003C/remarks\u003E",
+        "signature": {
+          "name": "DetectTargetRuntime",
+          "returns": "DotNetRuntimeInfo",
+          "params": [],
+          "modifier": [
+            "protected"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            return Assembly is not null \u0026\u0026 Assembly.TryGetTargetFramework(out var targetRuntime)\r\n                ? targetRuntime\r\n                : CorLibTypeFactory.ExtractDotNetRuntimeInfo();\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Creates an assembly resolver based on the corlib reference.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EThe resolver.\u003C/returns\u003E",
+        "signature": {
+          "name": "CreateAssemblyResolver",
+          "returns": "IAssemblyResolver",
+          "params": [],
+          "modifier": [
+            "protected"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            string fullPath = FilePath;\r\n            (string directory, string name) = !string.IsNullOrEmpty(fullPath)\r\n                ? (Path.GetDirectoryName(fullPath), Path.GetFileNameWithoutExtension(fullPath))\r\n                : (null, null);\r\n\r\n            var runtime = OriginalTargetRuntime;\r\n\r\n            AssemblyResolverBase resolver;\r\n            switch (runtime.Name)\r\n            {\r\n                case DotNetRuntimeInfo.NetFramework:\r\n                case DotNetRuntimeInfo.NetStandard\r\n                    when string.IsNullOrEmpty(DotNetCorePathProvider.DefaultInstallationPath):\r\n                    resolver = new DotNetFrameworkAssemblyResolver();\r\n                    break;\r\n                case DotNetRuntimeInfo.NetStandard\r\n                    when DotNetCorePathProvider.Default.TryGetLatestStandardCompatibleVersion(\r\n                        runtime.Version, out var coreVersion):\r\n                    resolver = new DotNetCoreAssemblyResolver(coreVersion);\r\n                    break;\r\n                case DotNetRuntimeInfo.NetCoreApp:\r\n                    resolver = new DotNetCoreAssemblyResolver(runtime.Version);\r\n                    break;\r\n                default:\r\n                    resolver = new DotNetFrameworkAssemblyResolver();\r\n                    break;\r\n            }\r\n\r\n            if (!string.IsNullOrEmpty(directory))\r\n                resolver.SearchDirectories.Add(directory);\r\n\r\n            return resolver;\r\n        }"
+      },
+      {
+        "doc": "/// \u003Cinheritdoc/\u003E",
+        "signature": {
+          "name": "ToString",
+          "returns": "string",
+          "params": [],
+          "modifier": [
+            "public",
+            "override"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to the file system.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022filePath\u0022\u003EThe output path of the manifest module file.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "string filePath"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to the file system.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022filePath\u0022\u003EThe output path of the manifest module file.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "string filePath",
+            "IPEImageBuilder imageBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to an output stream.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022outputStream\u0022\u003EThe output stream of the manifest module file.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "Stream outputStream",
+            "IPEImageBuilder imageBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to the file system.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022filePath\u0022\u003EThe output path of the manifest module file.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022fileBuilder\u0022\u003EThe engine to use for reconstructing a PE file.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "string filePath",
+            "IPEImageBuilder imageBuilder",
+            "IPEFileBuilder fileBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            using var fs = File.Create(filePath);\r\n            Write(fs, imageBuilder, fileBuilder);\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to an output stream.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022outputStream\u0022\u003EThe output stream of the manifest module file.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022fileBuilder\u0022\u003EThe engine to use for reconstructing a PE file.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "Stream outputStream",
+            "IPEImageBuilder imageBuilder",
+            "IPEFileBuilder fileBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            Write(new BinaryStreamWriter(outputStream), imageBuilder, fileBuilder);\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and writes it to the file system.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022writer\u0022\u003EThe output stream of the manifest module file.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022fileBuilder\u0022\u003EThe engine to use for reconstructing a PE file.\u003C/param\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "Write",
+          "returns": "void",
+          "params": [
+            "IBinaryStreamWriter writer",
+            "IPEImageBuilder imageBuilder",
+            "IPEFileBuilder fileBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            fileBuilder\r\n                .CreateFile(ToPEImage(imageBuilder))\r\n                .Write(writer);\r\n        }"
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and returns the IPEImage.\r\n/// \u003C/summary\u003E\r\n/// \u003Creturns\u003EIPEImage built using \u003Csee cref = \u0022ManagedPEImageBuilder\u0022/\u003E by default\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "ToPEImage",
+          "returns": "IPEImage",
+          "params": [],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": ""
+      },
+      {
+        "doc": "/// \u003Csummary\u003E\r\n/// Rebuilds the .NET module to a portable executable file and returns the IPEImage.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022imageBuilder\u0022\u003EThe engine to use for reconstructing a PE image.\u003C/param\u003E\r\n/// \u003Creturns\u003EIPEImage built by the specified IPEImageBuilder\u003C/returns\u003E\r\n/// \u003Cexception cref = \u0022AggregateException\u0022\u003EOccurs when the construction of the image threw exceptions.\u003C/exception\u003E",
+        "signature": {
+          "name": "ToPEImage",
+          "returns": "IPEImage",
+          "params": [
+            "IPEImageBuilder imageBuilder"
+          ],
+          "modifier": [
+            "public"
+          ],
+          "annotations": [],
+          "generics": []
+        },
+        "code": "{\r\n            var result = imageBuilder.CreateImage(this);\r\n            if (result.DiagnosticBag.HasErrors)\r\n            {\r\n                throw new AggregateException(\r\n                    \u0022Construction of the PE image failed with one or more errors.\u0022,\r\n                    result.DiagnosticBag.Exceptions);\r\n            }\r\n\r\n            return result.ConstructedImage;\r\n        }"
+      }
+    ],
+    "variables": [
+      "private readonly LazyVariable\u003Cstring\u003E _name;",
+      "private readonly LazyVariable\u003CGuid\u003E _mvid;",
+      "private readonly LazyVariable\u003CGuid\u003E _encId;",
+      "private readonly LazyVariable\u003CGuid\u003E _encBaseId;",
+      "private IList\u003CTypeDefinition\u003E _topLevelTypes;",
+      "private IList\u003CAssemblyReference\u003E _assemblyReferences;",
+      "private IList\u003CCustomAttribute\u003E _customAttributes;",
+      "private readonly LazyVariable\u003CIManagedEntrypoint\u003E _managedEntrypoint;",
+      "private IList\u003CModuleReference\u003E _moduleReferences;",
+      "private IList\u003CFileReference\u003E _fileReferences;",
+      "private IList\u003CManifestResource\u003E _resources;",
+      "private IList\u003CExportedType\u003E _exportedTypes;",
+      "private TokenAllocator _tokenAllocator;",
+      "private readonly LazyVariable\u003Cstring\u003E _runtimeVersion;",
+      "private readonly LazyVariable\u003CIResourceDirectory\u003E _nativeResources;",
+      "private IList\u003CDebugDataEntry\u003E _debugData;"
+    ],
+    "generics": [],
+    "imports": [
+      "using System;",
+      "using System.Collections.Generic;",
+      "using System.IO;",
+      "using System.Linq;",
+      "using System.Threading;",
+      "using AsmResolver.Collections;",
+      "using AsmResolver.DotNet.Builder;",
+      "using AsmResolver.DotNet.Serialized;",
+      "using AsmResolver.DotNet.Signatures.Types;",
+      "using AsmResolver.PE;",
+      "using AsmResolver.PE.Builder;",
+      "using AsmResolver.PE.Debug;",
+      "using AsmResolver.PE.DotNet;",
+      "using AsmResolver.PE.DotNet.Builder;",
+      "using AsmResolver.PE.DotNet.Metadata.Tables;",
+      "using AsmResolver.PE.File;",
+      "using AsmResolver.PE.File.Headers;",
+      "using AsmResolver.PE.Win32Resources;"
+    ],
+    "constructors": [
+      "/// \u003Csummary\u003E\r\n/// Initializes a new empty module with the provided metadata token.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022token\u0022\u003EThe metadata token.\u003C/param\u003E\r\nprotected ModuleDefinition(MetadataToken token) : base(token)\r\n{\r\n    _name = new LazyVariable\u003Cstring\u003E(GetName);\r\n    _mvid = new LazyVariable\u003CGuid\u003E(GetMvid);\r\n    _encId = new LazyVariable\u003CGuid\u003E(GetEncId);\r\n    _encBaseId = new LazyVariable\u003CGuid\u003E(GetEncBaseId);\r\n    _managedEntrypoint = new LazyVariable\u003CIManagedEntrypoint\u003E(GetManagedEntrypoint);\r\n    _runtimeVersion = new LazyVariable\u003Cstring\u003E(GetRuntimeVersion);\r\n    _nativeResources = new LazyVariable\u003CIResourceDirectory\u003E(GetNativeResources);\r\n    Attributes = DotNetDirectoryFlags.ILOnly;\r\n}",
+      "/// \u003Csummary\u003E\r\n/// Defines a new .NET module that references mscorlib version 4.0.0.0.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022name\u0022\u003EThe name of the module.\u003C/param\u003E\r\npublic ModuleDefinition(string name) : this(new MetadataToken(TableIndex.Module, 0))\r\n{\r\n    Name = name;\r\n    CorLibTypeFactory = CorLibTypeFactory.CreateMscorlib40TypeFactory(this);\r\n    AssemblyReferences.Add((AssemblyReference)CorLibTypeFactory.CorLibScope);\r\n    MetadataResolver = new DefaultMetadataResolver(new DotNetFrameworkAssemblyResolver());\r\n    TopLevelTypes.Add(new TypeDefinition(null, \u0022\u003CModule\u003E\u0022, 0));\r\n}",
+      "/// \u003Csummary\u003E\r\n/// Defines a new .NET module.\r\n/// \u003C/summary\u003E\r\n/// \u003Cparam name = \u0022name\u0022\u003EThe name of the module.\u003C/param\u003E\r\n/// \u003Cparam name = \u0022corLib\u0022\u003EThe reference to the common object runtime (COR) library that this module will use.\u003C/param\u003E\r\npublic ModuleDefinition(string name, AssemblyReference corLib) : this(new MetadataToken(TableIndex.Module, 0))\r\n{\r\n    Name = name;\r\n    var importer = new ReferenceImporter(this);\r\n    corLib = (AssemblyReference)importer.ImportScope(corLib);\r\n    CorLibTypeFactory = new CorLibTypeFactory(corLib);\r\n    AssemblyReferences.Add(corLib);\r\n    OriginalTargetRuntime = DetectTargetRuntime();\r\n    MetadataResolver = new DefaultMetadataResolver(CreateAssemblyResolver());\r\n    TopLevelTypes.Add(new TypeDefinition(null, \u0022\u003CModule\u003E\u0022, 0));\r\n}"
+    ],
+    "extends": "MetadataMember",
+    "implements": [
+      "IResolutionScope",
+      "IHasCustomAttribute",
+      "IOwnedCollectionElement\u003CAssemblyDefinition\u003E"
+    ],
+    "namespace": "AsmResolver.DotNet"
+  },
+  "code": "",
+  "code_file_path": "src/AsmResolver.DotNet/ModuleDefinition.cs",
+  "called_functions": [],
+  "id": 2007,
+  "tests": [
+    {
+      "tests": "using System;\r\nusing System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.Builder;\r\nusing AsmResolver.DotNet.Builder.Metadata;\r\nusing AsmResolver.PE;\r\nusing AsmResolver.PE.DotNet.Metadata;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables;\r\nusing Xunit;\r\n\r\nnamespace AsmResolver.DotNet.Tests.Builder\r\n{\r\n    public class ManagedPEImageBuilderTest\r\n    {\r\n        [Fact]\r\n        public void ExecutableImportDirectoryShouldContainMsCoreeCorExeMain()\r\n        {\r\n            using var stream = new MemoryStream();\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters);\r\n            module.Write(stream);\r\n\r\n            var image = PEImage.FromBytes(stream.ToArray());\r\n            var symbol = image\r\n                .Imports.FirstOrDefault(m =\u003E m.Name == \u0022mscoree.dll\u0022)\r\n                ?.Symbols.FirstOrDefault(m =\u003E m.Name == \u0022_CorExeMain\u0022);\r\n\r\n            Assert.NotNull(symbol);\r\n            Assert.Contains(image.Relocations, relocation =\u003E\r\n                relocation.Location.CanRead\r\n                \u0026\u0026 relocation.Location.CreateReader().ReadUInt32() == image.ImageBase \u002B symbol.AddressTableEntry!.Rva);\r\n        }\r\n\r\n        [Fact]\r\n        public void ExecutableImportDirectoryShouldContainMsCoreeCorDllMain()\r\n        {\r\n            using var stream = new MemoryStream();\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.ForwarderLibrary, TestReaderParameters);\r\n            module.Write(stream);\r\n\r\n            var image = PEImage.FromBytes(stream.ToArray());\r\n            var symbol = image\r\n                .Imports.FirstOrDefault(m =\u003E m.Name == \u0022mscoree.dll\u0022)\r\n                ?.Symbols.FirstOrDefault(m =\u003E m.Name == \u0022_CorDllMain\u0022);\r\n\r\n            Assert.NotNull(symbol);\r\n            Assert.Contains(image.Relocations, relocation =\u003E\r\n                relocation.Location.CanRead\r\n                \u0026\u0026 relocation.Location.CreateReader().ReadUInt32() == image.ImageBase \u002B symbol.AddressTableEntry!.Rva);\r\n        }\r\n\r\n        [Fact]\r\n        public void ConstructPEImageFromNewModuleWithNoPreservation()\r\n        {\r\n            var module = new ModuleDefinition(\u0022Module\u0022);\r\n            var result = module.ToPEImage();\r\n            var newModule = ModuleDefinition.FromImage(result, TestReaderParameters);\r\n            Assert.Equal(module.Name, newModule.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void ConstructPEImageFromNewModuleWithPreservation()\r\n        {\r\n            var module = new ModuleDefinition(\u0022Module\u0022);\r\n            var result = module.ToPEImage(new ManagedPEImageBuilder(MetadataBuilderFlags.PreserveAll));\r\n            var newModule = ModuleDefinition.FromImage(result, TestReaderParameters);\r\n            Assert.Equal(module.Name, newModule.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void ConstructPEImageFromExistingModuleWithNoPreservation()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters);\r\n            var result = module.ToPEImage();\r\n            var newModule = ModuleDefinition.FromImage(result, TestReaderParameters);\r\n            Assert.Equal(module.Name, newModule.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void ConstructPEImageFromExistingModuleWithPreservation()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters);\r\n            var result = module.ToPEImage(new ManagedPEImageBuilder(MetadataBuilderFlags.PreserveAll));\r\n            var newModule = ModuleDefinition.FromImage(result, TestReaderParameters);\r\n            Assert.Equal(module.Name, newModule.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void PreserveUnknownStreams()\r\n        {\r\n            // Prepare a PE image with an extra unconventional stream.\r\n            var image = PEImage.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters.PEReaderParameters);\r\n            byte[] data = { 1, 2, 3, 4 };\r\n            image.DotNetDirectory!.Metadata!.Streams.Add(new CustomMetadataStream(\u0022#Custom\u0022, data));\r\n\r\n            // Load and rebuild.\r\n            var module = ModuleDefinition.FromImage(image, TestReaderParameters);\r\n            var newImage = module.ToPEImage(new ManagedPEImageBuilder(MetadataBuilderFlags.PreserveUnknownStreams));\r\n\r\n            // Verify unconventional stream is still present.\r\n            var newStream = Assert.IsAssignableFrom\u003CCustomMetadataStream\u003E(\r\n                newImage.DotNetDirectory!.Metadata!.GetStream(\u0022#Custom\u0022));\r\n            Assert.Equal(data, Assert.IsAssignableFrom\u003CIReadableSegment\u003E(newStream.Contents).ToArray());\r\n        }\r\n\r\n        [Fact]\r\n        public void PreserveStreamOrder()\r\n        {\r\n            // Prepare a PE image with an unconventional stream order.\r\n            var image = PEImage.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters.PEReaderParameters);\r\n            var streams = image.DotNetDirectory!.Metadata!.Streams;\r\n            for (int i = 0; i \u003C streams.Count / 2; i\u002B\u002B)\r\n                (streams[i], streams[streams.Count - i - 1]) = (streams[streams.Count - i - 1], streams[i]);\r\n\r\n            // Load and rebuild.\r\n            var module = ModuleDefinition.FromImage(image, TestReaderParameters);\r\n            var newImage = module.ToPEImage(new ManagedPEImageBuilder(MetadataBuilderFlags.PreserveStreamOrder));\r\n\r\n            // Verify order is still the same.\r\n            Assert.Equal(\r\n                streams.Select(x =\u003E x.Name),\r\n                newImage.DotNetDirectory!.Metadata!.Streams.Select(x =\u003E x.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void PreserveUnknownStreamsAndStreamOrder()\r\n        {\r\n            // Prepare a PE image with an unconventional stream order and custom stream.\r\n            var image = PEImage.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters.PEReaderParameters);\r\n            var streams = image.DotNetDirectory!.Metadata!.Streams;\r\n\r\n            for (int i = 0; i \u003C streams.Count / 2; i\u002B\u002B)\r\n                (streams[i], streams[streams.Count - i - 1]) = (streams[streams.Count - i - 1], streams[i]);\r\n\r\n            byte[] data = { 1, 2, 3, 4 };\r\n            image.DotNetDirectory!.Metadata!.Streams.Insert(streams.Count / 2,\r\n                new CustomMetadataStream(\u0022#Custom\u0022, data));\r\n\r\n            // Load and rebuild.\r\n            var module = ModuleDefinition.FromImage(image, TestReaderParameters);\r\n            var newImage = module.ToPEImage(new ManagedPEImageBuilder(\r\n                MetadataBuilderFlags.PreserveStreamOrder | MetadataBuilderFlags.PreserveUnknownStreams));\r\n\r\n            // Verify order is still the same.\r\n            Assert.Equal(\r\n                streams.Select(x =\u003E x.Name),\r\n                newImage.DotNetDirectory!.Metadata!.Streams.Select(x =\u003E x.Name));\r\n\r\n            // Verify unconventional stream is still present.\r\n            var newStream = Assert.IsAssignableFrom\u003CCustomMetadataStream\u003E(\r\n                newImage.DotNetDirectory!.Metadata!.GetStream(\u0022#Custom\u0022));\r\n            Assert.Equal(data, Assert.IsAssignableFrom\u003CIReadableSegment\u003E(newStream.Contents).ToArray());\r\n        }\r\n\r\n        [Fact]\r\n        public void BuildInvalidImageShouldRegisterDiagnostics()\r\n        {\r\n            // Prepare temp assembly.\r\n            var assembly = new AssemblyDefinition(\u0022Assembly\u0022, new Version(1, 0, 0, 0));\r\n            var module = new ModuleDefinition(\u0022Module\u0022);\r\n            assembly.Modules.Add(module);\r\n\r\n            // Add some field with an non-imported field type.\r\n            module.GetOrCreateModuleType().Fields.Add(new FieldDefinition(\r\n                \u0022Field\u0022,\r\n                FieldAttributes.Static,\r\n                new TypeReference(null, \u0022NonImportedNamespace\u0022, \u0022NonImportedType\u0022).ToTypeSignature()));\r\n\r\n            // Build.\r\n            var bag = new DiagnosticBag();\r\n            var image = module.ToPEImage(new ManagedPEImageBuilder(bag), false);\r\n\r\n            // Verify diagnostics.\r\n            Assert.NotNull(image);\r\n            Assert.Contains(bag.Exceptions, x =\u003E x is MemberNotImportedException);\r\n        }\r\n\r\n        [Fact]\r\n        public void BuildingImageShouldConsiderJTDStreamAndUseLargeColumns()\r\n        {\r\n            var moduleDefinition = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld_JTDStream, TestReaderParameters);\r\n            var metadata = moduleDefinition.DotNetDirectory!.Metadata!;\r\n\r\n            Assert.True(metadata.IsEncMetadata);\r\n            Assert.True(metadata.GetStream\u003CTablesStream\u003E().ForceLargeColumns);\r\n\r\n            var builder = new ManagedPEImageBuilder(MetadataBuilderFlags.PreserveAll | MetadataBuilderFlags.ForceEncMetadata);\r\n            var rebuiltImage = moduleDefinition.ToPEImage(builder);\r\n            var rebuiltMetadata = rebuiltImage.DotNetDirectory!.Metadata!;\r\n\r\n            Assert.True(rebuiltMetadata.IsEncMetadata);\r\n            Assert.True(rebuiltMetadata.GetStream\u003CTablesStream\u003E().ForceLargeColumns);\r\n        }\r\n    }\r\n}\r\n",
+      "test_imports": [
+        "using System;",
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.Builder;",
+        "using AsmResolver.DotNet.Builder.Metadata;",
+        "using AsmResolver.PE;",
+        "using AsmResolver.PE.DotNet.Metadata;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables;",
+        "using Xunit;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests.Builder",
+      "test_class_name": "ManagedPEImageBuilderTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/Builder/ManagedPEImageBuilderTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.TestCases.Fields;\r\nusing Xunit;\r\n\r\nnamespace AsmResolver.DotNet.Tests\r\n{\r\n    public class ConstantTest\r\n    {\r\n        private Constant GetFieldConstant(string name)\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(Constants).Assembly.Location);\r\n            return GetFieldConstantInModule(module, name);\r\n        }\r\n\r\n        private static Constant GetFieldConstantInModule(ModuleDefinition module, string name)\r\n        {\r\n            var t = module.TopLevelTypes.First(t =\u003E t.Name == nameof(Constants));\r\n            return t.Fields.First(f =\u003E f.Name == name).Constant;\r\n        }\r\n\r\n        private Constant RebuildAndLookup(ModuleDefinition module, string name)\r\n        {\r\n            string tempFile = Path.GetTempFileName();\r\n            module.Write(tempFile);\r\n            \r\n            var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            \r\n            var newModule = ModuleDefinition.FromBytes(stream.ToArray());\r\n            return GetFieldConstantInModule(newModule, name);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(nameof(Constants.Boolean), Constants.Boolean)]\r\n        [InlineData(nameof(Constants.Byte), Constants.Byte)]\r\n        [InlineData(nameof(Constants.UInt16), Constants.UInt16)]\r\n        [InlineData(nameof(Constants.UInt32), Constants.UInt32)]\r\n        [InlineData(nameof(Constants.UInt64), Constants.UInt64)]\r\n        [InlineData(nameof(Constants.SByte), Constants.SByte)]\r\n        [InlineData(nameof(Constants.Int16), Constants.Int16)]\r\n        [InlineData(nameof(Constants.Int32), Constants.Int32)]\r\n        [InlineData(nameof(Constants.Int64), Constants.Int64)]\r\n        [InlineData(nameof(Constants.Single), Constants.Single)]\r\n        [InlineData(nameof(Constants.Double), Constants.Double)]\r\n        [InlineData(nameof(Constants.Char), Constants.Char)]\r\n        [InlineData(nameof(Constants.String), Constants.String)]\r\n        public void ReadAndInterpretData(string name, object expected)\r\n        {\r\n            var constant = GetFieldConstant(name);\r\n            Assert.Equal(expected, constant.Value.InterpretData(constant.Type));\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(nameof(Constants.Boolean))]\r\n        [InlineData(nameof(Constants.Byte))]\r\n        [InlineData(nameof(Constants.UInt16))]\r\n        [InlineData(nameof(Constants.UInt32))]\r\n        [InlineData(nameof(Constants.UInt64))]\r\n        [InlineData(nameof(Constants.SByte))]\r\n        [InlineData(nameof(Constants.Int16))]\r\n        [InlineData(nameof(Constants.Int32))]\r\n        [InlineData(nameof(Constants.Int64))]\r\n        [InlineData(nameof(Constants.Single))]\r\n        [InlineData(nameof(Constants.Double))]\r\n        [InlineData(nameof(Constants.Char))]\r\n        [InlineData(nameof(Constants.String))]\r\n        public void PersistentConstants(string name)\r\n        {\r\n            var constant = GetFieldConstant(name);\r\n            var newConstant = RebuildAndLookup(constant.Parent.Module, name);\r\n            Assert.NotNull(newConstant);\r\n            Assert.Equal(constant.Value.Data, newConstant.Value.Data);\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadInvalidConstantValueShouldNotThrow()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.ConstantZeroValueColumn);\r\n            var constantValue = module\r\n                .TopLevelTypes.First(t =\u003E t.Name == \u0022MyClass\u0022)\r\n                .Fields.First(f =\u003E f.Name == \u0022MyIntegerConstant\u0022)\r\n                .Constant.Value;\r\n            Assert.Null(constantValue);\r\n        }\r\n\r\n        [Fact]\r\n        public void WriteNullConstantValueShouldNotThrow()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.ConstantZeroValueColumn);\r\n            \r\n            var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            \r\n            var newModule = ModuleDefinition.FromBytes(stream.ToArray());\r\n            \r\n            var constantValue = newModule\r\n                .TopLevelTypes.First(t =\u003E t.Name == \u0022MyClass\u0022)\r\n                .Fields.First(f =\u003E f.Name == \u0022MyIntegerConstant\u0022)\r\n                .Constant.Value;\r\n            Assert.Null(constantValue);\r\n        }\r\n        \r\n    }\r\n}",
+      "test_imports": [
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.TestCases.Fields;",
+        "using Xunit;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests",
+      "test_class_name": "ConstantTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/ConstantTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System;\r\nusing System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.Builder;\r\nusing AsmResolver.DotNet.Code.Cil;\r\nusing AsmResolver.DotNet.Signatures;\r\nusing AsmResolver.DotNet.Signatures.Types;\r\nusing AsmResolver.DotNet.TestCases.CustomAttributes;\r\nusing AsmResolver.DotNet.TestCases.Properties;\r\nusing AsmResolver.PE;\r\nusing AsmResolver.PE.DotNet.Cil;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables.Rows;\r\nusing Xunit;\r\n\r\nnamespace AsmResolver.DotNet.Tests\r\n{\r\n    public class CustomAttributeTest\r\n    {\r\n        private readonly SignatureComparer _comparer = new SignatureComparer();\r\n        \r\n        [Fact]\r\n        public void ReadConstructor()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(CustomAttributesTestClass).Assembly.Location);\r\n            var type = module.TopLevelTypes.First(t =\u003E t.Name == nameof(CustomAttributesTestClass));\r\n\r\n            Assert.All(type.CustomAttributes, a =\u003E\r\n                Assert.Equal(nameof(TestCaseAttribute), a.Constructor.DeclaringType.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentConstructor()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(CustomAttributesTestClass).Assembly.Location);\r\n            using var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            \r\n            module = ModuleDefinition.FromReader(new ByteArrayReader(stream.ToArray()));\r\n            \r\n            var type = module.TopLevelTypes.First(t =\u003E t.Name == nameof(CustomAttributesTestClass));\r\n            Assert.All(type.CustomAttributes, a =\u003E\r\n                Assert.Equal(nameof(TestCaseAttribute), a.Constructor.DeclaringType.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadParent()\r\n        {\r\n            int parentToken = typeof(CustomAttributesTestClass).MetadataToken;\r\n            string filePath = typeof(CustomAttributesTestClass).Assembly.Location;\r\n\r\n            var image = PEImage.FromFile(filePath);\r\n            var tablesStream = image.DotNetDirectory.Metadata.GetStream\u003CTablesStream\u003E();\r\n            var encoder = tablesStream.GetIndexEncoder(CodedIndex.HasCustomAttribute);\r\n            var attributeTable = tablesStream.GetTable\u003CCustomAttributeRow\u003E(TableIndex.CustomAttribute);\r\n\r\n            // Find token of custom attribute\r\n            var attributeToken = MetadataToken.Zero;\r\n            for (int i = 0; i \u003C attributeTable.Count \u0026\u0026 attributeToken == 0; i\u002B\u002B)\r\n            {\r\n                var row = attributeTable[i];\r\n                var token = encoder.DecodeIndex(row.Parent);\r\n                if (token == parentToken)\r\n                    attributeToken = new MetadataToken(TableIndex.CustomAttribute, (uint) (i \u002B 1));\r\n            }\r\n\r\n            // Resolve by token and verify parent (forcing parent to execute the lazy initialization ).\r\n            var module = ModuleDefinition.FromFile(filePath);\r\n            var attribute = (CustomAttribute) module.LookupMember(attributeToken);\r\n            Assert.NotNull(attribute.Parent);\r\n            Assert.IsAssignableFrom\u003CTypeDefinition\u003E(attribute.Parent);\r\n            Assert.Equal(parentToken, attribute.Parent.MetadataToken);\r\n        }\r\n\r\n        private static CustomAttribute GetCustomAttributeTestCase(string methodName, bool rebuild = false)\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(CustomAttributesTestClass).Assembly.Location);\r\n            var type = module.TopLevelTypes.First(t =\u003E t.Name == nameof(CustomAttributesTestClass));\r\n            var method = type.Methods.First(m =\u003E m.Name == methodName);\r\n            var attribute = method.CustomAttributes\r\n                .First(c =\u003E c.Constructor.DeclaringType.Name == nameof(TestCaseAttribute));\r\n            \r\n            if (rebuild)\r\n                attribute = RebuildAndLookup(attribute);\r\n            return attribute;\r\n        }\r\n\r\n        private static CustomAttribute RebuildAndLookup(CustomAttribute attribute)\r\n        {\r\n            var stream = new MemoryStream();\r\n            var method = (MethodDefinition) attribute.Parent;\r\n            method.Module.Write(stream);\r\n            var newModule = ModuleDefinition.FromBytes(stream.ToArray());\r\n\r\n            return newModule\r\n                .TopLevelTypes.First(t =\u003E t.FullName == method.DeclaringType.FullName)\r\n                .Methods.First(f =\u003E f.Name == method.Name)\r\n                .CustomAttributes[0];\r\n        }\r\n        \r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32Argument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32Argument), rebuild);\r\n            \r\n            Assert.Single(attribute.Signature.FixedArguments);\r\n            Assert.Empty(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n            Assert.Equal(1, argument.Element);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedStringArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedStringArgument), rebuild);\r\n            Assert.Single(attribute.Signature.FixedArguments);\r\n            Assert.Empty(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n            Assert.Equal(\u0022String fixed arg\u0022, argument.Element);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedEnumArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedEnumArgument), rebuild);\r\n            Assert.Single(attribute.Signature.FixedArguments);\r\n            Assert.Empty(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n            Assert.Equal((int) TestEnum.Value3, argument.Element);\r\n        }\r\n        \r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedTypeArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedTypeArgument), rebuild);\r\n            Assert.Single(attribute.Signature.FixedArguments);\r\n            Assert.Empty(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n            Assert.Equal(\r\n                attribute.Constructor.Module.CorLibTypeFactory.String, \r\n                argument.Element as TypeSignature, _comparer);\r\n        }\r\n        \r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedComplexTypeArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedComplexTypeArgument), rebuild);\r\n            Assert.Single(attribute.Signature.FixedArguments);\r\n            Assert.Empty(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n            var factory = attribute.Constructor.Module.CorLibTypeFactory;\r\n            \r\n            var listRef = new TypeReference(factory.CorLibScope, \u0022System.Collections.Generic\u0022, \u0022KeyValuePair\u00602\u0022);\r\n            var instance = new GenericInstanceTypeSignature(listRef, false,\r\n                new SzArrayTypeSignature(factory.String),\r\n                new SzArrayTypeSignature(factory.Int32));\r\n\r\n            Assert.Equal(instance, argument.Element as TypeSignature, _comparer);\r\n        }\r\n        \r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void NamedInt32Argument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.NamedInt32Argument), rebuild);\r\n            Assert.Empty(attribute.Signature.FixedArguments);\r\n            Assert.Single(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.NamedArguments[0];\r\n            Assert.Equal(nameof(TestCaseAttribute.IntValue), argument.MemberName);\r\n            Assert.Equal(2, argument.Argument.Element);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void NamedStringArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.NamedStringArgument), rebuild);\r\n            Assert.Empty(attribute.Signature.FixedArguments);\r\n            Assert.Single(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.NamedArguments[0];\r\n            Assert.Equal(nameof(TestCaseAttribute.StringValue), argument.MemberName);\r\n            Assert.Equal(\u0022String named arg\u0022, argument.Argument.Element);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void NamedEnumArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.NamedEnumArgument), rebuild);\r\n            Assert.Empty(attribute.Signature.FixedArguments);\r\n            Assert.Single(attribute.Signature.NamedArguments);\r\n\r\n            var argument = attribute.Signature.NamedArguments[0];\r\n            Assert.Equal(nameof(TestCaseAttribute.EnumValue), argument.MemberName);\r\n            Assert.Equal((int) TestEnum.Value2, argument.Argument.Element);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void NamedTypeArgument(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.NamedTypeArgument), rebuild);\r\n            Assert.Empty(attribute.Signature.FixedArguments);\r\n            Assert.Single(attribute.Signature.NamedArguments);\r\n\r\n            var expected = new TypeReference(\r\n                attribute.Constructor.Module.CorLibTypeFactory.CorLibScope,\r\n                \u0022System\u0022, \u0022Int32\u0022);\r\n            \r\n            var argument = attribute.Signature.NamedArguments[0];\r\n            Assert.Equal(nameof(TestCaseAttribute.TypeValue), argument.MemberName);\r\n            Assert.Equal(expected, (ITypeDescriptor) argument.Argument.Element, _comparer);\r\n        }\r\n\r\n        [Fact]\r\n        public void IsCompilerGeneratedMember()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(SingleProperty).Assembly.Location);\r\n            var type = module.TopLevelTypes.First(t =\u003E t.Name == nameof(SingleProperty));\r\n            var property = type.Properties.First();\r\n            var setMethod = property.SetMethod;\r\n\r\n            Assert.True(setMethod.IsCompilerGenerated());\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void GenericTypeArgument(bool rebuild)\r\n        {\r\n            // https://github.com/Washi1337/AsmResolver/issues/92\r\n            \r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.GenericType), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            var module = attribute.Constructor.Module;\r\n            var nestedClass = (TypeDefinition) module.LookupMember(typeof(TestGenericType\u003C\u003E).MetadataToken);\r\n            var expected = new GenericInstanceTypeSignature(nestedClass, false, module.CorLibTypeFactory.Object);\r\n            \r\n            Assert.IsAssignableFrom\u003CTypeSignature\u003E(argument.Element);\r\n            Assert.Equal(expected, (TypeSignature) argument.Element, _comparer);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void ArrayGenericTypeArgument(bool rebuild)\r\n        {\r\n            // https://github.com/Washi1337/AsmResolver/issues/92\r\n            \r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.GenericTypeArray), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            var module = attribute.Constructor.Module;\r\n            var nestedClass = (TypeDefinition) module.LookupMember(typeof(TestGenericType\u003C\u003E).MetadataToken);\r\n            var expected = new SzArrayTypeSignature(\r\n                new GenericInstanceTypeSignature(nestedClass, false, module.CorLibTypeFactory.Object)\r\n            );\r\n\r\n            Assert.IsAssignableFrom\u003CTypeSignature\u003E(argument.Element);\r\n            Assert.Equal(expected, (TypeSignature) argument.Element, _comparer);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void IntPassedOnAsObject(bool rebuild)\r\n        {\r\n            // https://github.com/Washi1337/AsmResolver/issues/92\r\n            \r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.Int32PassedAsObject), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.IsAssignableFrom\u003CBoxedArgument\u003E(argument.Element);\r\n            Assert.Equal(123, ((BoxedArgument) argument.Element).Value);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void TypePassedOnAsObject(bool rebuild)\r\n        {\r\n            // https://github.com/Washi1337/AsmResolver/issues/92\r\n            \r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.TypePassedAsObject), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            var module = attribute.Constructor.Module;\r\n            Assert.IsAssignableFrom\u003CBoxedArgument\u003E(argument.Element);\r\n            Assert.Equal(module.CorLibTypeFactory.Int32, (ITypeDescriptor) ((BoxedArgument) argument.Element).Value, _comparer);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32NullArray(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayNullArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.True(argument.IsNullArray);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32EmptyArray(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayEmptyArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.False(argument.IsNullArray);\r\n            Assert.Empty(argument.Elements);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32Array(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.Equal(new[]\r\n            {\r\n                1, 2, 3, 4\r\n            }, argument.Elements.Cast\u003Cint\u003E());\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32ArrayNullAsObject(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayAsObjectNullArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.IsAssignableFrom\u003CBoxedArgument\u003E(argument.Element);\r\n            var boxedArgument = (BoxedArgument) argument.Element;\r\n            Assert.Null(boxedArgument.Value);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32EmptyArrayAsObject(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayAsObjectEmptyArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.IsAssignableFrom\u003CBoxedArgument\u003E(argument.Element);\r\n            var boxedArgument = (BoxedArgument) argument.Element;\r\n            Assert.Equal(new object[0], boxedArgument.Value);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void FixedInt32ArrayAsObject(bool rebuild)\r\n        {\r\n            var attribute = GetCustomAttributeTestCase(nameof(CustomAttributesTestClass.FixedInt32ArrayAsObjectArgument), rebuild);\r\n            var argument = attribute.Signature.FixedArguments[0];\r\n\r\n            Assert.IsAssignableFrom\u003CBoxedArgument\u003E(argument.Element);\r\n            var boxedArgument = (BoxedArgument) argument.Element;\r\n            Assert.Equal(new[]\r\n            {\r\n                1, 2, 3, 4\r\n            }, boxedArgument.Value);\r\n        }\r\n    }\r\n}",
+      "test_imports": [
+        "using System;",
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.Builder;",
+        "using AsmResolver.DotNet.Code.Cil;",
+        "using AsmResolver.DotNet.Signatures;",
+        "using AsmResolver.DotNet.Signatures.Types;",
+        "using AsmResolver.DotNet.TestCases.CustomAttributes;",
+        "using AsmResolver.DotNet.TestCases.Properties;",
+        "using AsmResolver.PE;",
+        "using AsmResolver.PE.DotNet.Cil;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables.Rows;",
+        "using Xunit;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests",
+      "test_class_name": "CustomAttributeTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/CustomAttributeTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System.IO;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables.Rows;\r\nusing Xunit;\r\nusing TestCaseResources = AsmResolver.DotNet.TestCases.Resources.Resources;\r\n\r\nnamespace AsmResolver.DotNet.Tests\r\n{\r\n    public class ManifestResourceTest\r\n    {\r\n        [Fact]\r\n        public void ReadEmbeddedResource1Data()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(TestCaseResources).Assembly.Location);\r\n            var resource = module.Resources.First(r =\u003E\r\n                r.Name == \u0022AsmResolver.DotNet.TestCases.Resources.Resources.EmbeddedResource1\u0022);\r\n\r\n            Assert.Equal(TestCaseResources.GetEmbeddedResource1Data(), Encoding.ASCII.GetString(resource.GetData()));\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadEmbeddedResource2Data()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(TestCaseResources).Assembly.Location);\r\n            var resource = module.Resources.First(r =\u003E\r\n                r.Name == \u0022AsmResolver.DotNet.TestCases.Resources.Resources.EmbeddedResource2\u0022);\r\n\r\n            Assert.Equal(TestCaseResources.GetEmbeddedResource2Data(), Encoding.ASCII.GetString(resource.GetData()));\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentData()\r\n        {\r\n            const string resourceName = \u0022SomeResource\u0022;\r\n            var contents = new byte[]\r\n            {\r\n                0,1,2,3,4\r\n            };\r\n            \r\n            var module = ModuleDefinition.FromFile(typeof(TestCaseResources).Assembly.Location);\r\n            module.Resources.Add(new ManifestResource(resourceName, ManifestResourceAttributes.Public, new DataSegment(contents)));\r\n            \r\n            using var stream = new MemoryStream();\r\n            module.Write(stream);\r\n\r\n            var newModule = ModuleDefinition.FromBytes(stream.ToArray());\r\n            Assert.Equal(contents, newModule.Resources.First(r =\u003E r.Name == resourceName).GetData());\r\n        }\r\n    }\r\n}",
+      "test_imports": [
+        "using System.IO;",
+        "using System.Linq;",
+        "using System.Text;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables.Rows;",
+        "using Xunit;",
+        "using TestCaseResources = AsmResolver.DotNet.TestCases.Resources.Resources;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests",
+      "test_class_name": "ManifestResourceTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/ManifestResourceTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System;\r\nusing System.Collections.Generic;\r\nusing System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.Builder;\r\nusing AsmResolver.DotNet.Cloning;\r\nusing AsmResolver.DotNet.Signatures;\r\nusing AsmResolver.DotNet.TestCases.NestedClasses;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables.Rows;\r\nusing AsmResolver.PE.Win32Resources;\r\nusing Xunit;\r\nusing FileAttributes = AsmResolver.PE.DotNet.Metadata.Tables.Rows.FileAttributes;\r\n\r\nnamespace AsmResolver.DotNet.Tests\r\n{\r\n    public class ModuleDefinitionTest\r\n    {\r\n        private static ModuleDefinition Rebuild(ModuleDefinition module)\r\n        {\r\n            using var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            return ModuleDefinition.FromReader(new ByteArrayReader(stream.ToArray()));\r\n        }\r\n        \r\n        [Fact]\r\n        public void ReadNameTest()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            Assert.Equal(\u0022HelloWorld.exe\u0022, module.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void NameIsPersistentAfterRebuild()\r\n        {\r\n            const string newName = \u0022HelloMars.exe\u0022;\r\n            \r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            module.Name = newName;\r\n\r\n            var newModule = Rebuild(module);\r\n            Assert.Equal(newName, newModule.Name);\r\n        }\r\n        \r\n        [Fact]\r\n        public void ReadManifestModule()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            Assert.NotNull(module.Assembly);\r\n            Assert.Same(module, module.Assembly.ManifestModule);\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadTypesNoNested()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            Assert.Equal(new[] {\u0022\u003CModule\u003E\u0022, \u0022Program\u0022}, module.TopLevelTypes.Select(t =\u003E t.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadTypesNested()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(TopLevelClass1).Assembly.Location);\r\n            Assert.Equal(new HashSet\u003Cstring\u003E\r\n            {\r\n                \u0022\u003CModule\u003E\u0022,\r\n                nameof(TopLevelClass1),\r\n                nameof(TopLevelClass2)\r\n            }, module.TopLevelTypes.Select(t =\u003E t.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadMaliciousNestedClassLoop()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld_MaliciousNestedClassLoop);\r\n            Assert.Equal(new[] {\u0022\u003CModule\u003E\u0022, \u0022Program\u0022}, module.TopLevelTypes.Select(t =\u003E t.Name));\r\n        }\r\n\r\n        [Fact]\r\n        public void ReadMaliciousNestedClassLoop2()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld_MaliciousNestedClassLoop2);\r\n            Assert.Equal(\r\n                new HashSet\u003Cstring\u003E {\u0022\u003CModule\u003E\u0022, \u0022Program\u0022, \u0022MaliciousEnclosingClass\u0022},\r\n                new HashSet\u003Cstring\u003E(module.TopLevelTypes.Select(t =\u003E t.Name)));\r\n\r\n            var enclosingClass = module.TopLevelTypes.First(x =\u003E x.Name == \u0022MaliciousEnclosingClass\u0022);\r\n            Assert.Single(enclosingClass.NestedTypes);\r\n            Assert.Single(enclosingClass.NestedTypes[0].NestedTypes);\r\n            Assert.Empty(enclosingClass.NestedTypes[0].NestedTypes[0].NestedTypes);\r\n        }\r\n        \r\n        [Fact]\r\n        public void HelloWorldReadAssemblyReferences()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            Assert.Single(module.AssemblyReferences);\r\n            Assert.Equal(\u0022mscorlib\u0022, module.AssemblyReferences[0].Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void LookupTypeReference()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            var member = module.LookupMember(new MetadataToken(TableIndex.TypeRef, 12));\r\n            Assert.IsAssignableFrom\u003CTypeReference\u003E(member);\r\n\r\n            var typeRef = (TypeReference) member;\r\n            Assert.Equal(\u0022System\u0022, typeRef.Namespace);\r\n            Assert.Equal(\u0022Object\u0022, typeRef.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void LookupTypeDefinition()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            var member = module.LookupMember(new MetadataToken(TableIndex.TypeDef, 2));\r\n            Assert.IsAssignableFrom\u003CTypeDefinition\u003E(member);\r\n            \r\n            var typeDef = (TypeDefinition) member;\r\n            Assert.Equal(\u0022HelloWorld\u0022, typeDef.Namespace);\r\n            Assert.Equal(\u0022Program\u0022, typeDef.Name);\r\n        }\r\n\r\n        [Fact]\r\n        public void LookupAssemblyReference()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            var member = module.LookupMember(new MetadataToken(TableIndex.AssemblyRef, 1));\r\n            Assert.IsAssignableFrom\u003CAssemblyReference\u003E(member);\r\n            \r\n            var assemblyRef = (AssemblyReference) member;\r\n            Assert.Equal(\u0022mscorlib\u0022, assemblyRef.Name);\r\n            Assert.Same(module.AssemblyReferences[0], assemblyRef);\r\n        }\r\n\r\n        [Fact]\r\n        public void LookupModuleReference()\r\n        {\r\n            var module = ModuleDefinition.FromFile(Path.Combine(\u0022Resources\u0022, \u0022Manifest.exe\u0022));\r\n            var member = module.LookupMember(new MetadataToken(TableIndex.ModuleRef, 1));\r\n            Assert.IsAssignableFrom\u003CModuleReference\u003E(member);\r\n\r\n            var moduleRef = (ModuleReference) member;\r\n            Assert.Equal(\u0022MyModel.netmodule\u0022, moduleRef.Name);\r\n            Assert.Same(module.ModuleReferences[0], moduleRef);\r\n        }\r\n\r\n        [Fact]\r\n        public void EmptyModuleShouldAlwaysContainCorLibReference()\r\n        {\r\n            // Issue #39 (https://github.com/Washi1337/AsmResolver/issues/39)\r\n            \r\n            var module = new ModuleDefinition(\u0022TestModule\u0022);\r\n            var corLib = module.CorLibTypeFactory.CorLibScope;\r\n            \r\n            using var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            \r\n            var newModule = ModuleDefinition.FromBytes(stream.ToArray());\r\n            var comparer = new SignatureComparer();\r\n            Assert.Contains(newModule.AssemblyReferences, reference =\u003E comparer.Equals(corLib, reference));\r\n        }\r\n\r\n        [Fact]\r\n        public void CreateNewCorLibFactory()\r\n        {\r\n            var module = new ModuleDefinition(\u0022MySampleModule\u0022);\r\n            Assert.NotNull(module.CorLibTypeFactory);\r\n            Assert.NotNull(module.CorLibTypeFactory.CorLibScope);\r\n            Assert.NotNull(module.CorLibTypeFactory.Void);\r\n        }\r\n        \r\n        [Fact]\r\n        public void AddingTypeIsPersistentAfterRebuild()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            \r\n            var newType = new TypeDefinition(\u0022SomeNamespace\u0022, \u0022SomeType\u0022, \r\n                TypeAttributes.Class | TypeAttributes.Abstract | TypeAttributes.Sealed);\r\n            module.TopLevelTypes.Add(newType);\r\n\r\n            var newModule = Rebuild(module);\r\n            var comparer = new SignatureComparer();\r\n            Assert.Contains(newModule.TopLevelTypes, t =\u003E comparer.Equals(newType, t));\r\n        }\r\n\r\n        [Fact]\r\n        public void NewFW40ModuleShouldAlwaysContainModuleType()\r\n        {\r\n            var module = new ModuleDefinition(\u0022TestModule\u0022);\r\n            Assert.NotNull(module.GetModuleType());\r\n        }\r\n\r\n        [Fact]\r\n        public void NewModuleShouldAlwaysContainModuleType()\r\n        {\r\n            var module = new ModuleDefinition(\u0022TestModule\u0022, KnownCorLibs.NetStandard_v2_1_0_0);\r\n            Assert.NotNull(module.GetModuleType());\r\n        }\r\n\r\n        [Fact]\r\n        public void GetOrCreateModuleConstructorShouldAddNewConstructorIfNotPresent()\r\n        {\r\n            var module = new ModuleDefinition(\u0022TestModule\u0022, KnownCorLibs.NetStandard_v2_1_0_0);\r\n            var cctor = module.GetOrCreateModuleConstructor();\r\n            Assert.Contains(cctor, module.GetModuleType().Methods);\r\n        }\r\n\r\n        [Fact]\r\n        public void GetOrCreateModuleConstructorShouldGetExistingConstructorIfPresent()\r\n        {\r\n            var module = new ModuleDefinition(\u0022TestModule\u0022, KnownCorLibs.NetStandard_v2_1_0_0);\r\n            var cctor = module.GetOrCreateModuleConstructor();\r\n            var cctor2 = module.GetOrCreateModuleConstructor();\r\n            Assert.Same(cctor, cctor2);\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentResources()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            \r\n            // Add new directory.\r\n            const string directoryName = \u0022Test\u0022;\r\n            var entryData = new byte[] {0, 1, 2, 3, 4};\r\n            var directory = new ResourceDirectory(directoryName)\r\n            {\r\n                Entries =\r\n                {\r\n                    new ResourceDirectory(1)\r\n                    {\r\n                        Entries = {new ResourceData(1234, new DataSegment(entryData))}\r\n                    }\r\n                }\r\n            };\r\n            module.NativeResourceDirectory.Entries.Add(directory);\r\n\r\n            // Write and rebuild.\r\n            using var stream = new MemoryStream();\r\n            module.Write(stream);\r\n            var newModule = ModuleDefinition.FromReader(new ByteArrayReader(stream.ToArray()));\r\n\r\n            // Assert contents.\r\n            var newDirectory = (IResourceDirectory) newModule.NativeResourceDirectory.Entries\r\n                .First(entry =\u003E entry.Name == directoryName);\r\n            newDirectory = (IResourceDirectory) newDirectory.Entries[0];\r\n            \r\n            var newData = (IResourceData) newDirectory.Entries[0];\r\n            var newContents = (IReadableSegment) newData.Contents;\r\n            Assert.Equal(entryData, newContents.ToArray());\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentTimeStamp()\r\n        {\r\n            var time = new DateTime(2020, 1, 2, 18, 30, 34);\r\n            \r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld);\r\n            module.TimeDateStamp = time;\r\n\r\n            var image = module.ToPEImage();\r\n            Assert.Equal(time, image.TimeDateStamp);\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentExportedType()\r\n        {\r\n            var module = new ModuleDefinition(\u0022SomeModule.exe\u0022);\r\n\r\n            var assembly = new AssemblyReference(\u0022SomeAssembly\u0022, new Version(1, 0, 0, 0));\r\n            var type = new ExportedType(assembly, \u0022SomeNamespace\u0022, \u0022SomeType\u0022);\r\n\r\n            module.AssemblyReferences.Add(assembly);\r\n            module.ExportedTypes.Add(type);\r\n\r\n            var newModule = Rebuild(module);\r\n            var newType = Assert.Single(newModule.ExportedTypes);\r\n            Assert.Equal(type, newType, new SignatureComparer());\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentFileReferences()\r\n        {\r\n            var module = new ModuleDefinition(\u0022SomeModule.exe\u0022);\r\n\r\n            var file = new FileReference(\u0022SubModule.netmodule\u0022, FileAttributes.ContainsMetadata);\r\n\r\n            module.FileReferences.Add(file);\r\n\r\n            var newModule = Rebuild(module);\r\n            var newFile = Assert.Single(newModule.FileReferences);\r\n            Assert.NotNull(newFile);\r\n            Assert.Equal(file.Name, newFile.Name);\r\n        }\r\n    }\r\n}",
+      "test_imports": [
+        "using System;",
+        "using System.Collections.Generic;",
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.Builder;",
+        "using AsmResolver.DotNet.Cloning;",
+        "using AsmResolver.DotNet.Signatures;",
+        "using AsmResolver.DotNet.TestCases.NestedClasses;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables.Rows;",
+        "using AsmResolver.PE.Win32Resources;",
+        "using Xunit;",
+        "using FileAttributes = AsmResolver.PE.DotNet.Metadata.Tables.Rows.FileAttributes;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests",
+      "test_class_name": "ModuleDefinitionTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/ModuleDefinitionTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.Signatures;\r\nusing AsmResolver.PE.DotNet.Cil;\r\nusing Xunit;\r\n\r\nnamespace AsmResolver.DotNet.Tests.Signatures\r\n{\r\n    public class MethodSignatureTest\r\n    {\r\n        private readonly ModuleDefinition _module;\r\n\r\n        public MethodSignatureTest()\r\n        {\r\n            _module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld, TestReaderParameters);\r\n        }\r\n\r\n        [Fact]\r\n        public void MakeInstanceShouldHaveHasThisFlagSet()\r\n        {\r\n            var signature = MethodSignature.CreateInstance(_module.CorLibTypeFactory.Void);\r\n            Assert.True(signature.HasThis);\r\n            Assert.False(signature.IsGeneric);\r\n        }\r\n\r\n        [Fact]\r\n        public void MakeStaticShouldNotHaveHasThisFlagSet()\r\n        {\r\n            var signature = MethodSignature.CreateStatic(_module.CorLibTypeFactory.Void);\r\n            Assert.False(signature.HasThis);\r\n            Assert.False(signature.IsGeneric);\r\n        }\r\n\r\n        [Fact]\r\n        public void MakeGenericInstanceShouldHaveHasThisAndGenericFlagSet()\r\n        {\r\n            var signature = MethodSignature.CreateInstance(_module.CorLibTypeFactory.Void, 1);\r\n            Assert.True(signature.HasThis);\r\n            Assert.True(signature.IsGeneric);\r\n        }\r\n\r\n        [Fact]\r\n        public void MakeGenericStaticShouldNotHaveHasThisAndGenericFlagSet()\r\n        {\r\n            var signature = MethodSignature.CreateStatic(_module.CorLibTypeFactory.Void, 1);\r\n            Assert.False(signature.HasThis);\r\n            Assert.True(signature.IsGeneric);\r\n        }\r\n\r\n        [Theory]\r\n        [InlineData(false)]\r\n        [InlineData(true)]\r\n        public void SentinelParameterTypes(bool rebuild)\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.ArgListTest, TestReaderParameters);\r\n            if (rebuild)\r\n            {\r\n                using var stream = new MemoryStream();\r\n                module.Write(stream);\r\n                module = ModuleDefinition.FromBytes(stream.ToArray(), TestReaderParameters);\r\n            }\r\n\r\n            var reference = (MemberReference) module.ManagedEntryPointMethod!.CilMethodBody!\r\n                .Instructions.First(i =\u003E i.OpCode.Code == CilCode.Call)\r\n                .Operand!;\r\n\r\n            var signature = Assert.IsAssignableFrom\u003CMethodSignature\u003E(reference.Signature);\r\n            var type = Assert.Single(signature.SentinelParameterTypes);\r\n\r\n            Assert.Equal(module.CorLibTypeFactory.String, type, SignatureComparer.Default);\r\n        }\r\n    }\r\n}\r\n",
+      "test_imports": [
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.Signatures;",
+        "using AsmResolver.PE.DotNet.Cil;",
+        "using Xunit;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests.Signatures",
+      "test_class_name": "MethodSignatureTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/Signatures/MethodSignatureTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    },
+    {
+      "tests": "using System.IO;\r\nusing System.Linq;\r\nusing AsmResolver.DotNet.Builder;\r\nusing AsmResolver.DotNet.Serialized;\r\nusing AsmResolver.DotNet.Signatures;\r\nusing AsmResolver.DotNet.Signatures.Types;\r\nusing AsmResolver.DotNet.TestCases.Generics;\r\nusing AsmResolver.PE.DotNet.Metadata.Tables;\r\nusing Xunit;\r\n\r\nnamespace AsmResolver.DotNet.Tests\r\n{\r\n    public class TypeSpecificationTest\r\n    {\r\n        \r\n        [Fact]\r\n        public void ReadGenericTypeInstantiation()\r\n        {\r\n            var module = ModuleDefinition.FromFile(typeof(GenericsTestClass).Assembly.Location);\r\n            var fieldType = module\r\n                .TopLevelTypes.First(t =\u003E t.Name == nameof(GenericsTestClass))\r\n                .Fields.First(f =\u003E f.Name == nameof(GenericsTestClass.GenericField))\r\n                .Signature.FieldType;\r\n\r\n            Assert.IsAssignableFrom\u003CGenericInstanceTypeSignature\u003E(fieldType);\r\n            var genericType = (GenericInstanceTypeSignature) fieldType;\r\n            Assert.Equal(\u0022GenericType\u00603\u0022, genericType.GenericType.Name);\r\n            Assert.Equal(new[]\r\n            {\r\n                \u0022System.String\u0022, \u0022System.Int32\u0022, \u0022System.Object\u0022\r\n            }, genericType.TypeArguments.Select(a =\u003E a.FullName));\r\n        }\r\n\r\n        [Fact]\r\n        public void PersistentGenericTypeInstantiation()\r\n        {  \r\n            var module = ModuleDefinition.FromFile(typeof(GenericsTestClass).Assembly.Location);\r\n            \r\n            using var tempStream = new MemoryStream();\r\n            module.Write(tempStream);\r\n            \r\n            module = ModuleDefinition.FromBytes(tempStream.ToArray());\r\n            var fieldType = module\r\n                .TopLevelTypes.First(t =\u003E t.Name == nameof(GenericsTestClass))\r\n                .Fields.First(f =\u003E f.Name == nameof(GenericsTestClass.GenericField))\r\n                .Signature.FieldType;\r\n\r\n            Assert.IsAssignableFrom\u003CGenericInstanceTypeSignature\u003E(fieldType);\r\n            var genericType = (GenericInstanceTypeSignature) fieldType;\r\n            Assert.Equal(\u0022GenericType\u00603\u0022, genericType.GenericType.Name);\r\n            Assert.Equal(new[]\r\n            {\r\n                \u0022System.String\u0022, \u0022System.Int32\u0022, \u0022System.Object\u0022\r\n            }, genericType.TypeArguments.Select(a =\u003E a.FullName));\r\n        }\r\n        \r\n        [Fact]\r\n        public void IllegalTypeSpecInTypeDefOrRef()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld_IllegalTypeSpecInTypeDefOrRefSig);\r\n            var typeSpec =  (TypeSpecification) module.LookupMember(new MetadataToken(TableIndex.TypeSpec, 1));\r\n            Assert.NotNull(typeSpec);\r\n        }\r\n        \r\n        [Fact]\r\n        public void MaliciousTypeSpecLoop()\r\n        {\r\n            var module = ModuleDefinition.FromBytes(Properties.Resources.HelloWorld_MaliciousTypeSpecLoop,\r\n                new ModuleReaderParameters(EmptyErrorListener.Instance));\r\n            var typeSpec =  (TypeSpecification) module.LookupMember(new MetadataToken(TableIndex.TypeSpec, 1));\r\n            Assert.NotNull(typeSpec.Signature);\r\n        }\r\n        \r\n    }\r\n}",
+      "test_imports": [
+        "using System.IO;",
+        "using System.Linq;",
+        "using AsmResolver.DotNet.Builder;",
+        "using AsmResolver.DotNet.Serialized;",
+        "using AsmResolver.DotNet.Signatures;",
+        "using AsmResolver.DotNet.Signatures.Types;",
+        "using AsmResolver.DotNet.TestCases.Generics;",
+        "using AsmResolver.PE.DotNet.Metadata.Tables;",
+        "using Xunit;"
+      ],
+      "test_namespace": "AsmResolver.DotNet.Tests",
+      "test_class_name": "TypeSpecificationTest",
+      "test_file_path": "test/AsmResolver.DotNet.Tests/TypeSpecificationTest.cs",
+      "test_runner": "xUnit",
+      "project_path": "test/AsmResolver.DotNet.Tests/AsmResolver.DotNet.Tests.csproj"
+    }
+  ]
+}

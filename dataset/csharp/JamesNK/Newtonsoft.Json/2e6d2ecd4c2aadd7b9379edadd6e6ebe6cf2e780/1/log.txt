@@ -1,0 +1,253 @@
+verify returned with:255
+
+        // Arrange
+        var json = "3.14";
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(3.14, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_2()
+    {
+        // Arrange
+        var json = "null";
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_3()
+    {
+        // Arrange
+        var json = "1.7976931348623157E+308"; // Max double value
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.MaxValue, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_4()
+    {
+        // Arrange
+        var json = "-1.7976931348623157E+308"; // Min double value
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.MinValue, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_5()
+    {
+        // Arrange
+        var json = "NaN"; // Not a number
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.IsTrue(double.IsNaN(result.Value));
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_6()
+    {
+        // Arrange
+        var json = "Infinity"; // Positive infinity
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.PositiveInfinity, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_7()
+    {
+        // Arrange
+        var json = "-Infinity"; // Negative infinity
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.NegativeInfinity, result);
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 75, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 90, Column: 5
+
+
+
+verify returned with:0
+using System.IO;
+using Newtonsoft.Json.Tests.Serialization;
+using Newtonsoft.Json;
+using System.Numerics;
+using Newtonsoft.Json.Tests.TestObjects;
+using System;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
+using System.Collections.Generic;
+
+namespace Newtonsoft.Json.Tests.Linq
+{
+
+[TestFixture]
+public class JTokenReaderTest
+{
+    [Test]
+    public void ReadAsDouble_Test_1()
+{
+        // Arrange
+        var json = "3.14";
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(3.14, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_2()
+    {
+        // Arrange
+        var json = "null";
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_3()
+    {
+        // Arrange
+        var json = "1.7976931348623157E+308"; // Max double value
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.MaxValue, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_4()
+    {
+        // Arrange
+        var json = "-1.7976931348623157E+308"; // Min double value
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.MinValue, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_5()
+    {
+        // Arrange
+        var json = "NaN"; // Not a number
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.IsTrue(double.IsNaN(result.Value));
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_6()
+    {
+        // Arrange
+        var json = "Infinity"; // Positive infinity
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.PositiveInfinity, result);
+    }
+
+    [Test]
+    public void ReadAsDouble_Test_7()
+    {
+        // Arrange
+        var json = "-Infinity"; // Negative infinity
+        var reader = new JsonTextReader(new StringReader(json));
+        reader.Read(); // Move to the first token
+
+        // Act
+        var result = reader.ReadAsDouble();
+
+        // Assert
+        Assert.AreEqual(double.NegativeInfinity, result);
+    }
+}}
+Syntactically correct
+
+

@@ -1,0 +1,394 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+1
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/root/core/Akka.FSharp.Tests/Akka.FSharp.Tests.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Tests/Akka.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.Tests/Akka.Remote.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Coordination.Tests/Akka.Coordination.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/PingPong/PingPong.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.TestKit.Tests/Akka.Remote.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Cluster.Tests/Akka.Cluster.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.TestKit.Tests/Akka.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.TCK.Tests/Akka.Persistence.TCK.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.Tests/Akka.Persistence.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Cluster.Tests.MultiNode/Akka.Cluster.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.Tests.MultiNode/Akka.Remote.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.DistributedData.Tests/Akka.DistributedData.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Tools.Tests/Akka.Cluster.Tools.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/Akka.Benchmarks/Akka.Benchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.DistributedData.Tests.MultiNode/Akka.DistributedData.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.TestKit.Tests/Akka.Persistence.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/serializers/Akka.Serialization.TestKit/Akka.Serialization.TestKit.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Streams.Tests/Akka.Streams.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Docs.Tests/Akka.Docs.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Docs.Tutorials/Akka.Docs.Tutorials.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Discovery.Tests/Akka.Discovery.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Metrics.Tests/Akka.Cluster.Metrics.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Sharding.Tests/Akka.Cluster.Sharding.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/Akka.Cluster.Benchmarks/Akka.Cluster.Benchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Tools.Tests.MultiNode/Akka.Cluster.Tools.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.Query.Tests/Akka.Persistence.Query.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Streams.TestKit.Tests/Akka.Streams.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.API.Tests/Akka.API.Tests.csproj]
+/root/core/Akka.FSharp.Tests/Akka.FSharp.Tests.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Sharding.Tests.MultiNode/Akka.Cluster.Sharding.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/RemotePingPong/RemotePingPong.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/serializers/Akka.Serialization.Hyperion.Tests/Akka.Serialization.Hyperion.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/SpawnBenchmark/SpawnBenchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Metrics.Tests.MultiNode/Akka.Cluster.Metrics.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/dependencyinjection/Akka.DependencyInjection.Tests/Akka.DependencyInjection.Tests.csproj]
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/examples/Akka.Persistence.Custom.Tests/Akka.Persistence.Custom.Tests.csproj]
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+
+Build FAILED.
+
+/root/core/Akka.FSharp.Tests/Akka.FSharp.Tests.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/root/core/Akka.FSharp.Tests/Akka.FSharp.Tests.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/root/core/Akka.FSharp/Akka.FSharp.fsproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: FSharp.Core 6.0.7, FSharp.Core 6.0.6.
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Tests/Akka.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.Tests/Akka.Remote.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Coordination.Tests/Akka.Coordination.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/PingPong/PingPong.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.TestKit.Tests/Akka.Remote.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Cluster.Tests/Akka.Cluster.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.TestKit.Tests/Akka.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.TCK.Tests/Akka.Persistence.TCK.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.Tests/Akka.Persistence.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Cluster.Tests.MultiNode/Akka.Cluster.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Remote.Tests.MultiNode/Akka.Remote.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.DistributedData.Tests/Akka.DistributedData.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Tools.Tests/Akka.Cluster.Tools.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/Akka.Benchmarks/Akka.Benchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.DistributedData.Tests.MultiNode/Akka.DistributedData.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.TestKit.Tests/Akka.Persistence.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/serializers/Akka.Serialization.TestKit/Akka.Serialization.TestKit.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Streams.Tests/Akka.Streams.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Docs.Tests/Akka.Docs.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Docs.Tutorials/Akka.Docs.Tutorials.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Discovery.Tests/Akka.Discovery.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Metrics.Tests/Akka.Cluster.Metrics.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Sharding.Tests/Akka.Cluster.Sharding.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/Akka.Cluster.Benchmarks/Akka.Cluster.Benchmarks.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Tools.Tests.MultiNode/Akka.Cluster.Tools.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Persistence.Query.Tests/Akka.Persistence.Query.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Streams.TestKit.Tests/Akka.Streams.TestKit.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.API.Tests/Akka.API.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Sharding.Tests.MultiNode/Akka.Cluster.Sharding.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/RemotePingPong/RemotePingPong.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/serializers/Akka.Serialization.Hyperion.Tests/Akka.Serialization.Hyperion.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/benchmark/SpawnBenchmark/SpawnBenchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/cluster/Akka.Cluster.Metrics.Tests.MultiNode/Akka.Cluster.Metrics.Tests.MultiNode.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/contrib/dependencyinjection/Akka.DependencyInjection.Tests/Akka.DependencyInjection.Tests.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/examples/Akka.Persistence.Custom.Tests/Akka.Persistence.Custom.Tests.csproj]
+    5 Warning(s)
+    35 Error(s)
+
+Time Elapsed 00:00:14.58
+
+verify returned with:255
+
+        // Arrange
+        IActorRef validActorRef = ActorRefs.NoSender; // Replace with a valid actor reference
+        IActorRef nobodyActorRef = ActorRefs.Nobody;
+        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;
+
+        // Act
+        bool resultValid = validActorRef.IsNobody();
+        bool resultNobody = nobodyActorRef.IsNobody();
+        bool resultDeadLetter = deadLetterActorRef.IsNobody();
+
+        // Assert
+        resultValid.Should().BeFalse();
+        resultNobody.Should().BeTrue();
+        resultDeadLetter.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsNobody_Test_Null_ActorRef()
+    {
+        // Arrange
+        IActorRef nullActorRef = null;
+
+        // Act
+        bool result = nullActorRef.IsNobody();
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsNobody_Test_Valid_ActorRef()
+    {
+        // Arrange
+        var actorSystem = ActorSystem.Create("TestSystem");
+        var testActor = actorSystem.ActorOf(Props.Create<TestActor>());
+        
+        // Act
+        bool result = testActor.IsNobody();
+
+        // Assert
+        result.Should().BeFalse();
+
+        // Cleanup
+        actorSystem.Terminate().Wait();
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 16, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 19, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 32, Column: 5
+
+
+
+verify returned with:0
+using System.Threading.Tasks;
+using Xunit;
+using FluentAssertions;
+using System;
+using Akka.Util.Internal;
+using Akka.TestKit.TestActors;
+using Akka.Serialization;
+using System.Threading;
+using Akka.Actor;
+using Akka.Actor.Internal;
+using Akka.TestKit;
+
+namespace Akka.Tests.Actor
+{
+
+public class ActorRefIgnoreSpec
+{
+    [Fact]
+    public void IsNobody_Test_1()
+{
+        // Arrange
+        IActorRef validActorRef = ActorRefs.NoSender; // Replace with a valid actor reference
+        IActorRef nobodyActorRef = ActorRefs.Nobody;
+        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;
+
+        // Act
+        bool resultValid = validActorRef.IsNobody();
+        bool resultNobody = nobodyActorRef.IsNobody();
+        bool resultDeadLetter = deadLetterActorRef.IsNobody();
+
+        // Assert
+        resultValid.Should().BeFalse();
+        resultNobody.Should().BeTrue();
+        resultDeadLetter.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsNobody_Test_Null_ActorRef()
+    {
+        // Arrange
+        IActorRef nullActorRef = null;
+
+        // Act
+        bool result = nullActorRef.IsNobody();
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsNobody_Test_Valid_ActorRef()
+    {
+        // Arrange
+        var actorSystem = ActorSystem.Create("TestSystem");
+        var testActor = actorSystem.ActorOf(Props.Create<TestActor>());
+        
+        // Act
+        bool result = testActor.IsNobody();
+
+        // Assert
+        result.Should().BeFalse();
+
+        // Cleanup
+        actorSystem.Terminate().Wait();
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 1327
+Modification successful! - new_tests - code
+
+
+Command: cat -n core/Akka.Tests/Actor/ActorRefIgnoreSpec.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test core/Akka.Tests/Akka.Tests.csproj --filter Akka.Tests.Actor.ActorRefIgnoreSpec --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Threading.Tasks;
+     2	using Xunit;
+     3	using FluentAssertions;
+     4	using System;
+     5	using Akka.Util.Internal;
+     6	using Akka.TestKit.TestActors;
+     7	using Akka.Serialization;
+     8	using System.Threading;
+     9	using Akka.Actor;
+    10	using Akka.Actor.Internal;
+    11	using Akka.TestKit;
+    12	
+    13	namespace Akka.Tests.Actor
+    14	{
+    15	
+    16	public class ActorRefIgnoreSpec
+    17	{
+    18	    [Fact]
+    19	    public void IsNobody_Test_1()
+    20	{
+    21	        // Arrange
+    22	        IActorRef validActorRef = ActorRefs.NoSender; // Replace with a valid actor reference
+    23	        IActorRef nobodyActorRef = ActorRefs.Nobody;
+    24	        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;
+    25	
+    26	        // Act
+    27	        bool resultValid = validActorRef.IsNobody();
+    28	        bool resultNobody = nobodyActorRef.IsNobody();
+    29	        bool resultDeadLetter = deadLetterActorRef.IsNobody();
+    30	
+    31	        // Assert
+    32	        resultValid.Should().BeFalse();
+    33	        resultNobody.Should().BeTrue();
+    34	        resultDeadLetter.Should().BeTrue();
+    35	    }
+    36	
+    37	    [Fact]
+    38	    public void IsNobody_Test_Null_ActorRef()
+    39	    {
+    40	        // Arrange
+    41	        IActorRef nullActorRef = null;
+    42	
+    43	        // Act
+    44	        bool result = nullActorRef.IsNobody();
+    45	
+    46	        // Assert
+    47	        result.Should().BeTrue();
+    48	    }
+    49	
+    50	    [Fact]
+    51	    public void IsNobody_Test_Valid_ActorRef()
+    52	    {
+    53	        // Arrange
+    54	        var actorSystem = ActorSystem.Create("TestSystem");
+    55	        var testActor = actorSystem.ActorOf(Props.Create<TestActor>());
+    56	        
+    57	        // Act
+    58	        bool result = testActor.IsNobody();
+    59	
+    60	        // Assert
+    61	        result.Should().BeFalse();
+    62	
+    63	        // Cleanup
+    64	        actorSystem.Terminate().Wait();
+    65	    }
+    66	}}  Determining projects to restore...
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Tests/Akka.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 1327
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n core/Akka.Tests/Actor/ActorRefIgnoreSpec.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test core/Akka.Tests/Akka.Tests.csproj --filter Akka.Tests.Actor.ActorRefIgnoreSpec --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Threading.Tasks;
+     2	using Xunit;
+     3	using FluentAssertions;
+     4	using System;
+     5	using Akka.Util.Internal;
+     6	using Akka.TestKit.TestActors;
+     7	using Akka.Serialization;
+     8	using System.Threading;
+     9	using Akka.Actor;
+    10	using Akka.Actor.Internal;
+    11	using Akka.TestKit;
+    12	
+    13	namespace Akka.Tests.Actor
+    14	{
+    15	
+    16	public class ActorRefIgnoreSpec
+    17	{
+    18	    [Fact]
+    19	    public void IsNobody_Test_1()
+    20	{
+    21	        // Arrange
+    22	        IActorRef validActorRef = ActorRefs.NoSender; // Replace with a valid actor reference
+    23	        IActorRef nobodyActorRef = ActorRefs.Nobody;
+    24	        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;
+    25	
+    26	        // Act
+    27	        bool resultValid = validActorRef.IsNobody();
+    28	        bool resultNobody = nobodyActorRef.IsNobody();
+    29	        bool resultDeadLetter = deadLetterActorRef.IsNobody();
+    30	
+    31	        // Assert
+    32	        resultValid.Should().BeFalse();
+    33	        resultNobody.Should().BeTrue();
+    34	        resultDeadLetter.Should().BeTrue();
+    35	    }
+    36	
+    37	    [Fact]
+    38	    public void IsNobody_Test_Null_ActorRef()
+    39	    {
+    40	        // Arrange
+    41	        IActorRef nullActorRef = null;
+    42	
+    43	        // Act
+    44	        bool result = nullActorRef.IsNobody();
+    45	
+    46	        // Assert
+    47	        result.Should().BeTrue();
+    48	    }
+    49	
+    50	    [Fact]
+    51	    public void IsNobody_Test_Valid_ActorRef()
+    52	    {
+    53	        // Arrange
+    54	        var actorSystem = ActorSystem.Create("TestSystem");
+    55	        var testActor = actorSystem.ActorOf(Props.Create<TestActor>());
+    56	        
+    57	        // Act
+    58	        bool result = testActor.IsNobody();
+    59	
+    60	        // Assert
+    61	        result.Should().BeFalse();
+    62	
+    63	        // Cleanup
+    64	        actorSystem.Terminate().Wait();
+    65	    }
+    66	}}  Determining projects to restore...
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(144,5): error NETSDK1045: The current .NET SDK does not support targeting .NET 7.0.  Either target .NET 6.0 or lower, or use a version of the .NET SDK that supports .NET 7.0. [/root/core/Akka.Tests/Akka.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

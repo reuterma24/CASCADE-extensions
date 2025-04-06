@@ -1,0 +1,519 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:02:02.56
+
+verify returned with:255
+
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(2); // Delete the second row
+
+        // Assert
+        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+        Assert.AreEqual("A3", worksheet.Cells[2, 1].Value); // A3 should now be in the second row
+        Assert.IsNull(worksheet.Cells[2, 1].Value); // The original second row should be empty
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_2()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+        worksheet.Cells[4, 1].Value = "A4";
+
+        // Act
+        worksheet.DeleteRow(1, 2); // Delete the first two rows
+
+        // Assert
+        Assert.IsNull(worksheet.Cells[1, 1].Value); // First row should be empty
+        Assert.AreEqual("A3", worksheet.Cells[1, 1].Value); // A3 should now be in the first row
+        Assert.AreEqual("A4", worksheet.Cells[2, 1].Value); // A4 should now be in the second row
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_3()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(3); // Delete the last row
+
+        // Assert
+        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+        Assert.AreEqual("A2", worksheet.Cells[2, 1].Value);
+        Assert.IsNull(worksheet.Cells[3, 1].Value); // The last row should be empty
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_4()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(1, 3); // Delete all rows
+
+        // Assert
+        Assert.IsNull(worksheet.Cells[1, 1].Value); // All rows should be empty
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void DeleteRow_Test_5()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+
+        // Act
+        worksheet.DeleteRow(2); // Attempt to delete a non-existing row
+
+        // Assert is handled by the ExpectedException attribute
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 16, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 19, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 39, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 58, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 76, Column: 5
+
+
+
+verify returned with:0
+using System.Data;
+using System.Threading.Tasks;
+using OfficeOpenXml.Table;
+using OfficeOpenXml.Table.PivotTable;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using OfficeOpenXml.Drawing;
+using System.Runtime.InteropServices;
+using System;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
+using System.Threading;
+using OfficeOpenXml.Drawing.Vml;
+using System.Reflection;
+using System.Globalization;
+using OfficeOpenXml.Style;
+
+namespace EPPlusTest
+{
+
+[TestClass]
+public class WorkSheetTests
+{
+    [TestMethod]
+    public void DeleteRow_Test_1()
+{
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(2); // Delete the second row
+
+        // Assert
+        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+        Assert.AreEqual("A3", worksheet.Cells[2, 1].Value); // A3 should now be in the second row
+        Assert.IsNull(worksheet.Cells[2, 1].Value); // The original second row should be empty
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_2()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+        worksheet.Cells[4, 1].Value = "A4";
+
+        // Act
+        worksheet.DeleteRow(1, 2); // Delete the first two rows
+
+        // Assert
+        Assert.IsNull(worksheet.Cells[1, 1].Value); // First row should be empty
+        Assert.AreEqual("A3", worksheet.Cells[1, 1].Value); // A3 should now be in the first row
+        Assert.AreEqual("A4", worksheet.Cells[2, 1].Value); // A4 should now be in the second row
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_3()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(3); // Delete the last row
+
+        // Assert
+        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+        Assert.AreEqual("A2", worksheet.Cells[2, 1].Value);
+        Assert.IsNull(worksheet.Cells[3, 1].Value); // The last row should be empty
+    }
+
+    [TestMethod]
+    public void DeleteRow_Test_4()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+        worksheet.Cells[2, 1].Value = "A2";
+        worksheet.Cells[3, 1].Value = "A3";
+
+        // Act
+        worksheet.DeleteRow(1, 3); // Delete all rows
+
+        // Assert
+        Assert.IsNull(worksheet.Cells[1, 1].Value); // All rows should be empty
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void DeleteRow_Test_5()
+    {
+        // Arrange
+        var package = new ExcelPackage();
+        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+        worksheet.Cells[1, 1].Value = "A1";
+
+        // Act
+        worksheet.DeleteRow(2); // Attempt to delete a non-existing row
+
+        // Assert is handled by the ExpectedException attribute
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 1866
+Modification successful! - new_tests - code
+
+
+Command: cat -n EPPlusTest/WorkSheetTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test EPPlusTest/EPPlus.Test.csproj --filter EPPlusTest.WorkSheetTest --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Data;
+     2	using System.Threading.Tasks;
+     3	using OfficeOpenXml.Table;
+     4	using OfficeOpenXml.Table.PivotTable;
+     5	using System.Collections.Generic;
+     6	using System.Linq;
+     7	using System.IO;
+     8	using OfficeOpenXml.Drawing;
+     9	using System.Runtime.InteropServices;
+    10	using System;
+    11	using System.Drawing;
+    12	using Microsoft.VisualStudio.TestTools.UnitTesting;
+    13	using OfficeOpenXml;
+    14	using OfficeOpenXml.Drawing.Chart;
+    15	using System.Threading;
+    16	using OfficeOpenXml.Drawing.Vml;
+    17	using System.Reflection;
+    18	using System.Globalization;
+    19	using OfficeOpenXml.Style;
+    20	
+    21	namespace EPPlusTest
+    22	{
+    23	
+    24	[TestClass]
+    25	public class WorkSheetTests
+    26	{
+    27	    [TestMethod]
+    28	    public void DeleteRow_Test_1()
+    29	{
+    30	        // Arrange
+    31	        var package = new ExcelPackage();
+    32	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    33	        worksheet.Cells[1, 1].Value = "A1";
+    34	        worksheet.Cells[2, 1].Value = "A2";
+    35	        worksheet.Cells[3, 1].Value = "A3";
+    36	
+    37	        // Act
+    38	        worksheet.DeleteRow(2); // Delete the second row
+    39	
+    40	        // Assert
+    41	        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+    42	        Assert.AreEqual("A3", worksheet.Cells[2, 1].Value); // A3 should now be in the second row
+    43	        Assert.IsNull(worksheet.Cells[2, 1].Value); // The original second row should be empty
+    44	    }
+    45	
+    46	    [TestMethod]
+    47	    public void DeleteRow_Test_2()
+    48	    {
+    49	        // Arrange
+    50	        var package = new ExcelPackage();
+    51	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    52	        worksheet.Cells[1, 1].Value = "A1";
+    53	        worksheet.Cells[2, 1].Value = "A2";
+    54	        worksheet.Cells[3, 1].Value = "A3";
+    55	        worksheet.Cells[4, 1].Value = "A4";
+    56	
+    57	        // Act
+    58	        worksheet.DeleteRow(1, 2); // Delete the first two rows
+    59	
+    60	        // Assert
+    61	        Assert.IsNull(worksheet.Cells[1, 1].Value); // First row should be empty
+    62	        Assert.AreEqual("A3", worksheet.Cells[1, 1].Value); // A3 should now be in the first row
+    63	        Assert.AreEqual("A4", worksheet.Cells[2, 1].Value); // A4 should now be in the second row
+    64	    }
+    65	
+    66	    [TestMethod]
+    67	    public void DeleteRow_Test_3()
+    68	    {
+    69	        // Arrange
+    70	        var package = new ExcelPackage();
+    71	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    72	        worksheet.Cells[1, 1].Value = "A1";
+    73	        worksheet.Cells[2, 1].Value = "A2";
+    74	        worksheet.Cells[3, 1].Value = "A3";
+    75	
+    76	        // Act
+    77	        worksheet.DeleteRow(3); // Delete the last row
+    78	
+    79	        // Assert
+    80	        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+    81	        Assert.AreEqual("A2", worksheet.Cells[2, 1].Value);
+    82	        Assert.IsNull(worksheet.Cells[3, 1].Value); // The last row should be empty
+    83	    }
+    84	
+    85	    [TestMethod]
+    86	    public void DeleteRow_Test_4()
+    87	    {
+    88	        // Arrange
+    89	        var package = new ExcelPackage();
+    90	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    91	        worksheet.Cells[1, 1].Value = "A1";
+    92	        worksheet.Cells[2, 1].Value = "A2";
+    93	        worksheet.Cells[3, 1].Value = "A3";
+    94	
+    95	        // Act
+    96	        worksheet.DeleteRow(1, 3); // Delete all rows
+    97	
+    98	        // Assert
+    99	        Assert.IsNull(worksheet.Cells[1, 1].Value); // All rows should be empty
+   100	    }
+   101	
+   102	    [TestMethod]
+   103	    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+   104	    public void DeleteRow_Test_5()
+   105	    {
+   106	        // Arrange
+   107	        var package = new ExcelPackage();
+   108	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+   109	        worksheet.Cells[1, 1].Value = "A1";
+   110	
+   111	        // Act
+   112	        worksheet.DeleteRow(2); // Attempt to delete a non-existing row
+   113	
+   114	        // Assert is handled by the ExpectedException attribute
+   115	    }
+   116	}}  Determining projects to restore...
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+  Restored /root/EPPlusTest/EPPlus.Test.csproj (in 15.97 sec).
+  Restored /root/EPPlus/EPPlus.csproj (in 44.73 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 1866
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n EPPlusTest/WorkSheetTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test EPPlusTest/EPPlus.Test.csproj --filter EPPlusTest.WorkSheetTest --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using System.Data;
+     2	using System.Threading.Tasks;
+     3	using OfficeOpenXml.Table;
+     4	using OfficeOpenXml.Table.PivotTable;
+     5	using System.Collections.Generic;
+     6	using System.Linq;
+     7	using System.IO;
+     8	using OfficeOpenXml.Drawing;
+     9	using System.Runtime.InteropServices;
+    10	using System;
+    11	using System.Drawing;
+    12	using Microsoft.VisualStudio.TestTools.UnitTesting;
+    13	using OfficeOpenXml;
+    14	using OfficeOpenXml.Drawing.Chart;
+    15	using System.Threading;
+    16	using OfficeOpenXml.Drawing.Vml;
+    17	using System.Reflection;
+    18	using System.Globalization;
+    19	using OfficeOpenXml.Style;
+    20	
+    21	namespace EPPlusTest
+    22	{
+    23	
+    24	[TestClass]
+    25	public class WorkSheetTests
+    26	{
+    27	    [TestMethod]
+    28	    public void DeleteRow_Test_1()
+    29	{
+    30	        // Arrange
+    31	        var package = new ExcelPackage();
+    32	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    33	        worksheet.Cells[1, 1].Value = "A1";
+    34	        worksheet.Cells[2, 1].Value = "A2";
+    35	        worksheet.Cells[3, 1].Value = "A3";
+    36	
+    37	        // Act
+    38	        worksheet.DeleteRow(2); // Delete the second row
+    39	
+    40	        // Assert
+    41	        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+    42	        Assert.AreEqual("A3", worksheet.Cells[2, 1].Value); // A3 should now be in the second row
+    43	        Assert.IsNull(worksheet.Cells[2, 1].Value); // The original second row should be empty
+    44	    }
+    45	
+    46	    [TestMethod]
+    47	    public void DeleteRow_Test_2()
+    48	    {
+    49	        // Arrange
+    50	        var package = new ExcelPackage();
+    51	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    52	        worksheet.Cells[1, 1].Value = "A1";
+    53	        worksheet.Cells[2, 1].Value = "A2";
+    54	        worksheet.Cells[3, 1].Value = "A3";
+    55	        worksheet.Cells[4, 1].Value = "A4";
+    56	
+    57	        // Act
+    58	        worksheet.DeleteRow(1, 2); // Delete the first two rows
+    59	
+    60	        // Assert
+    61	        Assert.IsNull(worksheet.Cells[1, 1].Value); // First row should be empty
+    62	        Assert.AreEqual("A3", worksheet.Cells[1, 1].Value); // A3 should now be in the first row
+    63	        Assert.AreEqual("A4", worksheet.Cells[2, 1].Value); // A4 should now be in the second row
+    64	    }
+    65	
+    66	    [TestMethod]
+    67	    public void DeleteRow_Test_3()
+    68	    {
+    69	        // Arrange
+    70	        var package = new ExcelPackage();
+    71	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    72	        worksheet.Cells[1, 1].Value = "A1";
+    73	        worksheet.Cells[2, 1].Value = "A2";
+    74	        worksheet.Cells[3, 1].Value = "A3";
+    75	
+    76	        // Act
+    77	        worksheet.DeleteRow(3); // Delete the last row
+    78	
+    79	        // Assert
+    80	        Assert.AreEqual("A1", worksheet.Cells[1, 1].Value);
+    81	        Assert.AreEqual("A2", worksheet.Cells[2, 1].Value);
+    82	        Assert.IsNull(worksheet.Cells[3, 1].Value); // The last row should be empty
+    83	    }
+    84	
+    85	    [TestMethod]
+    86	    public void DeleteRow_Test_4()
+    87	    {
+    88	        // Arrange
+    89	        var package = new ExcelPackage();
+    90	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+    91	        worksheet.Cells[1, 1].Value = "A1";
+    92	        worksheet.Cells[2, 1].Value = "A2";
+    93	        worksheet.Cells[3, 1].Value = "A3";
+    94	
+    95	        // Act
+    96	        worksheet.DeleteRow(1, 3); // Delete all rows
+    97	
+    98	        // Assert
+    99	        Assert.IsNull(worksheet.Cells[1, 1].Value); // All rows should be empty
+   100	    }
+   101	
+   102	    [TestMethod]
+   103	    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+   104	    public void DeleteRow_Test_5()
+   105	    {
+   106	        // Arrange
+   107	        var package = new ExcelPackage();
+   108	        var worksheet = package.Workbook.Worksheets.Add("TestSheet");
+   109	        worksheet.Cells[1, 1].Value = "A1";
+   110	
+   111	        // Act
+   112	        worksheet.DeleteRow(2); // Attempt to delete a non-existing row
+   113	
+   114	        // Assert is handled by the ExpectedException attribute
+   115	    }
+   116	}}  Determining projects to restore...
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'net5.0' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/EPPlus/EPPlus.csproj]
+  Restored /root/EPPlus/EPPlus.csproj (in 24.24 sec).
+  Restored /root/EPPlusTest/EPPlus.Test.csproj (in 24.98 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

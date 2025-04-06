@@ -1,0 +1,391 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+1
+__________________________________________________
+Project "/root/Humanizer.Tests/Humanizer.Tests.csproj" (_GetRequiredWorkloads target(s)):
+
+/root/Humanizer.Tests/Humanizer.Tests.csproj : error MSB4057: The target "_GetRequiredWorkloads" does not exist in the project.
+Done building project "Humanizer.Tests.csproj" -- FAILED.
+Failed to restore workload for project /root/Humanizer.Tests/Humanizer.Tests.csproj: Failed to run MSBuild Target _GetRequiredWorkloads.
+MSBuild version 17.3.4+a400405ba for .NET
+/root/Humanizer/Humanizer.csproj : warning NU1503: Skipping restore for project '/root/Humanizer/Humanizer.csproj'. The project file may be invalid or missing targets required for restore. [/root/Humanizer.sln]
+/root/Humanizer/Humanizer.csproj(207,3): error MSB4019: The imported project "/usr/share/dotnet/sdk/6.0.428/Microsoft/Portable/v4.0/Microsoft.Portable.CSharp.targets" was not found. Confirm that the expression in the Import declaration "/usr/share/dotnet/sdk/6.0.428/Microsoft/Portable/v4.0/Microsoft.Portable.CSharp.targets" is correct, and that the file exists on disk.
+/usr/share/dotnet/sdk/6.0.428/Microsoft.Common.CurrentVersion.targets(1220,5): error MSB3644: The reference assemblies for .NETFramework,Version=v4.0 were not found. To resolve this, install the Developer Pack (SDK/Targeting Pack) for this framework version or retarget your application. You can download .NET Framework Developer Packs at https://aka.ms/msbuild/developerpacks [/root/Humanizer.Tests/Humanizer.Tests.csproj]
+
+Build FAILED.
+
+/root/Humanizer/Humanizer.csproj : warning NU1503: Skipping restore for project '/root/Humanizer/Humanizer.csproj'. The project file may be invalid or missing targets required for restore. [/root/Humanizer.sln]
+/root/Humanizer/Humanizer.csproj(207,3): error MSB4019: The imported project "/usr/share/dotnet/sdk/6.0.428/Microsoft/Portable/v4.0/Microsoft.Portable.CSharp.targets" was not found. Confirm that the expression in the Import declaration "/usr/share/dotnet/sdk/6.0.428/Microsoft/Portable/v4.0/Microsoft.Portable.CSharp.targets" is correct, and that the file exists on disk.
+/usr/share/dotnet/sdk/6.0.428/Microsoft.Common.CurrentVersion.targets(1220,5): error MSB3644: The reference assemblies for .NETFramework,Version=v4.0 were not found. To resolve this, install the Developer Pack (SDK/Targeting Pack) for this framework version or retarget your application. You can download .NET Framework Developer Packs at https://aka.ms/msbuild/developerpacks [/root/Humanizer.Tests/Humanizer.Tests.csproj]
+    1 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:01.77
+
+verify returned with:255
+
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    }
+
+    [Fact]
+    public void GetResource_NullCulture_ReturnsDefaultCultureResource()
+    {
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+
+        // Act
+        string result = Resources.GetResource(resourceKey);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    }
+
+    [Fact]
+    public void GetResource_InvalidKey_ReturnsNull()
+    {
+        // Arrange
+        string resourceKey = "InvalidResourceKey";
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void GetResource_ValidKeyWithDifferentCulture_ReturnsLocalizedResource()
+    {
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+        CultureInfo culture = new CultureInfo("fr-FR"); // Assuming this key has a French translation
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ValeurAttendue", result); // Replace "ValeurAttendue" with the actual expected value for the resource key in French
+    }
+
+    [Fact]
+    public void GetResource_EmptyKey_ReturnsNull()
+    {
+        // Arrange
+        string resourceKey = string.Empty;
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 29, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 43, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 58, Column: 5
+
+
+
+verify returned with:0
+using Humanizer.Localisation;
+using Xunit.Extensions;
+using System.Collections.Generic;
+using System.Globalization; // For CultureInfo
+using Xunit;
+using Xunit; // For Xunit testing framework
+
+namespace Humanizer.Tests
+{
+
+public class ResourceKeyTests
+{
+    [Fact]
+    public void GetResource_Test_1()
+{
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    }
+
+    [Fact]
+    public void GetResource_NullCulture_ReturnsDefaultCultureResource()
+    {
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+
+        // Act
+        string result = Resources.GetResource(resourceKey);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    }
+
+    [Fact]
+    public void GetResource_InvalidKey_ReturnsNull()
+    {
+        // Arrange
+        string resourceKey = "InvalidResourceKey";
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void GetResource_ValidKeyWithDifferentCulture_ReturnsLocalizedResource()
+    {
+        // Arrange
+        string resourceKey = "SomeResourceKey";
+        CultureInfo culture = new CultureInfo("fr-FR"); // Assuming this key has a French translation
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("ValeurAttendue", result); // Replace "ValeurAttendue" with the actual expected value for the resource key in French
+    }
+
+    [Fact]
+    public void GetResource_EmptyKey_ReturnsNull()
+    {
+        // Arrange
+        string resourceKey = string.Empty;
+        CultureInfo culture = new CultureInfo("en-US");
+
+        // Act
+        string result = Resources.GetResource(resourceKey, culture);
+
+        // Assert
+        Assert.Null(result);
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 229
+Modification successful! - new_tests - code
+
+
+Command: cat -n Humanizer.Tests/ResourceKeyTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test Humanizer.Tests/Humanizer.Tests.csproj --filter Humanizer.Tests.ResourceKeyTests --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using Humanizer.Localisation;
+     2	using Xunit.Extensions;
+     3	using System.Collections.Generic;
+     4	using System.Globalization; // For CultureInfo
+     5	using Xunit;
+     6	using Xunit; // For Xunit testing framework
+     7	
+     8	namespace Humanizer.Tests
+     9	{
+    10	
+    11	public class ResourceKeyTests
+    12	{
+    13	    [Fact]
+    14	    public void GetResource_Test_1()
+    15	{
+    16	        // Arrange
+    17	        string resourceKey = "SomeResourceKey";
+    18	        CultureInfo culture = new CultureInfo("en-US");
+    19	
+    20	        // Act
+    21	        string result = Resources.GetResource(resourceKey, culture);
+    22	
+    23	        // Assert
+    24	        Assert.NotNull(result);
+    25	        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    26	    }
+    27	
+    28	    [Fact]
+    29	    public void GetResource_NullCulture_ReturnsDefaultCultureResource()
+    30	    {
+    31	        // Arrange
+    32	        string resourceKey = "SomeResourceKey";
+    33	
+    34	        // Act
+    35	        string result = Resources.GetResource(resourceKey);
+    36	
+    37	        // Assert
+    38	        Assert.NotNull(result);
+    39	        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    40	    }
+    41	
+    42	    [Fact]
+    43	    public void GetResource_InvalidKey_ReturnsNull()
+    44	    {
+    45	        // Arrange
+    46	        string resourceKey = "InvalidResourceKey";
+    47	        CultureInfo culture = new CultureInfo("en-US");
+    48	
+    49	        // Act
+    50	        string result = Resources.GetResource(resourceKey, culture);
+    51	
+    52	        // Assert
+    53	        Assert.Null(result);
+    54	    }
+    55	
+    56	    [Fact]
+    57	    public void GetResource_ValidKeyWithDifferentCulture_ReturnsLocalizedResource()
+    58	    {
+    59	        // Arrange
+    60	        string resourceKey = "SomeResourceKey";
+    61	        CultureInfo culture = new CultureInfo("fr-FR"); // Assuming this key has a French translation
+    62	
+    63	        // Act
+    64	        string result = Resources.GetResource(resourceKey, culture);
+    65	
+    66	        // Assert
+    67	        Assert.NotNull(result);
+    68	        Assert.Equal("ValeurAttendue", result); // Replace "ValeurAttendue" with the actual expected value for the resource key in French
+    69	    }
+    70	
+    71	    [Fact]
+    72	    public void GetResource_EmptyKey_ReturnsNull()
+    73	    {
+    74	        // Arrange
+    75	        string resourceKey = string.Empty;
+    76	        CultureInfo culture = new CultureInfo("en-US");
+    77	
+    78	        // Act
+    79	        string result = Resources.GetResource(resourceKey, culture);
+    80	
+    81	        // Assert
+    82	        Assert.Null(result);
+    83	    }
+    84	}}  Determining projects to restore...
+  Nothing to do. None of the projects specified contain packages to restore.
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 229
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n Humanizer.Tests/ResourceKeyTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test Humanizer.Tests/Humanizer.Tests.csproj --filter Humanizer.Tests.ResourceKeyTests --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using Humanizer.Localisation;
+     2	using Xunit.Extensions;
+     3	using System.Collections.Generic;
+     4	using System.Globalization; // For CultureInfo
+     5	using Xunit;
+     6	using Xunit; // For Xunit testing framework
+     7	
+     8	namespace Humanizer.Tests
+     9	{
+    10	
+    11	public class ResourceKeyTests
+    12	{
+    13	    [Fact]
+    14	    public void GetResource_Test_1()
+    15	{
+    16	        // Arrange
+    17	        string resourceKey = "SomeResourceKey";
+    18	        CultureInfo culture = new CultureInfo("en-US");
+    19	
+    20	        // Act
+    21	        string result = Resources.GetResource(resourceKey, culture);
+    22	
+    23	        // Assert
+    24	        Assert.NotNull(result);
+    25	        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    26	    }
+    27	
+    28	    [Fact]
+    29	    public void GetResource_NullCulture_ReturnsDefaultCultureResource()
+    30	    {
+    31	        // Arrange
+    32	        string resourceKey = "SomeResourceKey";
+    33	
+    34	        // Act
+    35	        string result = Resources.GetResource(resourceKey);
+    36	
+    37	        // Assert
+    38	        Assert.NotNull(result);
+    39	        Assert.Equal("ExpectedValue", result); // Replace "ExpectedValue" with the actual expected value for the resource key
+    40	    }
+    41	
+    42	    [Fact]
+    43	    public void GetResource_InvalidKey_ReturnsNull()
+    44	    {
+    45	        // Arrange
+    46	        string resourceKey = "InvalidResourceKey";
+    47	        CultureInfo culture = new CultureInfo("en-US");
+    48	
+    49	        // Act
+    50	        string result = Resources.GetResource(resourceKey, culture);
+    51	
+    52	        // Assert
+    53	        Assert.Null(result);
+    54	    }
+    55	
+    56	    [Fact]
+    57	    public void GetResource_ValidKeyWithDifferentCulture_ReturnsLocalizedResource()
+    58	    {
+    59	        // Arrange
+    60	        string resourceKey = "SomeResourceKey";
+    61	        CultureInfo culture = new CultureInfo("fr-FR"); // Assuming this key has a French translation
+    62	
+    63	        // Act
+    64	        string result = Resources.GetResource(resourceKey, culture);
+    65	
+    66	        // Assert
+    67	        Assert.NotNull(result);
+    68	        Assert.Equal("ValeurAttendue", result); // Replace "ValeurAttendue" with the actual expected value for the resource key in French
+    69	    }
+    70	
+    71	    [Fact]
+    72	    public void GetResource_EmptyKey_ReturnsNull()
+    73	    {
+    74	        // Arrange
+    75	        string resourceKey = string.Empty;
+    76	        CultureInfo culture = new CultureInfo("en-US");
+    77	
+    78	        // Act
+    79	        string result = Resources.GetResource(resourceKey, culture);
+    80	
+    81	        // Assert
+    82	        Assert.Null(result);
+    83	    }
+    84	}}  Determining projects to restore...
+  Nothing to do. None of the projects specified contain packages to restore.
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

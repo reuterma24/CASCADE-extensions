@@ -1,0 +1,293 @@
+verify returned with:255
+
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ol><li>Item 1</li></ol>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<div><li>Item 1</li></div>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsFalse(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("div", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li><li>Item 2</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(3, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[2].TagName);
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 13, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 16, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 32, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 48, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 64, Column: 5
+
+
+
+verify returned with:0
+ 
+Syntactically correct
+
+
+verify returned with:255
+
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ol><li>Item 1</li></ol>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<div><li>Item 1</li></div>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsFalse(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("div", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li><li>Item 2</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(3, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[2].TagName);
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 13, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 16, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 32, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 48, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 64, Column: 5
+
+
+
+verify returned with:0
+using System;
+using AngleSharp.Core.Tests.Mocks;
+using AngleSharp.Dom;
+using AngleSharp.Parser.Html;
+using NUnit.Framework;
+
+namespace AngleSharp.Core.Tests
+{
+
+[TestFixture]
+public class HtmlScript
+{
+    [Test]
+    public void InBodyStartTagListItem_Test_1()
+{
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ol><li>Item 1</li></ol>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<div><li>Item 1</li></div>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsFalse(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("div", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(1, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[0].TagName);
+    }
+
+    [Test]
+    public void InBodyStartTagListItem_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<ul><li>Item 1</li><li>Item 2</li></ul>");
+        var token = new HtmlTagToken("li", HtmlTagTokenType.StartTag);
+        
+        // Act
+        parser.InBodyStartTagListItem(token);
+        
+        // Assert
+        Assert.IsTrue(parser.IsInListItemScope());
+        Assert.AreEqual(3, parser.OpenElements.Count);
+        Assert.AreEqual("li", parser.OpenElements[2].TagName);
+    }
+}}
+Syntactically correct
+
+

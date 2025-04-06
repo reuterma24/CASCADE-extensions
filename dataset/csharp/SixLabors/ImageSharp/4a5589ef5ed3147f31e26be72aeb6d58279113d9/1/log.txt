@@ -1,0 +1,342 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:17.64
+
+verify returned with:255
+
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.NotNull(pngMetadata);
+    Assert.Equal(expectedWidth, pngMetadata.Width);
+    Assert.Equal(expectedHeight, pngMetadata.Height);
+    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+}
+
+[Fact]
+public void ReadHeaderChunk_InvalidData_ThrowsException()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* invalid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act & Assert
+    Assert.Throws<InvalidDataException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+}
+
+[Fact]
+public void ReadHeaderChunk_EmptyData_ThrowsException()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = ReadOnlySpan<byte>.Empty;
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act & Assert
+    Assert.Throws<ArgumentException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+}
+
+[Fact]
+public void ReadHeaderChunk_ValidData_SetsMetadataCorrectly()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.Equal(expectedBitDepth, pngMetadata.BitDepth);
+    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+    Assert.Equal(expectedCompressionMethod, pngMetadata.CompressionMethod);
+    Assert.Equal(expectedFilterMethod, pngMetadata.FilterMethod);
+    Assert.Equal(expectedInterlaceMethod, pngMetadata.InterlaceMethod);
+}
+
+[Fact]
+public void ReadHeaderChunk_ValidInterlacedData_SetsInterlaceMethod()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid interlaced header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.Equal(PngInterlaceMethod.Adam7, pngMetadata.InterlaceMethod);
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 15, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 18, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 42, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 61, Column: 1
+
+
+
+verify returned with:0
+using ImageSharp;
+using System.IO; // For InvalidDataException
+using System;
+using ImageSharp; // Assuming PngMetadata and PngDecoderCore are part of the ImageSharp library
+using Xunit; // For the [Fact] attribute and testing framework
+using ImageSharp.Formats; // If PngMetadata is defined in this namespace
+
+namespace ImageSharpIsolated.Tests
+{
+
+public class PngDecoderTests
+{
+    [Fact]
+    public void ReadHeaderChunk_Test_1()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.NotNull(pngMetadata);
+    Assert.Equal(expectedWidth, pngMetadata.Width);
+    Assert.Equal(expectedHeight, pngMetadata.Height);
+    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+}
+
+[Fact]
+public void ReadHeaderChunk_InvalidData_ThrowsException()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* invalid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act & Assert
+    Assert.Throws<InvalidDataException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+}
+
+[Fact]
+public void ReadHeaderChunk_EmptyData_ThrowsException()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = ReadOnlySpan<byte>.Empty;
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act & Assert
+    Assert.Throws<ArgumentException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+}
+
+[Fact]
+public void ReadHeaderChunk_ValidData_SetsMetadataCorrectly()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.Equal(expectedBitDepth, pngMetadata.BitDepth);
+    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+    Assert.Equal(expectedCompressionMethod, pngMetadata.CompressionMethod);
+    Assert.Equal(expectedFilterMethod, pngMetadata.FilterMethod);
+    Assert.Equal(expectedInterlaceMethod, pngMetadata.InterlaceMethod);
+}
+
+[Fact]
+public void ReadHeaderChunk_ValidInterlacedData_SetsInterlaceMethod()
+{
+    // Arrange
+    var pngMetadata = new PngMetadata();
+    var data = new ReadOnlySpan<byte>(new byte[] { /* valid interlaced header data */ });
+    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+
+    // Act
+    decoder.ReadHeaderChunk(pngMetadata, data);
+
+    // Assert
+    Assert.Equal(PngInterlaceMethod.Adam7, pngMetadata.InterlaceMethod);
+}}}
+Syntactically correct
+
+
+Modifying context with id: 1118
+Modification successful! - new_tests - code
+
+
+Command: cat -n ImageSharpIsolated.Tests/PngDecoderTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj --filter ImageSharpIsolated.Tests.PngDecoderTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ImageSharp;
+     2	using System.IO; // For InvalidDataException
+     3	using System;
+     4	using ImageSharp; // Assuming PngMetadata and PngDecoderCore are part of the ImageSharp library
+     5	using Xunit; // For the [Fact] attribute and testing framework
+     6	using ImageSharp.Formats; // If PngMetadata is defined in this namespace
+     7	
+     8	namespace ImageSharpIsolated.Tests
+     9	{
+    10	
+    11	public class PngDecoderTests
+    12	{
+    13	    [Fact]
+    14	    public void ReadHeaderChunk_Test_1()
+    15	{
+    16	    // Arrange
+    17	    var pngMetadata = new PngMetadata();
+    18	    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    19	    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+    20	
+    21	    // Act
+    22	    decoder.ReadHeaderChunk(pngMetadata, data);
+    23	
+    24	    // Assert
+    25	    Assert.NotNull(pngMetadata);
+    26	    Assert.Equal(expectedWidth, pngMetadata.Width);
+    27	    Assert.Equal(expectedHeight, pngMetadata.Height);
+    28	    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+    29	}
+    30	
+    31	[Fact]
+    32	public void ReadHeaderChunk_InvalidData_ThrowsException()
+    33	{
+    34	    // Arrange
+    35	    var pngMetadata = new PngMetadata();
+    36	    var data = new ReadOnlySpan<byte>(new byte[] { /* invalid header data */ });
+    37	    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+    38	
+    39	    // Act & Assert
+    40	    Assert.Throws<InvalidDataException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+    41	}
+    42	
+    43	[Fact]
+    44	public void ReadHeaderChunk_EmptyData_ThrowsException()
+    45	{
+    46	    // Arrange
+    47	    var pngMetadata = new PngMetadata();
+    48	    var data = ReadOnlySpan<byte>.Empty;
+    49	    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+    50	
+    51	    // Act & Assert
+    52	    Assert.Throws<ArgumentException>(() => decoder.ReadHeaderChunk(pngMetadata, data));
+    53	}
+    54	
+    55	[Fact]
+    56	public void ReadHeaderChunk_ValidData_SetsMetadataCorrectly()
+    57	{
+    58	    // Arrange
+    59	    var pngMetadata = new PngMetadata();
+    60	    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });
+    61	    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+    62	
+    63	    // Act
+    64	    decoder.ReadHeaderChunk(pngMetadata, data);
+    65	
+    66	    // Assert
+    67	    Assert.Equal(expectedBitDepth, pngMetadata.BitDepth);
+    68	    Assert.Equal(expectedColorType, pngMetadata.ColorType);
+    69	    Assert.Equal(expectedCompressionMethod, pngMetadata.CompressionMethod);
+    70	    Assert.Equal(expectedFilterMethod, pngMetadata.FilterMethod);
+    71	    Assert.Equal(expectedInterlaceMethod, pngMetadata.InterlaceMethod);
+    72	}
+    73	
+    74	[Fact]
+    75	public void ReadHeaderChunk_ValidInterlacedData_SetsInterlaceMethod()
+    76	{
+    77	    // Arrange
+    78	    var pngMetadata = new PngMetadata();
+    79	    var data = new ReadOnlySpan<byte>(new byte[] { /* valid interlaced header data */ });
+    80	    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());
+    81	
+    82	    // Act
+    83	    decoder.ReadHeaderChunk(pngMetadata, data);
+    84	
+    85	    // Assert
+    86	    Assert.Equal(PngInterlaceMethod.Adam7, pngMetadata.InterlaceMethod);
+    87	}}}  Determining projects to restore...
+  Restored /root/ImageSharp/ImageSharp.csproj (in 2.75 sec).
+  Restored /root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj (in 5.29 sec).
+/root/ImageSharp/PngDecoder.cs(8,23): warning CS8618: Non-nullable field 'header' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [/root/ImageSharp/ImageSharp.csproj]
+  ImageSharp -> /root/ImageSharp/bin/Debug/net9.0/ImageSharp.dll
+/root/ImageSharpIsolated.Tests/PngDecoderTests.cs(4,7): warning CS0105: The using directive for 'ImageSharp' appeared previously in this namespace [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+/root/ImageSharpIsolated.Tests/PngDecoderTests.cs(6,18): error CS0234: The type or namespace name 'Formats' does not exist in the namespace 'ImageSharp' (are you missing an assembly reference?) [/root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 1118
+
+Unhandled exception. System.InvalidOperationException: File does not contain class of method!
+   at Modifier.ReplaceMethodBody(Context context, String methodBody, String projectDir) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 62
+   at Modifier.ReplaceMethod(String projectDir, Context context) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 51
+   at Modifier.Modify(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 33
+   at Program.Main(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Program.cs:line 19
+   at Program.<Main>(String[] args)
+

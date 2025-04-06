@@ -1,0 +1,1317 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:32.91
+
+verify returned with:255
+
+    // Test for a simple file name
+    string input = "file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_2()
+{
+    // Test for a file name with leading slashes
+    string input = "//folder/file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_3()
+{
+    // Test for a file name with backslashes
+    string input = "folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_4()
+{
+    // Test for a UNC path
+    string input = "\\\\server\\share\\file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_5()
+{
+    // Test for a device name
+    string input = "c:\\folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_6()
+{
+    // Test for a name with multiple leading slashes
+    string input = "///folder///file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_7()
+{
+    // Test for an empty string
+    string input = "";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_8()
+{
+    // Test for a name with only slashes
+    string input = "////";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_9()
+{
+    // Test for a name with mixed slashes
+    string input = "folder\\subfolder/file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_10()
+{
+    // Test for a long path
+    string input = "c:\\folder\\subfolder\\file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 7, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 10, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 20, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 40, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 50, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 70, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 80, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 90, Column: 1
+
+
+
+verify returned with:0
+using ICSharpCode.SharpZipLib.Zip; // For the ZipEntry class
+using NUnit.Framework; // For the NUnit testing framework
+using NUnit.Framework;
+using ICSharpCode.SharpZipLib.Zip;
+using System;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Core;
+using System.IO;
+
+namespace ICSharpCode.SharpZipLib.Tests.Zip
+{
+
+[TestFixture]
+public class StreamHandling
+{
+    [Test]
+    public void CleanName_Test_1()
+{
+    // Test for a simple file name
+    string input = "file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_2()
+{
+    // Test for a file name with leading slashes
+    string input = "//folder/file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_3()
+{
+    // Test for a file name with backslashes
+    string input = "folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_4()
+{
+    // Test for a UNC path
+    string input = "\\\\server\\share\\file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_5()
+{
+    // Test for a device name
+    string input = "c:\\folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_6()
+{
+    // Test for a name with multiple leading slashes
+    string input = "///folder///file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_7()
+{
+    // Test for an empty string
+    string input = "";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_8()
+{
+    // Test for a name with only slashes
+    string input = "////";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_9()
+{
+    // Test for a name with mixed slashes
+    string input = "folder\\subfolder/file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_10()
+{
+    // Test for a long path
+    string input = "c:\\folder\\subfolder\\file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}}}
+Syntactically correct
+
+
+Modifying context with id: 458
+Modification successful! - new_tests - code
+
+
+Command: cat -n test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj --filter ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ICSharpCode.SharpZipLib.Zip; // For the ZipEntry class
+     2	using NUnit.Framework; // For the NUnit testing framework
+     3	using NUnit.Framework;
+     4	using ICSharpCode.SharpZipLib.Zip;
+     5	using System;
+     6	using ICSharpCode.SharpZipLib.Tests.TestSupport;
+     7	using ICSharpCode.SharpZipLib.Core;
+     8	using System.IO;
+     9	
+    10	namespace ICSharpCode.SharpZipLib.Tests.Zip
+    11	{
+    12	
+    13	[TestFixture]
+    14	public class StreamHandling
+    15	{
+    16	    [Test]
+    17	    public void CleanName_Test_1()
+    18	{
+    19	    // Test for a simple file name
+    20	    string input = "file.txt";
+    21	    string expected = "file.txt";
+    22	    string actual = ZipEntry.CleanName(input);
+    23	    Assert.AreEqual(expected, actual);
+    24	}
+    25	
+    26	[Test]
+    27	public void CleanName_Test_2()
+    28	{
+    29	    // Test for a file name with leading slashes
+    30	    string input = "//folder/file.txt";
+    31	    string expected = "folder/file.txt";
+    32	    string actual = ZipEntry.CleanName(input);
+    33	    Assert.AreEqual(expected, actual);
+    34	}
+    35	
+    36	[Test]
+    37	public void CleanName_Test_3()
+    38	{
+    39	    // Test for a file name with backslashes
+    40	    string input = "folder\\file.txt";
+    41	    string expected = "folder/file.txt";
+    42	    string actual = ZipEntry.CleanName(input);
+    43	    Assert.AreEqual(expected, actual);
+    44	}
+    45	
+    46	[Test]
+    47	public void CleanName_Test_4()
+    48	{
+    49	    // Test for a UNC path
+    50	    string input = "\\\\server\\share\\file.txt";
+    51	    string expected = "file.txt";
+    52	    string actual = ZipEntry.CleanName(input);
+    53	    Assert.AreEqual(expected, actual);
+    54	}
+    55	
+    56	[Test]
+    57	public void CleanName_Test_5()
+    58	{
+    59	    // Test for a device name
+    60	    string input = "c:\\folder\\file.txt";
+    61	    string expected = "folder/file.txt";
+    62	    string actual = ZipEntry.CleanName(input);
+    63	    Assert.AreEqual(expected, actual);
+    64	}
+    65	
+    66	[Test]
+    67	public void CleanName_Test_6()
+    68	{
+    69	    // Test for a name with multiple leading slashes
+    70	    string input = "///folder///file.txt";
+    71	    string expected = "folder/file.txt";
+    72	    string actual = ZipEntry.CleanName(input);
+    73	    Assert.AreEqual(expected, actual);
+    74	}
+    75	
+    76	[Test]
+    77	public void CleanName_Test_7()
+    78	{
+    79	    // Test for an empty string
+    80	    string input = "";
+    81	    string expected = "";
+    82	    string actual = ZipEntry.CleanName(input);
+    83	    Assert.AreEqual(expected, actual);
+    84	}
+    85	
+    86	[Test]
+    87	public void CleanName_Test_8()
+    88	{
+    89	    // Test for a name with only slashes
+    90	    string input = "////";
+    91	    string expected = "";
+    92	    string actual = ZipEntry.CleanName(input);
+    93	    Assert.AreEqual(expected, actual);
+    94	}
+    95	
+    96	[Test]
+    97	public void CleanName_Test_9()
+    98	{
+    99	    // Test for a name with mixed slashes
+   100	    string input = "folder\\subfolder/file.txt";
+   101	    string expected = "folder/subfolder/file.txt";
+   102	    string actual = ZipEntry.CleanName(input);
+   103	    Assert.AreEqual(expected, actual);
+   104	}
+   105	
+   106	[Test]
+   107	public void CleanName_Test_10()
+   108	{
+   109	    // Test for a long path
+   110	    string input = "c:\\folder\\subfolder\\file.txt";
+   111	    string expected = "folder/subfolder/file.txt";
+   112	    string actual = ZipEntry.CleanName(input);
+   113	    Assert.AreEqual(expected, actual);
+   114	}}}  Determining projects to restore...
+  Restored /root/src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj (in 11.91 sec).
+  Restored /root/test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj (in 12.49 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:45.73
+
+verify returned with:255
+
+    // Test for a simple file name
+    string input = "file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_2()
+{
+    // Test for a file name with leading slashes
+    string input = "//folder/file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_3()
+{
+    // Test for a file name with backslashes
+    string input = "folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_4()
+{
+    // Test for a UNC path
+    string input = "\\\\server\\share\\file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_5()
+{
+    // Test for a device name
+    string input = "c:\\folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_6()
+{
+    // Test for a name with multiple leading slashes
+    string input = "///folder///file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_7()
+{
+    // Test for an empty string
+    string input = "";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_8()
+{
+    // Test for a name with only slashes
+    string input = "////";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_9()
+{
+    // Test for a name with mixed slashes
+    string input = "folder\\subfolder/file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_10()
+{
+    // Test for a long path
+    string input = "c:\\folder\\subfolder\\file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 7, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 10, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 20, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 40, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 50, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 70, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 80, Column: 1
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 90, Column: 1
+
+
+
+verify returned with:0
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Zip;
+using NUnit.Framework;
+using System;
+using System.IO;
+
+namespace ICSharpCode.SharpZipLib.Tests.Zip
+{
+
+[TestFixture]
+public class StreamHandling
+{
+    [Test]
+    public void CleanName_Test_1()
+{
+    // Test for a simple file name
+    string input = "file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_2()
+{
+    // Test for a file name with leading slashes
+    string input = "//folder/file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_3()
+{
+    // Test for a file name with backslashes
+    string input = "folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_4()
+{
+    // Test for a UNC path
+    string input = "\\\\server\\share\\file.txt";
+    string expected = "file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_5()
+{
+    // Test for a device name
+    string input = "c:\\folder\\file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_6()
+{
+    // Test for a name with multiple leading slashes
+    string input = "///folder///file.txt";
+    string expected = "folder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_7()
+{
+    // Test for an empty string
+    string input = "";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_8()
+{
+    // Test for a name with only slashes
+    string input = "////";
+    string expected = "";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_9()
+{
+    // Test for a name with mixed slashes
+    string input = "folder\\subfolder/file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}
+
+[Test]
+public void CleanName_Test_10()
+{
+    // Test for a long path
+    string input = "c:\\folder\\subfolder\\file.txt";
+    string expected = "folder/subfolder/file.txt";
+    string actual = ZipEntry.CleanName(input);
+    Assert.AreEqual(expected, actual);
+}}}
+Syntactically correct
+
+
+Modifying context with id: 458
+Modification successful! - new_tests - code
+
+
+Command: cat -n test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj --filter ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ICSharpCode.SharpZipLib.Core;
+     2	using ICSharpCode.SharpZipLib.Tests.TestSupport;
+     3	using ICSharpCode.SharpZipLib.Zip;
+     4	using NUnit.Framework;
+     5	using System;
+     6	using System.IO;
+     7	
+     8	namespace ICSharpCode.SharpZipLib.Tests.Zip
+     9	{
+    10	
+    11	[TestFixture]
+    12	public class StreamHandling
+    13	{
+    14	    [Test]
+    15	    public void CleanName_Test_1()
+    16	{
+    17	    // Test for a simple file name
+    18	    string input = "file.txt";
+    19	    string expected = "file.txt";
+    20	    string actual = ZipEntry.CleanName(input);
+    21	    Assert.AreEqual(expected, actual);
+    22	}
+    23	
+    24	[Test]
+    25	public void CleanName_Test_2()
+    26	{
+    27	    // Test for a file name with leading slashes
+    28	    string input = "//folder/file.txt";
+    29	    string expected = "folder/file.txt";
+    30	    string actual = ZipEntry.CleanName(input);
+    31	    Assert.AreEqual(expected, actual);
+    32	}
+    33	
+    34	[Test]
+    35	public void CleanName_Test_3()
+    36	{
+    37	    // Test for a file name with backslashes
+    38	    string input = "folder\\file.txt";
+    39	    string expected = "folder/file.txt";
+    40	    string actual = ZipEntry.CleanName(input);
+    41	    Assert.AreEqual(expected, actual);
+    42	}
+    43	
+    44	[Test]
+    45	public void CleanName_Test_4()
+    46	{
+    47	    // Test for a UNC path
+    48	    string input = "\\\\server\\share\\file.txt";
+    49	    string expected = "file.txt";
+    50	    string actual = ZipEntry.CleanName(input);
+    51	    Assert.AreEqual(expected, actual);
+    52	}
+    53	
+    54	[Test]
+    55	public void CleanName_Test_5()
+    56	{
+    57	    // Test for a device name
+    58	    string input = "c:\\folder\\file.txt";
+    59	    string expected = "folder/file.txt";
+    60	    string actual = ZipEntry.CleanName(input);
+    61	    Assert.AreEqual(expected, actual);
+    62	}
+    63	
+    64	[Test]
+    65	public void CleanName_Test_6()
+    66	{
+    67	    // Test for a name with multiple leading slashes
+    68	    string input = "///folder///file.txt";
+    69	    string expected = "folder/file.txt";
+    70	    string actual = ZipEntry.CleanName(input);
+    71	    Assert.AreEqual(expected, actual);
+    72	}
+    73	
+    74	[Test]
+    75	public void CleanName_Test_7()
+    76	{
+    77	    // Test for an empty string
+    78	    string input = "";
+    79	    string expected = "";
+    80	    string actual = ZipEntry.CleanName(input);
+    81	    Assert.AreEqual(expected, actual);
+    82	}
+    83	
+    84	[Test]
+    85	public void CleanName_Test_8()
+    86	{
+    87	    // Test for a name with only slashes
+    88	    string input = "////";
+    89	    string expected = "";
+    90	    string actual = ZipEntry.CleanName(input);
+    91	    Assert.AreEqual(expected, actual);
+    92	}
+    93	
+    94	[Test]
+    95	public void CleanName_Test_9()
+    96	{
+    97	    // Test for a name with mixed slashes
+    98	    string input = "folder\\subfolder/file.txt";
+    99	    string expected = "folder/subfolder/file.txt";
+   100	    string actual = ZipEntry.CleanName(input);
+   101	    Assert.AreEqual(expected, actual);
+   102	}
+   103	
+   104	[Test]
+   105	public void CleanName_Test_10()
+   106	{
+   107	    // Test for a long path
+   108	    string input = "c:\\folder\\subfolder\\file.txt";
+   109	    string expected = "folder/subfolder/file.txt";
+   110	    string actual = ZipEntry.CleanName(input);
+   111	    Assert.AreEqual(expected, actual);
+   112	}}}  Determining projects to restore...
+  Restored /root/src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj (in 12.46 sec).
+  Restored /root/test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj (in 13.31 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:46.14
+
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:01:33.71
+
+Modifying context with id: 458
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj --filter ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ICSharpCode.SharpZipLib.Core;
+     2	using ICSharpCode.SharpZipLib.Tests.TestSupport;
+     3	using ICSharpCode.SharpZipLib.Zip;
+     4	using NUnit.Framework;
+     5	using System;
+     6	using System.IO;
+     7	
+     8	namespace ICSharpCode.SharpZipLib.Tests.Zip
+     9	{
+    10	
+    11	[TestFixture]
+    12	public class StreamHandling
+    13	{
+    14	    [Test]
+    15	    public void CleanName_Test_1()
+    16	{
+    17	    // Test for a simple file name
+    18	    string input = "file.txt";
+    19	    string expected = "file.txt";
+    20	    string actual = ZipEntry.CleanName(input);
+    21	    Assert.AreEqual(expected, actual);
+    22	}
+    23	
+    24	[Test]
+    25	public void CleanName_Test_2()
+    26	{
+    27	    // Test for a file name with leading slashes
+    28	    string input = "//folder/file.txt";
+    29	    string expected = "folder/file.txt";
+    30	    string actual = ZipEntry.CleanName(input);
+    31	    Assert.AreEqual(expected, actual);
+    32	}
+    33	
+    34	[Test]
+    35	public void CleanName_Test_3()
+    36	{
+    37	    // Test for a file name with backslashes
+    38	    string input = "folder\\file.txt";
+    39	    string expected = "folder/file.txt";
+    40	    string actual = ZipEntry.CleanName(input);
+    41	    Assert.AreEqual(expected, actual);
+    42	}
+    43	
+    44	[Test]
+    45	public void CleanName_Test_4()
+    46	{
+    47	    // Test for a UNC path
+    48	    string input = "\\\\server\\share\\file.txt";
+    49	    string expected = "file.txt";
+    50	    string actual = ZipEntry.CleanName(input);
+    51	    Assert.AreEqual(expected, actual);
+    52	}
+    53	
+    54	[Test]
+    55	public void CleanName_Test_5()
+    56	{
+    57	    // Test for a device name
+    58	    string input = "c:\\folder\\file.txt";
+    59	    string expected = "folder/file.txt";
+    60	    string actual = ZipEntry.CleanName(input);
+    61	    Assert.AreEqual(expected, actual);
+    62	}
+    63	
+    64	[Test]
+    65	public void CleanName_Test_6()
+    66	{
+    67	    // Test for a name with multiple leading slashes
+    68	    string input = "///folder///file.txt";
+    69	    string expected = "folder/file.txt";
+    70	    string actual = ZipEntry.CleanName(input);
+    71	    Assert.AreEqual(expected, actual);
+    72	}
+    73	
+    74	[Test]
+    75	public void CleanName_Test_7()
+    76	{
+    77	    // Test for an empty string
+    78	    string input = "";
+    79	    string expected = "";
+    80	    string actual = ZipEntry.CleanName(input);
+    81	    Assert.AreEqual(expected, actual);
+    82	}
+    83	
+    84	[Test]
+    85	public void CleanName_Test_8()
+    86	{
+    87	    // Test for a name with only slashes
+    88	    string input = "////";
+    89	    string expected = "";
+    90	    string actual = ZipEntry.CleanName(input);
+    91	    Assert.AreEqual(expected, actual);
+    92	}
+    93	
+    94	[Test]
+    95	public void CleanName_Test_9()
+    96	{
+    97	    // Test for a name with mixed slashes
+    98	    string input = "folder\\subfolder/file.txt";
+    99	    string expected = "folder/subfolder/file.txt";
+   100	    string actual = ZipEntry.CleanName(input);
+   101	    Assert.AreEqual(expected, actual);
+   102	}
+   103	
+   104	[Test]
+   105	public void CleanName_Test_10()
+   106	{
+   107	    // Test for a long path
+   108	    string input = "c:\\folder\\subfolder\\file.txt";
+   109	    string expected = "folder/subfolder/file.txt";
+   110	    string actual = ZipEntry.CleanName(input);
+   111	    Assert.AreEqual(expected, actual);
+   112	}}}  Determining projects to restore...
+  Restored /root/src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj (in 8.2 sec).
+  Restored /root/test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj (in 13.63 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:43.97
+
+Modifying context with id: 458
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj --filter ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ICSharpCode.SharpZipLib.Core;
+     2	using ICSharpCode.SharpZipLib.Tests.TestSupport;
+     3	using ICSharpCode.SharpZipLib.Zip;
+     4	using NUnit.Framework;
+     5	using System;
+     6	using System.IO;
+     7	
+     8	namespace ICSharpCode.SharpZipLib.Tests.Zip
+     9	{
+    10	
+    11	[TestFixture]
+    12	public class StreamHandling
+    13	{
+    14	    [Test]
+    15	    public void CleanName_Test_1()
+    16	{
+    17	    // Test for a simple file name
+    18	    string input = "file.txt";
+    19	    string expected = "file.txt";
+    20	    string actual = ZipEntry.CleanName(input);
+    21	    Assert.AreEqual(expected, actual);
+    22	}
+    23	
+    24	[Test]
+    25	public void CleanName_Test_2()
+    26	{
+    27	    // Test for a file name with leading slashes
+    28	    string input = "//folder/file.txt";
+    29	    string expected = "folder/file.txt";
+    30	    string actual = ZipEntry.CleanName(input);
+    31	    Assert.AreEqual(expected, actual);
+    32	}
+    33	
+    34	[Test]
+    35	public void CleanName_Test_3()
+    36	{
+    37	    // Test for a file name with backslashes
+    38	    string input = "folder\\file.txt";
+    39	    string expected = "folder/file.txt";
+    40	    string actual = ZipEntry.CleanName(input);
+    41	    Assert.AreEqual(expected, actual);
+    42	}
+    43	
+    44	[Test]
+    45	public void CleanName_Test_4()
+    46	{
+    47	    // Test for a UNC path
+    48	    string input = "\\\\server\\share\\file.txt";
+    49	    string expected = "file.txt";
+    50	    string actual = ZipEntry.CleanName(input);
+    51	    Assert.AreEqual(expected, actual);
+    52	}
+    53	
+    54	[Test]
+    55	public void CleanName_Test_5()
+    56	{
+    57	    // Test for a device name
+    58	    string input = "c:\\folder\\file.txt";
+    59	    string expected = "folder/file.txt";
+    60	    string actual = ZipEntry.CleanName(input);
+    61	    Assert.AreEqual(expected, actual);
+    62	}
+    63	
+    64	[Test]
+    65	public void CleanName_Test_6()
+    66	{
+    67	    // Test for a name with multiple leading slashes
+    68	    string input = "///folder///file.txt";
+    69	    string expected = "folder/file.txt";
+    70	    string actual = ZipEntry.CleanName(input);
+    71	    Assert.AreEqual(expected, actual);
+    72	}
+    73	
+    74	[Test]
+    75	public void CleanName_Test_7()
+    76	{
+    77	    // Test for an empty string
+    78	    string input = "";
+    79	    string expected = "";
+    80	    string actual = ZipEntry.CleanName(input);
+    81	    Assert.AreEqual(expected, actual);
+    82	}
+    83	
+    84	[Test]
+    85	public void CleanName_Test_8()
+    86	{
+    87	    // Test for a name with only slashes
+    88	    string input = "////";
+    89	    string expected = "";
+    90	    string actual = ZipEntry.CleanName(input);
+    91	    Assert.AreEqual(expected, actual);
+    92	}
+    93	
+    94	[Test]
+    95	public void CleanName_Test_9()
+    96	{
+    97	    // Test for a name with mixed slashes
+    98	    string input = "folder\\subfolder/file.txt";
+    99	    string expected = "folder/subfolder/file.txt";
+   100	    string actual = ZipEntry.CleanName(input);
+   101	    Assert.AreEqual(expected, actual);
+   102	}
+   103	
+   104	[Test]
+   105	public void CleanName_Test_10()
+   106	{
+   107	    // Test for a long path
+   108	    string input = "c:\\folder\\subfolder\\file.txt";
+   109	    string expected = "folder/subfolder/file.txt";
+   110	    string actual = ZipEntry.CleanName(input);
+   111	    Assert.AreEqual(expected, actual);
+   112	}}}  Determining projects to restore...
+  Restored /root/src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj (in 9.11 sec).
+  Restored /root/test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj (in 12.46 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+Installing workloads: 
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Installing workload manifest microsoft.net.sdk.android version 32.0.509…
+Installing workload manifest microsoft.net.sdk.ios version 16.4.60…
+Installing workload manifest microsoft.net.sdk.maccatalyst version 16.4.60…
+Installing workload manifest microsoft.net.sdk.macos version 13.3.60…
+Installing workload manifest microsoft.net.sdk.maui version 6.0.553…
+Installing workload manifest microsoft.net.sdk.tvos version 16.4.60…
+Installing workload manifest microsoft.net.workload.mono.toolchain version 6.0.36…
+Installing workload manifest microsoft.net.workload.emscripten version 6.0.36…
+Garbage collecting for SDK feature band(s) ...
+
+Successfully installed workload(s) .
+
+MSBuild version 17.3.4+a400405ba for .NET
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+
+Build succeeded.
+
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+/usr/share/dotnet/sdk/6.0.428/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.EolTargetFrameworks.targets(29,5): warning NETSDK1138: The target framework 'netcoreapp2.1' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/dotnet-core-support for more information about the support policy. [/root/benchmark/ICSharpCode.SharpZipLib.Benchmark/ICSharpCode.SharpZipLib.Benchmark.csproj]
+    2 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:01:46.00
+
+Modifying context with id: 458
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj --filter ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling --framework net6.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using ICSharpCode.SharpZipLib.Core;
+     2	using ICSharpCode.SharpZipLib.Tests.TestSupport;
+     3	using ICSharpCode.SharpZipLib.Zip;
+     4	using NUnit.Framework;
+     5	using System;
+     6	using System.IO;
+     7	
+     8	namespace ICSharpCode.SharpZipLib.Tests.Zip
+     9	{
+    10	
+    11	[TestFixture]
+    12	public class StreamHandling
+    13	{
+    14	    [Test]
+    15	    public void CleanName_Test_1()
+    16	{
+    17	    // Test for a simple file name
+    18	    string input = "file.txt";
+    19	    string expected = "file.txt";
+    20	    string actual = ZipEntry.CleanName(input);
+    21	    Assert.AreEqual(expected, actual);
+    22	}
+    23	
+    24	[Test]
+    25	public void CleanName_Test_2()
+    26	{
+    27	    // Test for a file name with leading slashes
+    28	    string input = "//folder/file.txt";
+    29	    string expected = "folder/file.txt";
+    30	    string actual = ZipEntry.CleanName(input);
+    31	    Assert.AreEqual(expected, actual);
+    32	}
+    33	
+    34	[Test]
+    35	public void CleanName_Test_3()
+    36	{
+    37	    // Test for a file name with backslashes
+    38	    string input = "folder\\file.txt";
+    39	    string expected = "folder/file.txt";
+    40	    string actual = ZipEntry.CleanName(input);
+    41	    Assert.AreEqual(expected, actual);
+    42	}
+    43	
+    44	[Test]
+    45	public void CleanName_Test_4()
+    46	{
+    47	    // Test for a UNC path
+    48	    string input = "\\\\server\\share\\file.txt";
+    49	    string expected = "file.txt";
+    50	    string actual = ZipEntry.CleanName(input);
+    51	    Assert.AreEqual(expected, actual);
+    52	}
+    53	
+    54	[Test]
+    55	public void CleanName_Test_5()
+    56	{
+    57	    // Test for a device name
+    58	    string input = "c:\\folder\\file.txt";
+    59	    string expected = "folder/file.txt";
+    60	    string actual = ZipEntry.CleanName(input);
+    61	    Assert.AreEqual(expected, actual);
+    62	}
+    63	
+    64	[Test]
+    65	public void CleanName_Test_6()
+    66	{
+    67	    // Test for a name with multiple leading slashes
+    68	    string input = "///folder///file.txt";
+    69	    string expected = "folder/file.txt";
+    70	    string actual = ZipEntry.CleanName(input);
+    71	    Assert.AreEqual(expected, actual);
+    72	}
+    73	
+    74	[Test]
+    75	public void CleanName_Test_7()
+    76	{
+    77	    // Test for an empty string
+    78	    string input = "";
+    79	    string expected = "";
+    80	    string actual = ZipEntry.CleanName(input);
+    81	    Assert.AreEqual(expected, actual);
+    82	}
+    83	
+    84	[Test]
+    85	public void CleanName_Test_8()
+    86	{
+    87	    // Test for a name with only slashes
+    88	    string input = "////";
+    89	    string expected = "";
+    90	    string actual = ZipEntry.CleanName(input);
+    91	    Assert.AreEqual(expected, actual);
+    92	}
+    93	
+    94	[Test]
+    95	public void CleanName_Test_9()
+    96	{
+    97	    // Test for a name with mixed slashes
+    98	    string input = "folder\\subfolder/file.txt";
+    99	    string expected = "folder/subfolder/file.txt";
+   100	    string actual = ZipEntry.CleanName(input);
+   101	    Assert.AreEqual(expected, actual);
+   102	}
+   103	
+   104	[Test]
+   105	public void CleanName_Test_10()
+   106	{
+   107	    // Test for a long path
+   108	    string input = "c:\\folder\\subfolder\\file.txt";
+   109	    string expected = "folder/subfolder/file.txt";
+   110	    string actual = ZipEntry.CleanName(input);
+   111	    Assert.AreEqual(expected, actual);
+   112	}}}  Determining projects to restore...
+  Restored /root/src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj (in 8.23 sec).
+  Restored /root/test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj (in 14.89 sec).
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+

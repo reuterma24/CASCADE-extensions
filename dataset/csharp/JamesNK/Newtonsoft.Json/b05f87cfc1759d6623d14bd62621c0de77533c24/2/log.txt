@@ -1,0 +1,214 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:14.44
+
+verify returned with:0
+
+using Xunit;
+
+namespace Newtonsoft.Json.Tests
+{
+    public class JValueTests
+    {
+        // Test for CreateUndefined method
+        [Fact]
+        public void CreateUndefined_Test_1()
+        {
+            // Act
+            var result = JValue.CreateUndefined();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(JTokenType.Undefined, result.Type);
+        }
+
+        [Fact]
+        public void CreateUndefined_Test_2()
+        {
+            // Act
+            var result = JValue.CreateUndefined();
+
+            // Assert
+            Assert.IsType<JValue>(result);
+            Assert.Null(result.Value);
+        }
+
+        [Fact]
+        public void CreateUndefined_Test_3()
+        {
+            // Act
+            var result = JValue.CreateUndefined();
+
+            // Assert
+            Assert.True(result.Equals(JValue.CreateUndefined()));
+        }
+
+        [Fact]
+        public void CreateUndefined_Test_4()
+        {
+            // Act
+            var result = JValue.CreateUndefined();
+
+            // Assert
+            Assert.Equal(result.GetHashCode(), JValue.CreateUndefined().GetHashCode());
+        }
+
+        [Fact]
+        public void CreateUndefined_Test_5()
+        {
+            // Act
+            var result = JValue.CreateUndefined();
+
+            // Assert
+            Assert.Equal("undefined", result.ToString());
+        }
+    }
+}
+Syntactically correct
+
+
+Modifying context with id: 926
+Modification successful! - new_tests - code
+
+
+Command: cat -n Newtonsoft.Json.Tests/JValueTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj --filter Newtonsoft.Json.Tests.JValueTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	
+     2	using Xunit;
+     3	
+     4	namespace Newtonsoft.Json.Tests
+     5	{
+     6	    public class JValueTests
+     7	    {
+     8	        // Test for CreateUndefined method
+     9	        [Fact]
+    10	        public void CreateUndefined_Test_1()
+    11	        {
+    12	            // Act
+    13	            var result = JValue.CreateUndefined();
+    14	
+    15	            // Assert
+    16	            Assert.NotNull(result);
+    17	            Assert.Equal(JTokenType.Undefined, result.Type);
+    18	        }
+    19	
+    20	        [Fact]
+    21	        public void CreateUndefined_Test_2()
+    22	        {
+    23	            // Act
+    24	            var result = JValue.CreateUndefined();
+    25	
+    26	            // Assert
+    27	            Assert.IsType<JValue>(result);
+    28	            Assert.Null(result.Value);
+    29	        }
+    30	
+    31	        [Fact]
+    32	        public void CreateUndefined_Test_3()
+    33	        {
+    34	            // Act
+    35	            var result = JValue.CreateUndefined();
+    36	
+    37	            // Assert
+    38	            Assert.True(result.Equals(JValue.CreateUndefined()));
+    39	        }
+    40	
+    41	        [Fact]
+    42	        public void CreateUndefined_Test_4()
+    43	        {
+    44	            // Act
+    45	            var result = JValue.CreateUndefined();
+    46	
+    47	            // Assert
+    48	            Assert.Equal(result.GetHashCode(), JValue.CreateUndefined().GetHashCode());
+    49	        }
+    50	
+    51	        [Fact]
+    52	        public void CreateUndefined_Test_5()
+    53	        {
+    54	            // Act
+    55	            var result = JValue.CreateUndefined();
+    56	
+    57	            // Assert
+    58	            Assert.Equal("undefined", result.ToString());
+    59	        }
+    60	    }
+    61	}  Determining projects to restore...
+  Restored /root/NewtonsoftJson/NewtonsoftJson.csproj (in 2.89 sec).
+  Restored /root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj (in 4.88 sec).
+/root/NewtonsoftJson/JValue.cs(26,32): warning CS8600: Converting null literal or possible null value to non-nullable type. [/root/NewtonsoftJson/NewtonsoftJson.csproj]
+/root/NewtonsoftJson/JValue.cs(27,28): warning CS8600: Converting null literal or possible null value to non-nullable type. [/root/NewtonsoftJson/NewtonsoftJson.csproj]
+/root/NewtonsoftJson/JValue.cs(31,55): warning CS8604: Possible null reference argument for parameter 'value' in 'JTokenType JValue.GetValueType(JTokenType? current, object value)'. [/root/NewtonsoftJson/NewtonsoftJson.csproj]
+/root/NewtonsoftJson/JValue.cs(34,22): warning CS8601: Possible null reference assignment. [/root/NewtonsoftJson/NewtonsoftJson.csproj]
+/root/NewtonsoftJson/JValue.cs(50,27): warning CS8625: Cannot convert null literal to non-nullable reference type. [/root/NewtonsoftJson/NewtonsoftJson.csproj]
+  NewtonsoftJson -> /root/NewtonsoftJson/bin/Debug/net9.0/NewtonsoftJson.dll
+/root/Newtonsoft.Json.Tests/JValueTests.cs(13,26): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(17,26): error CS0103: The name 'JTokenType' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(24,26): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(27,27): error CS0246: The type or namespace name 'JValue' could not be found (are you missing a using directive or an assembly reference?) [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(35,26): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(38,39): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(45,26): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(48,48): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+/root/Newtonsoft.Json.Tests/JValueTests.cs(55,26): error CS0103: The name 'JValue' does not exist in the current context [/root/Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj]
+
+Eval Command: cat $HOME/test_result.trx
+1
+cat: /root/test_result.trx: No such file or directory
+
+Modifying context with id: 926
+
+Unhandled exception. System.IO.DirectoryNotFoundException: Could not find a part of the path '/var/folders/84/pm3zvl915yxcx6mlr7twzxhr0000gn/T/tmp34mxr2at/Newtonsoft.Json/Linq/JValue.cs'.
+   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Encoding encoding, Int32 bufferSize)
+   at System.IO.File.ReadAllText(String path, Encoding encoding)
+   at Modifier.ReplaceMethodBody(Context context, String methodBody, String projectDir) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 56
+   at Modifier.ReplaceMethod(String projectDir, Context context) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 51
+   at Modifier.Modify(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Modifier/Modifier.cs:line 33
+   at Program.Main(String[] args) in /Users/mar/Desktop/Masterarbeit/CSharpTool/Program.cs:line 19
+   at Program.<Main>(String[] args)
+

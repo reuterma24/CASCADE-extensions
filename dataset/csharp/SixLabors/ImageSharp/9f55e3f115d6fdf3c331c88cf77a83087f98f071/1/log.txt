@@ -1,0 +1,582 @@
+Command: dotnet workload restore --verbosity quiet; dotnet build --verbosity quiet /p:WarningLevel=0 /p:EnableWindowsTargeting=true; RET=$?; rm -rf ../root/*; exit $RET;
+0
+
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.workload.emscripten.net6.
+Updated advertising manifest microsoft.net.sdk.macos.
+Updated advertising manifest microsoft.net.workload.emscripten.current.
+Updated advertising manifest microsoft.net.sdk.ios.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.current.
+Updated advertising manifest microsoft.net.workload.emscripten.net8.
+Updated advertising manifest microsoft.net.sdk.android.
+Updated advertising manifest microsoft.net.workload.emscripten.net7.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net7.
+Updated advertising manifest microsoft.net.sdk.tvos.
+Updated advertising manifest microsoft.net.sdk.maccatalyst.
+Updated advertising manifest microsoft.net.sdk.maui.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net8.
+Updated advertising manifest microsoft.net.workload.mono.toolchain.net6.
+Updated advertising manifest microsoft.net.sdk.aspire.
+Installing workload manifest microsoft.net.sdk.android version 35.0.39...
+Installing workload manifest microsoft.net.sdk.ios version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.maccatalyst version 18.2.9173...
+Installing workload manifest microsoft.net.sdk.macos version 15.2.9173...
+Installing workload manifest microsoft.net.sdk.maui version 9.0.14...
+Installing workload manifest microsoft.net.sdk.tvos version 18.2.9173...
+No workloads installed for this feature band. To update workloads installed with earlier SDK versions, include the --from-previous-sdk option.
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully updated workload(s): .
+
+Installing workloads: 
+
+Garbage collecting for SDK feature band(s) 9.0.100...
+
+Successfully installed workload(s) .
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:13.59
+
+verify returned with:255
+
+    [Fact]
+    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    {
+        // Arrange
+        bool isDisposed = false;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("TestObject", exception.ObjectName);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "AnotherTestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("AnotherTestObject", exception.ObjectName);
+    }
+}
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 3, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 14, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 27, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 40, Column: 5
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 51, Column: 1
+
+
+
+verify returned with:255
+using Xunit; // For the Xunit testing framework
+using ImageSharp;
+using System;
+
+namespace ImageSharpIsolated.Tests
+{
+
+public class DebugGuardTests
+{
+    [Fact]
+    public void NotDisposed_Test_1()
+{
+    [Fact]
+    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    {
+        // Arrange
+        bool isDisposed = false;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("TestObject", exception.ObjectName);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "AnotherTestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("AnotherTestObject", exception.ObjectName);
+    }
+}}}
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 14, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 25, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 38, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 51, Column: 5
+
+
+
+verify returned with:0
+using Xunit; // For the Xunit testing framework
+using ImageSharp;
+using System;
+
+namespace ImageSharpIsolated.Tests
+{
+
+public class DebugGuardTests
+{
+    [Fact]
+    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    {
+        // Arrange
+        bool isDisposed = false;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("TestObject", exception.ObjectName);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "TestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    }
+
+    [Fact]
+    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    {
+        // Arrange
+        bool isDisposed = true;
+        string objectName = "AnotherTestObject";
+
+        // Act & Assert
+        var exception = Assert.Throws<ObjectDisposedException>(() => 
+            DebugGuard.NotDisposed(isDisposed, objectName));
+        Assert.Equal("AnotherTestObject", exception.ObjectName);
+    }
+}}
+Syntactically correct
+
+
+Modifying context with id: 505
+Modification successful! - new_tests - code
+
+
+Command: cat -n ImageSharpIsolated.Tests/DebugGuardTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj --filter ImageSharpIsolated.Tests.DebugGuardTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using Xunit; // For the Xunit testing framework
+     2	using ImageSharp;
+     3	using System;
+     4	
+     5	namespace ImageSharpIsolated.Tests
+     6	{
+     7	
+     8	public class DebugGuardTests
+     9	{
+    10	    [Fact]
+    11	    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    12	    {
+    13	        // Arrange
+    14	        bool isDisposed = false;
+    15	        string objectName = "TestObject";
+    16	
+    17	        // Act & Assert
+    18	        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    19	    }
+    20	
+    21	    [Fact]
+    22	    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    23	    {
+    24	        // Arrange
+    25	        bool isDisposed = true;
+    26	        string objectName = "TestObject";
+    27	
+    28	        // Act & Assert
+    29	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    30	            DebugGuard.NotDisposed(isDisposed, objectName));
+    31	        Assert.Equal("TestObject", exception.ObjectName);
+    32	    }
+    33	
+    34	    [Fact]
+    35	    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    36	    {
+    37	        // Arrange
+    38	        bool isDisposed = true;
+    39	        string objectName = "TestObject";
+    40	
+    41	        // Act & Assert
+    42	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    43	            DebugGuard.NotDisposed(isDisposed, objectName));
+    44	        Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    45	    }
+    46	
+    47	    [Fact]
+    48	    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    49	    {
+    50	        // Arrange
+    51	        bool isDisposed = true;
+    52	        string objectName = "AnotherTestObject";
+    53	
+    54	        // Act & Assert
+    55	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    56	            DebugGuard.NotDisposed(isDisposed, objectName));
+    57	        Assert.Equal("AnotherTestObject", exception.ObjectName);
+    58	    }
+    59	}}[xUnit.net 00:00:00.55]     ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [FAIL]
+  Determining projects to restore...
+  Restored /root/ImageSharp/ImageSharp.csproj (in 5.96 sec).
+  Restored /root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj (in 9.26 sec).
+  ImageSharp -> /root/ImageSharp/bin/Debug/net9.0/ImageSharp.dll
+  ImageSharpIsolated.Tests -> /root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll
+Test run for /root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [7 ms]
+  Error Message:
+   Assert.Contains() Failure: Sub-string not found
+String:    "Cannot access a disposed object.\nObject n"···
+Not found: "The object 'TestObject' has been disposed"···
+  Stack Trace:
+     at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed() in /root/ImageSharpIsolated.Tests/DebugGuardTests.cs:line 44
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /root/test_result.trx
+
+Failed!  - Failed:     1, Passed:     3, Skipped:     0, Total:     4, Duration: 64 ms - ImageSharpIsolated.Tests.dll (net9.0)
+
+Eval Command: cat $HOME/test_result.trx
+0
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="15530202-781f-4b48-9c85-68065806ce0d" name="@ee1703e2b2b2 2025-02-07 13:07:56" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-02-07T13:07:56.5863442+00:00" queuing="2025-02-07T13:07:56.5863443+00:00" start="2025-02-07T13:07:54.0274658+00:00" finish="2025-02-07T13:07:56.6041202+00:00" />
+  <TestSettings name="default" id="d96235b2-3ded-48b4-bbb0-3184d819beec">
+    <Deployment runDeploymentRoot="_ee1703e2b2b2_2025-02-07_13_07_56" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2c9f1084-c6ca-4a2e-80f4-450acd05d76c" testId="b069965c-1879-e1b3-fc14-35dddd507916" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" computerName="ee1703e2b2b2" duration="00:00:00.0106418" startTime="2025-02-07T13:07:56.2836663+00:00" endTime="2025-02-07T13:07:56.2837138+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c9f1084-c6ca-4a2e-80f4-450acd05d76c" />
+    <UnitTestResult executionId="61432b99-36f6-4807-8ddc-7c24d5873630" testId="a2ae423f-635d-2a9f-3378-eff91211549d" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldNotThrow_WhenNotDisposed" computerName="ee1703e2b2b2" duration="00:00:00.0002320" startTime="2025-02-07T13:07:56.2952844+00:00" endTime="2025-02-07T13:07:56.2952845+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61432b99-36f6-4807-8ddc-7c24d5873630" />
+    <UnitTestResult executionId="0d5ea4c2-5fa8-4895-aedc-5be8b0d7f178" testId="630fc981-3816-0e57-edb6-a11415323a0f" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" computerName="ee1703e2b2b2" duration="00:00:00.0005009" startTime="2025-02-07T13:07:56.3375018+00:00" endTime="2025-02-07T13:07:56.3375019+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d5ea4c2-5fa8-4895-aedc-5be8b0d7f178" />
+    <UnitTestResult executionId="8a56f87e-92e7-4732-946d-1b0d1f3cca96" testId="e52388e8-7cd1-8c1a-e207-7a707d178d2b" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" computerName="ee1703e2b2b2" duration="00:00:00.0072682" startTime="2025-02-07T13:07:56.3370509+00:00" endTime="2025-02-07T13:07:56.3370511+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a56f87e-92e7-4732-946d-1b0d1f3cca96">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Contains() Failure: Sub-string not found
+String:    "Cannot access a disposed object.\nObject n"···
+Not found: "The object 'TestObject' has been disposed"···</Message>
+          <StackTrace>   at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed() in /root/ImageSharpIsolated.Tests/DebugGuardTests.cs:line 44
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldNotThrow_WhenNotDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="a2ae423f-635d-2a9f-3378-eff91211549d">
+      <Execution id="61432b99-36f6-4807-8ddc-7c24d5873630" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldNotThrow_WhenNotDisposed" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="e52388e8-7cd1-8c1a-e207-7a707d178d2b">
+      <Execution id="8a56f87e-92e7-4732-946d-1b0d1f3cca96" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="630fc981-3816-0e57-edb6-a11415323a0f">
+      <Execution id="0d5ea4c2-5fa8-4895-aedc-5be8b0d7f178" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="b069965c-1879-e1b3-fc14-35dddd507916">
+      <Execution id="2c9f1084-c6ca-4a2e-80f4-450acd05d76c" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b069965c-1879-e1b3-fc14-35dddd507916" executionId="2c9f1084-c6ca-4a2e-80f4-450acd05d76c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2ae423f-635d-2a9f-3378-eff91211549d" executionId="61432b99-36f6-4807-8ddc-7c24d5873630" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="630fc981-3816-0e57-edb6-a11415323a0f" executionId="0d5ea4c2-5fa8-4895-aedc-5be8b0d7f178" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e52388e8-7cd1-8c1a-e207-7a707d178d2b" executionId="8a56f87e-92e7-4732-946d-1b0d1f3cca96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="3" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.1)
+[xUnit.net 00:00:00.24]   Discovering: ImageSharpIsolated.Tests
+[xUnit.net 00:00:00.36]   Discovered:  ImageSharpIsolated.Tests
+[xUnit.net 00:00:00.38]   Starting:    ImageSharpIsolated.Tests
+[xUnit.net 00:00:00.56]       Assert.Contains() Failure: Sub-string not found
+[xUnit.net 00:00:00.56]       String:    "Cannot access a disposed object.\nObject n"···
+[xUnit.net 00:00:00.56]       Not found: "The object 'TestObject' has been disposed"···
+[xUnit.net 00:00:00.56]       Stack Trace:
+[xUnit.net 00:00:00.56]         /root/ImageSharpIsolated.Tests/DebugGuardTests.cs(44,0): at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+[xUnit.net 00:00:00.56]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:00.56]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.57]   Finished:    ImageSharpIsolated.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ee1703e2b2b2" outcome="Error" timestamp="2025-02-07T13:07:56.3269321+00:00">
+        <Text>[xUnit.net 00:00:00.55]     ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
+Modifying context with id: 505
+Modification successful! - new_tests - new_code
+
+
+Command: cat -n ImageSharpIsolated.Tests/DebugGuardTests.cs; echo "[INFO] Tests run starting!" > out; timeout 120 dotnet test ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj --filter ImageSharpIsolated.Tests.DebugGuardTests --framework net9.0 /p:EnableWindowsTargeting=true --logger "trx;LogFileName=$HOME/test_result.trx"  2>&1 > output; cat output > out; cat output
+0
+     1	using Xunit; // For the Xunit testing framework
+     2	using ImageSharp;
+     3	using System;
+     4	
+     5	namespace ImageSharpIsolated.Tests
+     6	{
+     7	
+     8	public class DebugGuardTests
+     9	{
+    10	    [Fact]
+    11	    public void NotDisposed_ShouldNotThrow_WhenNotDisposed()
+    12	    {
+    13	        // Arrange
+    14	        bool isDisposed = false;
+    15	        string objectName = "TestObject";
+    16	
+    17	        // Act & Assert
+    18	        DebugGuard.NotDisposed(isDisposed, objectName); // Should not throw
+    19	    }
+    20	
+    21	    [Fact]
+    22	    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed()
+    23	    {
+    24	        // Arrange
+    25	        bool isDisposed = true;
+    26	        string objectName = "TestObject";
+    27	
+    28	        // Act & Assert
+    29	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    30	            DebugGuard.NotDisposed(isDisposed, objectName));
+    31	        Assert.Equal("TestObject", exception.ObjectName);
+    32	    }
+    33	
+    34	    [Fact]
+    35	    public void NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+    36	    {
+    37	        // Arrange
+    38	        bool isDisposed = true;
+    39	        string objectName = "TestObject";
+    40	
+    41	        // Act & Assert
+    42	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    43	            DebugGuard.NotDisposed(isDisposed, objectName));
+    44	        Assert.Contains("The object 'TestObject' has been disposed.", exception.Message);
+    45	    }
+    46	
+    47	    [Fact]
+    48	    public void NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName()
+    49	    {
+    50	        // Arrange
+    51	        bool isDisposed = true;
+    52	        string objectName = "AnotherTestObject";
+    53	
+    54	        // Act & Assert
+    55	        var exception = Assert.Throws<ObjectDisposedException>(() => 
+    56	            DebugGuard.NotDisposed(isDisposed, objectName));
+    57	        Assert.Equal("AnotherTestObject", exception.ObjectName);
+    58	    }
+    59	}}[xUnit.net 00:00:02.23]     ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [FAIL]
+  Determining projects to restore...
+  Restored /root/ImageSharp/ImageSharp.csproj (in 2.96 sec).
+  Restored /root/ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj (in 4.98 sec).
+  ImageSharp -> /root/ImageSharp/bin/Debug/net9.0/ImageSharp.dll
+  ImageSharpIsolated.Tests -> /root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll
+Test run for /root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 17.12.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [23 ms]
+  Error Message:
+   Assert.Contains() Failure: Sub-string not found
+String:    "Cannot access a disposed object.\nObject n"···
+Not found: "The object 'TestObject' has been disposed"···
+  Stack Trace:
+     at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed() in /root/ImageSharpIsolated.Tests/DebugGuardTests.cs:line 44
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /root/test_result.trx
+
+Failed!  - Failed:     1, Passed:     3, Skipped:     0, Total:     4, Duration: 1 s - ImageSharpIsolated.Tests.dll (net9.0)
+
+Eval Command: cat $HOME/test_result.trx
+0
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="db82a367-b79e-4ccd-91a7-655238a59452" name="@0b3c88860449 2025-02-07 13:08:23" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-02-07T13:08:23.6100415+00:00" queuing="2025-02-07T13:08:23.6100416+00:00" start="2025-02-07T13:08:19.6266514+00:00" finish="2025-02-07T13:08:23.6343955+00:00" />
+  <TestSettings name="default" id="65a9f8a0-3af3-4f90-9c8a-2cab6d4e5a87">
+    <Deployment runDeploymentRoot="_0b3c88860449_2025-02-07_13_08_23" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="43d1a09a-dcd3-4df8-b4f1-14321cb7fbae" testId="b069965c-1879-e1b3-fc14-35dddd507916" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" computerName="0b3c88860449" duration="00:00:01.5650742" startTime="2025-02-07T13:08:23.1729318+00:00" endTime="2025-02-07T13:08:23.1729856+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="43d1a09a-dcd3-4df8-b4f1-14321cb7fbae" />
+    <UnitTestResult executionId="1ec2d5ce-6d53-41ea-8017-f2c234535755" testId="630fc981-3816-0e57-edb6-a11415323a0f" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" computerName="0b3c88860449" duration="00:00:00.0004971" startTime="2025-02-07T13:08:23.3208964+00:00" endTime="2025-02-07T13:08:23.3208965+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ec2d5ce-6d53-41ea-8017-f2c234535755" />
+    <UnitTestResult executionId="bf5a10c4-2686-4c35-9b09-a8a9cb83e336" testId="a2ae423f-635d-2a9f-3378-eff91211549d" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldNotThrow_WhenNotDisposed" computerName="0b3c88860449" duration="00:00:00.0083944" startTime="2025-02-07T13:08:23.2960382+00:00" endTime="2025-02-07T13:08:23.2960384+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bf5a10c4-2686-4c35-9b09-a8a9cb83e336" />
+    <UnitTestResult executionId="cab1ab4d-41d0-47d4-a9a0-14080b2b7aeb" testId="e52388e8-7cd1-8c1a-e207-7a707d178d2b" testName="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" computerName="0b3c88860449" duration="00:00:00.0237889" startTime="2025-02-07T13:08:23.3202919+00:00" endTime="2025-02-07T13:08:23.3202922+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cab1ab4d-41d0-47d4-a9a0-14080b2b7aeb">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Contains() Failure: Sub-string not found
+String:    "Cannot access a disposed object.\nObject n"···
+Not found: "The object 'TestObject' has been disposed"···</Message>
+          <StackTrace>   at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed() in /root/ImageSharpIsolated.Tests/DebugGuardTests.cs:line 44
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldNotThrow_WhenNotDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="a2ae423f-635d-2a9f-3378-eff91211549d">
+      <Execution id="bf5a10c4-2686-4c35-9b09-a8a9cb83e336" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldNotThrow_WhenNotDisposed" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="e52388e8-7cd1-8c1a-e207-7a707d178d2b">
+      <Execution id="cab1ab4d-41d0-47d4-a9a0-14080b2b7aeb" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="630fc981-3816-0e57-edb6-a11415323a0f">
+      <Execution id="1ec2d5ce-6d53-41ea-8017-f2c234535755" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WhenDisposedWithDifferentObjectName" />
+    </UnitTest>
+    <UnitTest name="ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" storage="/root/imagesharpisolated.tests/bin/debug/net9.0/imagesharpisolated.tests.dll" id="b069965c-1879-e1b3-fc14-35dddd507916">
+      <Execution id="43d1a09a-dcd3-4df8-b4f1-14321cb7fbae" />
+      <TestMethod codeBase="/root/ImageSharpIsolated.Tests/bin/Debug/net9.0/ImageSharpIsolated.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ImageSharpIsolated.Tests.DebugGuardTests" name="NotDisposed_ShouldThrowObjectDisposedException_WhenDisposed" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b069965c-1879-e1b3-fc14-35dddd507916" executionId="43d1a09a-dcd3-4df8-b4f1-14321cb7fbae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="630fc981-3816-0e57-edb6-a11415323a0f" executionId="1ec2d5ce-6d53-41ea-8017-f2c234535755" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2ae423f-635d-2a9f-3378-eff91211549d" executionId="bf5a10c4-2686-4c35-9b09-a8a9cb83e336" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e52388e8-7cd1-8c1a-e207-7a707d178d2b" executionId="cab1ab4d-41d0-47d4-a9a0-14080b2b7aeb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="3" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.1)
+[xUnit.net 00:00:00.22]   Discovering: ImageSharpIsolated.Tests
+[xUnit.net 00:00:00.34]   Discovered:  ImageSharpIsolated.Tests
+[xUnit.net 00:00:00.35]   Starting:    ImageSharpIsolated.Tests
+[xUnit.net 00:00:02.23]       Assert.Contains() Failure: Sub-string not found
+[xUnit.net 00:00:02.23]       String:    "Cannot access a disposed object.\nObject n"···
+[xUnit.net 00:00:02.23]       Not found: "The object 'TestObject' has been disposed"···
+[xUnit.net 00:00:02.23]       Stack Trace:
+[xUnit.net 00:00:02.23]         /root/ImageSharpIsolated.Tests/DebugGuardTests.cs(44,0): at ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed()
+[xUnit.net 00:00:02.23]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[xUnit.net 00:00:02.23]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:02.25]   Finished:    ImageSharpIsolated.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="0b3c88860449" outcome="Error" timestamp="2025-02-07T13:08:23.3536575+00:00">
+        <Text>[xUnit.net 00:00:02.23]     ImageSharpIsolated.Tests.DebugGuardTests.NotDisposed_ShouldThrowObjectDisposedException_WithCorrectMessage_WhenDisposed [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

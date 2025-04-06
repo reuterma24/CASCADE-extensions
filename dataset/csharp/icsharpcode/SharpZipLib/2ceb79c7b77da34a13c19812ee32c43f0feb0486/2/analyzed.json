@@ -1,0 +1,266 @@
+[
+    {
+        "doc": "/// <summary>\n/// Cleans a name making it conform to Zip file conventions.\n/// Devices names ('c:\\') and UNC share names ('\\\\server\\share') are removed\n/// and back slashes ('\\') are converted to forward slashes ('/').\n/// Names are made relative by trimming leading slashes which is compatible\n/// with the ZIP naming convention.\n/// </summary>\n/// <param name = \"name\">The name to clean</param>\n/// <returns>The 'cleaned' name.</returns>\n/// <remarks>\n/// The <seealso cref = \"ZipNameTransform\">Zip name transform</seealso> class is more flexible.\n/// </remarks>",
+        "signature": {
+            "name": "CleanName",
+            "returns": "string",
+            "params": [
+                "string name"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "ZipEntry",
+            "doc": "/// <summary>\n/// This class represents an entry in a zip archive.  This can be a file\n/// or a directory\n/// ZipFile and ZipInputStream will give you instances of this class as\n/// information about the members in an archive.  ZipOutputStream\n/// uses an instance of this class when creating an entry in a Zip file.\n/// <br/>\n/// <br/>Author of the original java version : Jochen Hoenicke\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\n/// Test the external attributes for this <see cref = \"ZipEntry\"/> to\n/// see if the external attributes are Dos based (including WINNT and variants)\n/// and match the values\n/// </summary>\n/// <param name = \"attributes\">The attributes to test.</param>\n/// <returns>Returns true if the external attributes are known to be DOS/Windows\n/// based and have the same attributes set as the value passed.</returns>",
+                    "signature": {
+                        "name": "HasDosAttributes",
+                        "returns": "bool",
+                        "params": [
+                            "int attributes"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tbool result = false;\n\t\t\tif ((known & Known.ExternalAttributes) != 0)\n\t\t\t{\n\t\t\t\tresult |= (((HostSystem == (int)HostSystemID.Msdos) ||\n\t\t\t\t\t(HostSystem == (int)HostSystemID.WindowsNT)) &&\n\t\t\t\t\t(ExternalFileAttributes & attributes) == attributes);\n\t\t\t}\n\t\t\treturn result;\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Force this entry to be recorded using Zip64 extensions.\n/// </summary>",
+                    "signature": {
+                        "name": "ForceZip64",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\n/// Get a value indicating whether Zip64 extensions were forced.\n/// </summary>\n/// <returns>A <see cref = \"bool \"/> value of true if Zip64 extensions have been forced on; false if not.</returns>",
+                    "signature": {
+                        "name": "IsZip64Forced",
+                        "returns": "bool",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\n/// Process extra data fields updating the entry based on the contents.\n/// </summary>\n/// <param name = \"localHeader\">True if the extra data fields should be handled\n/// for a local header, rather than for a central header.\n/// </param>",
+                    "signature": {
+                        "name": "ProcessExtraData",
+                        "returns": "void",
+                        "params": [
+                            "bool localHeader"
+                        ],
+                        "modifier": [
+                            "internal"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tvar extraData = new ZipExtraData(this.extra);\n\n\t\t\tif (extraData.Find(0x0001))\n\t\t\t{\n\t\t\t\t// Version required to extract is ignored here as some archivers dont set it correctly\n\t\t\t\t// in theory it should be version 45 or higher\n\n\t\t\t\t// The recorded size will change but remember that this is zip64.\n\t\t\t\tforceZip64_ = true;\n\n\t\t\t\tif (extraData.ValueLength < 4)\n\t\t\t\t{\n\t\t\t\t\tthrow new ZipException(\"Extra data extended Zip64 information length is invalid\");\n\t\t\t\t}\n\n\t\t\t\t// (localHeader ||) was deleted, because actually there is no specific difference with reading sizes between local header & central directory\n\t\t\t\t// https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT\n\t\t\t\t// ...\n\t\t\t\t// 4.4  Explanation of fields\n\t\t\t\t// ...\n\t\t\t\t//\t4.4.8 compressed size: (4 bytes)\n\t\t\t\t//\t4.4.9 uncompressed size: (4 bytes)\n\t\t\t\t//\n\t\t\t\t//\t\tThe size of the file compressed (4.4.8) and uncompressed,\n\t\t\t\t//\t\t(4.4.9) respectively.  When a decryption header is present it\n\t\t\t\t//\t\twill be placed in front of the file data and the value of the\n\t\t\t\t//\t\tcompressed file size will include the bytes of the decryption\n\t\t\t\t//\t\theader.  If bit 3 of the general purpose bit flag is set,\n\t\t\t\t//\t\tthese fields are set to zero in the local header and the\n\t\t\t\t//\t\tcorrect values are put in the data descriptor and\n\t\t\t\t//\t\tin the central directory.  If an archive is in ZIP64 format\n\t\t\t\t//\t\tand the value in this field is 0xFFFFFFFF, the size will be\n\t\t\t\t//\t\tin the corresponding 8 byte ZIP64 extended information\n\t\t\t\t//\t\textra field.  When encrypting the central directory, if the\n\t\t\t\t//\t\tlocal header is not in ZIP64 format and general purpose bit\n\t\t\t\t//\t\tflag 13 is set indicating masking, the value stored for the\n\t\t\t\t//\t\tuncompressed size in the Local Header will be zero.\n\t\t\t\t//\n\t\t\t\t// Otherwise there is problem with minizip implementation\n\t\t\t\tif (size == uint.MaxValue)\n\t\t\t\t{\n\t\t\t\t\tsize = (ulong)extraData.ReadLong();\n\t\t\t\t}\n\n\t\t\t\tif (compressedSize == uint.MaxValue)\n\t\t\t\t{\n\t\t\t\t\tcompressedSize = (ulong)extraData.ReadLong();\n\t\t\t\t}\n\n\t\t\t\tif (!localHeader && (offset == uint.MaxValue))\n\t\t\t\t{\n\t\t\t\t\toffset = extraData.ReadLong();\n\t\t\t\t}\n\n\t\t\t\t// Disk number on which file starts is ignored\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tif (\n\t\t\t\t\t((versionToExtract & 0xff) >= ZipConstants.VersionZip64) &&\n\t\t\t\t\t((size == uint.MaxValue) || (compressedSize == uint.MaxValue))\n\t\t\t\t)\n\t\t\t\t{\n\t\t\t\t\tthrow new ZipException(\"Zip64 Extended information required but is missing.\");\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tDateTime = GetDateTime(extraData) ?? DateTime;\n\t\t\tif (method == CompressionMethod.WinZipAES)\n\t\t\t{\n\t\t\t\tProcessAESExtraData(extraData);\n\t\t\t}\n\t\t}"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "GetDateTime",
+                        "returns": "DateTime?",
+                        "params": [
+                            "ZipExtraData extraData"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\t// Check for NT timestamp\n\t\t\t// NOTE: Disable by default to match behavior of InfoZIP\n#if RESPECT_NT_TIMESTAMP\n\t\t\tNTTaggedData ntData = extraData.GetData<NTTaggedData>();\n\t\t\tif (ntData != null)\n\t\t\t\treturn ntData.LastModificationTime;\n#endif\n\n\t\t\t// Check for Unix timestamp\n\t\t\tExtendedUnixData unixData = extraData.GetData<ExtendedUnixData>();\n\t\t\tif (unixData != null && unixData.Include.HasFlag(ExtendedUnixData.Flags.ModificationTime))\n\t\t\t\treturn unixData.ModificationTime;\n\n\t\t\treturn null;\n\t\t}"
+                },
+                {
+                    "doc": "// For AES the method in the entry is 99, and the real compression method is in the extradata",
+                    "signature": {
+                        "name": "ProcessAESExtraData",
+                        "returns": "void",
+                        "params": [
+                            "ZipExtraData extraData"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tif (extraData.Find(0x9901))\n\t\t\t{\n\t\t\t\t// Set version for Zipfile.CreateAndInitDecryptionStream\n\t\t\t\tversionToExtract = ZipConstants.VERSION_AES;            // Ver 5.1 = AES see \"Version\" getter\n\n\t\t\t\t//\n\t\t\t\t// Unpack AES extra data field see http://www.winzip.com/aes_info.htm\n\t\t\t\tint length = extraData.ValueLength;         // Data size currently 7\n\t\t\t\tif (length < 7)\n\t\t\t\t\tthrow new ZipException(\"AES Extra Data Length \" + length + \" invalid.\");\n\t\t\t\tint ver = extraData.ReadShort();            // Version number (1=AE-1 2=AE-2)\n\t\t\t\tint vendorId = extraData.ReadShort();       // 2-character vendor ID 0x4541 = \"AE\"\n\t\t\t\tint encrStrength = extraData.ReadByte();    // encryption strength 1 = 128 2 = 192 3 = 256\n\t\t\t\tint actualCompress = extraData.ReadShort(); // The actual compression method used to compress the file\n\t\t\t\t_aesVer = ver;\n\t\t\t\t_aesEncryptionStrength = encrStrength;\n\t\t\t\tmethod = (CompressionMethod)actualCompress;\n\t\t\t}\n\t\t\telse\n\t\t\t\tthrow new ZipException(\"AES Extra Data missing\");\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Test entry to see if data can be extracted.\n/// </summary>\n/// <returns>Returns true if data can be extracted for this entry; false otherwise.</returns>",
+                    "signature": {
+                        "name": "IsCompressionMethodSupported",
+                        "returns": "bool",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\n/// Creates a copy of this zip entry.\n/// </summary>\n/// <returns>An <see cref = \"Object\"/> that is a copy of the current instance.</returns>",
+                    "signature": {
+                        "name": "Clone",
+                        "returns": "object",
+                        "params": [],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n\t\t\tvar result = (ZipEntry)this.MemberwiseClone();\n\n\t\t\t// Ensure extra data is unique if it exists.\n\t\t\tif (extra != null)\n\t\t\t{\n\t\t\t\tresult.extra = new byte[extra.Length];\n\t\t\t\tArray.Copy(extra, 0, result.extra, 0, extra.Length);\n\t\t\t}\n\n\t\t\treturn result;\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\n/// Gets a string representation of this ZipEntry.\n/// </summary>\n/// <returns>A readable textual representation of this <see cref = \"ZipEntry\"/></returns>",
+                    "signature": {
+                        "name": "ToString",
+                        "returns": "string",
+                        "params": [],
+                        "modifier": [
+                            "public",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\n/// Test a <see cref = \"CompressionMethod\">compression method</see> to see if this library\n/// supports extracting data compressed with that method\n/// </summary>\n/// <param name = \"method\">The compression method to test.</param>\n/// <returns>Returns true if the compression method is supported; false otherwise</returns>",
+                    "signature": {
+                        "name": "IsCompressionMethodSupported",
+                        "returns": "bool",
+                        "params": [
+                            "CompressionMethod method"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": ""
+                }
+            ],
+            "variables": [
+                "#region Instance Fields\r\nprivate Known known;",
+                "private int externalFileAttributes = -1; // contains external attributes (O/S dependant)\r\n",
+                "private ushort versionMadeBy; // Contains host system and version information\r\n",
+                "// only relevant for central header entries\r\nprivate string name;",
+                "private ulong size;",
+                "private ulong compressedSize;",
+                "private ushort versionToExtract; // Version required to extract (library handles <= 2.0)\r\n",
+                "private uint crc;",
+                "private DateTime dateTime;",
+                "private CompressionMethod method = CompressionMethod.Deflated;",
+                "private byte[] extra;",
+                "private string comment;",
+                "private int flags; // general purpose bit flags\r\n",
+                "private long zipFileIndex = -1; // used by ZipFile\r\n",
+                "private long offset; // used by ZipFile and ZipOutputStream\r\n",
+                "private bool forceZip64_;",
+                "private byte cryptoCheckValue_;",
+                "private int _aesVer; // Version number (2 = AE-2 ?). Assigned but not used.\r\n",
+                "private int _aesEncryptionStrength; // Encryption strength 1 = 128 2 = 192 3 = 256\r\n"
+            ],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.IO;"
+            ],
+            "constructors": [
+                "#region Constructors\r\n/// <summary>\n/// Creates a zip entry with the given name.\n/// </summary>\n/// <param name = \"name\">\n/// The name for this entry. Can include directory components.\n/// The convention for names is 'unix' style paths with relative names only.\n/// There are with no device names and path elements are separated by '/' characters.\n/// </param>\n/// <exception cref = \"ArgumentNullException\">\n/// The name passed is null\n/// </exception>\npublic ZipEntry(string name) : this(name, 0, ZipConstants.VersionMadeBy, CompressionMethod.Deflated)\r\n{\r\n}",
+                "/// <summary>\n/// Creates a zip entry with the given name and version required to extract\n/// </summary>\n/// <param name = \"name\">\n/// The name for this entry. Can include directory components.\n/// The convention for names is 'unix'  style paths with no device names and\n/// path elements separated by '/' characters.  This is not enforced see <see cref = \"CleanName(string)\">CleanName</see>\n/// on how to ensure names are valid if this is desired.\n/// </param>\n/// <param name = \"versionRequiredToExtract\">\n/// The minimum 'feature version' required this entry\n/// </param>\n/// <exception cref = \"ArgumentNullException\">\n/// The name passed is null\n/// </exception>\ninternal ZipEntry(string name, int versionRequiredToExtract) : this(name, versionRequiredToExtract, ZipConstants.VersionMadeBy, CompressionMethod.Deflated)\r\n{\r\n}",
+                "/// <summary>\n/// Initializes an entry with the given name and made by information\n/// </summary>\n/// <param name = \"name\">Name for this entry</param>\n/// <param name = \"madeByInfo\">Version and HostSystem Information</param>\n/// <param name = \"versionRequiredToExtract\">Minimum required zip feature version required to extract this entry</param>\n/// <param name = \"method\">Compression method for this entry.</param>\n/// <exception cref = \"ArgumentNullException\">\n/// The name passed is null\n/// </exception>\n/// <exception cref = \"ArgumentOutOfRangeException\">\n/// versionRequiredToExtract should be 0 (auto-calculate) or > 10\n/// </exception>\n/// <remarks>\n/// This constructor is used by the ZipFile class when reading from the central header\n/// It is not generally useful, use the constructor specifying the name only.\n/// </remarks>\ninternal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo, CompressionMethod method)\r\n{\r\n    if (name == null)\r\n    {\r\n        throw new ArgumentNullException(nameof(name));\r\n    }\r\n\r\n    if (name.Length > 0xffff)\r\n    {\r\n        throw new ArgumentException(\"Name is too long\", nameof(name));\r\n    }\r\n\r\n    if ((versionRequiredToExtract != 0) && (versionRequiredToExtract < 10))\r\n    {\r\n        throw new ArgumentOutOfRangeException(nameof(versionRequiredToExtract));\r\n    }\r\n\r\n    this.DateTime = DateTime.Now;\r\n    this.name = name;\r\n    this.versionMadeBy = (ushort)madeByInfo;\r\n    this.versionToExtract = (ushort)versionRequiredToExtract;\r\n    this.method = method;\r\n    IsUnicodeText = ZipStrings.UseUnicode;\r\n}",
+                "/// <summary>\n/// Creates a deep copy of the given zip entry.\n/// </summary>\n/// <param name = \"entry\">\n/// The entry to copy.\n/// </param>\n[Obsolete(\"Use Clone instead\")]\r\npublic ZipEntry(ZipEntry entry)\r\n{\r\n    if (entry == null)\r\n    {\r\n        throw new ArgumentNullException(nameof(entry));\r\n    }\r\n\r\n    known = entry.known;\r\n    name = entry.name;\r\n    size = entry.size;\r\n    compressedSize = entry.compressedSize;\r\n    crc = entry.crc;\r\n    dateTime = entry.DateTime;\r\n    method = entry.method;\r\n    comment = entry.comment;\r\n    versionToExtract = entry.versionToExtract;\r\n    versionMadeBy = entry.versionMadeBy;\r\n    externalFileAttributes = entry.externalFileAttributes;\r\n    flags = entry.flags;\r\n    zipFileIndex = entry.zipFileIndex;\r\n    offset = entry.offset;\r\n    forceZip64_ = entry.forceZip64_;\r\n    if (entry.extra != null)\r\n    {\r\n        extra = new byte[entry.extra.Length];\r\n        Array.Copy(entry.extra, 0, extra, 0, entry.extra.Length);\r\n    }\r\n}"
+            ],
+            "extends": "",
+            "implements": [],
+            "namespace": "ICSharpCode.SharpZipLib.Zip"
+        },
+        "code": "{\n\t\t\tif (name == null)\n\t\t\t{\n\t\t\t\treturn string.Empty;\n\t\t\t}\n\n\t\t\tif (Path.IsPathRooted(name))\n\t\t\t{\n\t\t\t\t// NOTE:\n\t\t\t\t// for UNC names...  \\\\machine\\share\\zoom\\beet.txt gives \\zoom\\beet.txt\n\t\t\t\tname = name.Substring(Path.GetPathRoot(name).Length);\n\t\t\t}\n\n\t\t\tname = name.Replace(@\"\\\", \"/\");\n\n\t\t\twhile ((name.Length > 0) && (name[0] == '/'))\n\t\t\t{\n\t\t\t\tname = name.Remove(0, 1);\n\t\t\t}\n\t\t\treturn name;\n\t\t}",
+        "code_file_path": "src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs",
+        "called_functions": [
+            "Path.IsPathRooted(name)",
+            "name.Substring(Path.GetPathRoot(name).Length)",
+            "Path.GetPathRoot(name)",
+            "name.Replace(@\"\\\", \"/\")",
+            "name.Remove(0, 1)"
+        ],
+        "id": 458,
+        "tests": [
+            {
+                "tests": "using ICSharpCode.SharpZipLib.Core;\nusing ICSharpCode.SharpZipLib.Tests.TestSupport;\nusing ICSharpCode.SharpZipLib.Zip;\nusing NUnit.Framework;\nusing System;\nusing System.IO;\n\nnamespace ICSharpCode.SharpZipLib.Tests.Zip\n{\n\t/// <summary>\n\t/// This contains newer tests for stream handling. Much of this is still in GeneralHandling\n\t/// </summary>\n\t[TestFixture]\n\tpublic class StreamHandling : ZipBase\n\t{\n\t\tprivate void MustFailRead(Stream s, byte[] buffer, int offset, int count)\n\t\t{\n\t\t\tbool exception = false;\n\t\t\ttry\n\t\t\t{\n\t\t\t\ts.Read(buffer, offset, count);\n\t\t\t}\n\t\t\tcatch\n\t\t\t{\n\t\t\t\texception = true;\n\t\t\t}\n\t\t\tAssert.IsTrue(exception, \"Read should fail\");\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ParameterHandling()\n\t\t{\n\t\t\tbyte[] buffer = new byte[10];\n\t\t\tbyte[] emptyBuffer = new byte[0];\n\n\t\t\tvar ms = new MemoryStream();\n\t\t\tvar outStream = new ZipOutputStream(ms);\n\t\t\toutStream.IsStreamOwner = false;\n\t\t\toutStream.PutNextEntry(new ZipEntry(\"Floyd\"));\n\t\t\toutStream.Write(buffer, 0, 10);\n\t\t\toutStream.Finish();\n\n\t\t\tms.Seek(0, SeekOrigin.Begin);\n\n\t\t\tvar inStream = new ZipInputStream(ms);\n\t\t\tZipEntry e = inStream.GetNextEntry();\n\n\t\t\tMustFailRead(inStream, null, 0, 0);\n\t\t\tMustFailRead(inStream, buffer, -1, 1);\n\t\t\tMustFailRead(inStream, buffer, 0, 11);\n\t\t\tMustFailRead(inStream, buffer, 7, 5);\n\t\t\tMustFailRead(inStream, buffer, 0, -1);\n\n\t\t\tMustFailRead(inStream, emptyBuffer, 0, 1);\n\n\t\t\tint bytesRead = inStream.Read(buffer, 10, 0);\n\t\t\tAssert.AreEqual(0, bytesRead, \"Should be able to read zero bytes\");\n\n\t\t\tbytesRead = inStream.Read(emptyBuffer, 0, 0);\n\t\t\tAssert.AreEqual(0, bytesRead, \"Should be able to read zero bytes\");\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Check that Zip64 descriptor is added to an entry OK.\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void Zip64Descriptor()\n\t\t{\n\t\t\tMemoryStream msw = new MemoryStreamWithoutSeek();\n\t\t\tvar outStream = new ZipOutputStream(msw);\n\t\t\toutStream.UseZip64 = UseZip64.Off;\n\n\t\t\toutStream.IsStreamOwner = false;\n\t\t\toutStream.PutNextEntry(new ZipEntry(\"StripedMarlin\"));\n\t\t\toutStream.WriteByte(89);\n\t\t\toutStream.Close();\n\n\t\t\tAssert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));\n\n\t\t\tmsw = new MemoryStreamWithoutSeek();\n\t\t\toutStream = new ZipOutputStream(msw);\n\t\t\toutStream.UseZip64 = UseZip64.On;\n\n\t\t\toutStream.IsStreamOwner = false;\n\t\t\toutStream.PutNextEntry(new ZipEntry(\"StripedMarlin\"));\n\t\t\toutStream.WriteByte(89);\n\t\t\toutStream.Close();\n\n\t\t\tAssert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ReadAndWriteZip64NonSeekable()\n\t\t{\n\t\t\tMemoryStream msw = new MemoryStreamWithoutSeek();\n\t\t\tusing (ZipOutputStream outStream = new ZipOutputStream(msw))\n\t\t\t{\n\t\t\t\toutStream.UseZip64 = UseZip64.On;\n\n\t\t\t\toutStream.IsStreamOwner = false;\n\t\t\t\toutStream.PutNextEntry(new ZipEntry(\"StripedMarlin\"));\n\t\t\t\toutStream.WriteByte(89);\n\n\t\t\t\toutStream.PutNextEntry(new ZipEntry(\"StripedMarlin2\"));\n\t\t\t\toutStream.WriteByte(89);\n\n\t\t\t\toutStream.Close();\n\t\t\t}\n\n\t\t\tAssert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));\n\n\t\t\tmsw.Position = 0;\n\n\t\t\tusing (ZipInputStream zis = new ZipInputStream(msw))\n\t\t\t{\n\t\t\t\twhile (zis.GetNextEntry() != null)\n\t\t\t\t{\n\t\t\t\t\tint len = 0;\n\t\t\t\t\tint bufferSize = 1024;\n\t\t\t\t\tbyte[] buffer = new byte[bufferSize];\n\t\t\t\t\twhile ((len = zis.Read(buffer, 0, bufferSize)) > 0)\n\t\t\t\t\t{\n\t\t\t\t\t\t// Reading the data is enough\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Check that adding an entry with no data and Zip64 works OK\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void EntryWithNoDataAndZip64()\n\t\t{\n\t\t\tMemoryStream msw = new MemoryStreamWithoutSeek();\n\t\t\tvar outStream = new ZipOutputStream(msw);\n\n\t\t\toutStream.IsStreamOwner = false;\n\t\t\tvar ze = new ZipEntry(\"Striped Marlin\");\n\t\t\tze.ForceZip64();\n\t\t\tze.Size = 0;\n\t\t\toutStream.PutNextEntry(ze);\n\t\t\toutStream.CloseEntry();\n\t\t\toutStream.Finish();\n\t\t\toutStream.Close();\n\n\t\t\tAssert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Empty zip entries can be created and read?\n\t\t/// </summary>\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void EmptyZipEntries()\n\t\t{\n\t\t\tvar ms = new MemoryStream();\n\t\t\tvar outStream = new ZipOutputStream(ms);\n\n\t\t\tfor (int i = 0; i < 10; ++i)\n\t\t\t{\n\t\t\t\toutStream.PutNextEntry(new ZipEntry(i.ToString()));\n\t\t\t}\n\n\t\t\toutStream.Finish();\n\n\t\t\tms.Seek(0, SeekOrigin.Begin);\n\n\t\t\tvar inStream = new ZipInputStream(ms);\n\n\t\t\tint extractCount = 0;\n\t\t\tbyte[] decompressedData = new byte[100];\n\n\t\t\twhile ((inStream.GetNextEntry()) != null)\n\t\t\t{\n\t\t\t\twhile (true)\n\t\t\t\t{\n\t\t\t\t\tint numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);\n\t\t\t\t\tif (numRead <= 0)\n\t\t\t\t\t{\n\t\t\t\t\t\tbreak;\n\t\t\t\t\t}\n\t\t\t\t\textractCount += numRead;\n\t\t\t\t}\n\t\t\t}\n\t\t\tinStream.Close();\n\t\t\tAssert.Zero(extractCount, \"No data should be read from empty entries\");\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Test that calling Write with 0 bytes behaves.\n\t\t/// See issue @ https://github.com/icsharpcode/SharpZipLib/issues/123.\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void TestZeroByteWrite()\n\t\t{\n\t\t\tusing (var ms = new MemoryStreamWithoutSeek())\n\t\t\t{\n\t\t\t\tusing (var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })\n\t\t\t\t{\n\t\t\t\t\tvar ze = new ZipEntry(\"Striped Marlin\");\n\t\t\t\t\toutStream.PutNextEntry(ze);\n\n\t\t\t\t\tvar buffer = Array.Empty<byte>();\n\t\t\t\t\toutStream.Write(buffer, 0, 0);\n\t\t\t\t}\n\n\t\t\t\tms.Seek(0, SeekOrigin.Begin);\n\n\t\t\t\tusing (var inStream = new ZipInputStream(ms) { IsStreamOwner = false })\n\t\t\t\t{\n\t\t\t\t\tint extractCount = 0;\n\t\t\t\t\tbyte[] decompressedData = new byte[100];\n\n\t\t\t\t\twhile (inStream.GetNextEntry() != null)\n\t\t\t\t\t{\n\t\t\t\t\t\twhile (true)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tint numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);\n\t\t\t\t\t\t\tif (numRead <= 0)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\textractCount += numRead;\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tAssert.Zero(extractCount, \"No data should be read from empty entries\");\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void WriteZipStreamWithNoCompression([Values(0, 1, 256)] int contentLength)\n\t\t{\n\t\t\tvar buffer = new byte[255];\n\n\t\t\tusing (var dummyZip = Utils.GetDummyFile(0))\n\t\t\tusing (var inputFile = Utils.GetDummyFile(contentLength))\n\t\t\t{\n\t\t\t\t// Filename is manually cleaned here to prevent this test from failing while ZipEntry doesn't automatically clean it\n\t\t\t\tvar inputFileName = ZipEntry.CleanName(inputFile.Filename);\n\n\t\t\t\tusing (var zipFileStream = File.OpenWrite(dummyZip.Filename))\n\t\t\t\tusing (var zipOutputStream = new ZipOutputStream(zipFileStream))\n\t\t\t\tusing (var inputFileStream = File.OpenRead(inputFile.Filename))\n\t\t\t\t{\n\t\t\t\t\tzipOutputStream.PutNextEntry(new ZipEntry(inputFileName)\n\t\t\t\t\t{\n\t\t\t\t\t\tCompressionMethod = CompressionMethod.Stored,\n\t\t\t\t\t});\n\n\t\t\t\t\tStreamUtils.Copy(inputFileStream, zipOutputStream, buffer);\n\t\t\t\t}\n\n\t\t\t\tusing (var zf = new ZipFile(dummyZip.Filename))\n\t\t\t\t{\n\t\t\t\t\tvar inputBytes = File.ReadAllBytes(inputFile.Filename);\n\n\t\t\t\t\tvar entry = zf.GetEntry(inputFileName);\n\t\t\t\t\tAssert.IsNotNull(entry, \"No entry matching source file \\\"{0}\\\" found in archive, found \\\"{1}\\\"\", inputFileName, zf[0].Name);\n\n\t\t\t\t\tAssert.DoesNotThrow(() =>\n\t\t\t\t\t{\n\t\t\t\t\t\tusing (var entryStream = zf.GetInputStream(entry))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tvar outputBytes = new byte[entryStream.Length];\n\t\t\t\t\t\t\tentryStream.Read(outputBytes, 0, outputBytes.Length);\n\n\t\t\t\t\t\t\tAssert.AreEqual(inputBytes, outputBytes, \"Archive content does not match the source content\");\n\t\t\t\t\t\t}\n\t\t\t\t\t}, \"Failed to locate entry stream in archive\");\n\n\t\t\t\t\tAssert.IsTrue(zf.TestArchive(testData: true), \"Archive did not pass TestArchive\");\n\t\t\t\t}\n\n\t\t\t\t\n\t\t\t}\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ZipEntryFileNameAutoClean()\n\t\t{\n\t\t\tusing (var dummyZip = Utils.GetDummyFile(0))\n\t\t\tusing (var inputFile = Utils.GetDummyFile()) {\n\t\t\t\tusing (var zipFileStream = File.OpenWrite(dummyZip.Filename))\n\t\t\t\tusing (var zipOutputStream = new ZipOutputStream(zipFileStream))\n\t\t\t\tusing (var inputFileStream = File.OpenRead(inputFile.Filename))\n\t\t\t\t{\n\t\t\t\t\t// New ZipEntry created with a full file name path as it's name\n\t\t\t\t\tzipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)\n\t\t\t\t\t{\n\t\t\t\t\t\tCompressionMethod = CompressionMethod.Stored,\n\t\t\t\t\t});\n\n\t\t\t\t\tinputFileStream.CopyTo(zipOutputStream);\n\t\t\t\t}\n\n\t\t\t\tusing (var zf = new ZipFile(dummyZip.Filename))\n\t\t\t\t{\n\t\t\t\t\t// The ZipEntry name should have been automatically cleaned\n\t\t\t\t\tAssert.AreEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name);\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Empty zips can be created and read?\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void CreateAndReadEmptyZip()\n\t\t{\n\t\t\tvar ms = new MemoryStream();\n\t\t\tvar outStream = new ZipOutputStream(ms);\n\t\t\toutStream.Finish();\n\n\t\t\tms.Seek(0, SeekOrigin.Begin);\n\n\t\t\tvar inStream = new ZipInputStream(ms);\n\t\t\twhile ((inStream.GetNextEntry()) != null)\n\t\t\t{\n\t\t\t\tAssert.Fail(\"No entries should be found in empty zip\");\n\t\t\t}\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Base stream is closed when IsOwner is true ( default);\n\t\t/// </summary>\n\t\t[Test]\n\t\tpublic void BaseClosedWhenOwner()\n\t\t{\n\t\t\tvar ms = new TrackedMemoryStream();\n\n\t\t\tAssert.IsFalse(ms.IsClosed, \"Underlying stream should NOT be closed\");\n\n\t\t\tusing (ZipOutputStream stream = new ZipOutputStream(ms))\n\t\t\t{\n\t\t\t\tAssert.IsTrue(stream.IsStreamOwner, \"Should be stream owner by default\");\n\t\t\t}\n\n\t\t\tAssert.IsTrue(ms.IsClosed, \"Underlying stream should be closed\");\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Check that base stream is not closed when IsOwner is false;\n\t\t/// </summary>\n\t\t[Test]\n\t\tpublic void BaseNotClosedWhenNotOwner()\n\t\t{\n\t\t\tvar ms = new TrackedMemoryStream();\n\n\t\t\tAssert.IsFalse(ms.IsClosed, \"Underlying stream should NOT be closed\");\n\n\t\t\tusing (ZipOutputStream stream = new ZipOutputStream(ms))\n\t\t\t{\n\t\t\t\tAssert.IsTrue(stream.IsStreamOwner, \"Should be stream owner by default\");\n\t\t\t\tstream.IsStreamOwner = false;\n\t\t\t}\n\t\t\tAssert.IsFalse(ms.IsClosed, \"Underlying stream should still NOT be closed\");\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Check that base stream is not closed when IsOwner is false;\n\t\t/// </summary>\n\t\t[Test]\n\t\tpublic void BaseClosedAfterFailure()\n\t\t{\n\t\t\tvar ms = new TrackedMemoryStream(new byte[32]);\n\n\t\t\tAssert.IsFalse(ms.IsClosed, \"Underlying stream should NOT be closed initially\");\n\t\t\tbool blewUp = false;\n\t\t\ttry\n\t\t\t{\n\t\t\t\tusing (ZipOutputStream stream = new ZipOutputStream(ms))\n\t\t\t\t{\n\t\t\t\t\tAssert.IsTrue(stream.IsStreamOwner, \"Should be stream owner by default\");\n\t\t\t\t\ttry\n\t\t\t\t\t{\n\t\t\t\t\t\tstream.PutNextEntry(new ZipEntry(\"Tiny\"));\n\t\t\t\t\t\tstream.Write(new byte[32], 0, 32);\n\t\t\t\t\t}\n\t\t\t\t\tfinally\n\t\t\t\t\t{\n\t\t\t\t\t\tAssert.IsFalse(ms.IsClosed, \"Stream should still not be closed.\");\n\t\t\t\t\t\tstream.Close();\n\t\t\t\t\t\tAssert.Fail(\"Exception not thrown\");\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tcatch\n\t\t\t{\n\t\t\t\tblewUp = true;\n\t\t\t}\n\n\t\t\tAssert.IsTrue(blewUp, \"Should have failed to write to stream\");\n\t\t\tAssert.IsTrue(ms.IsClosed, \"Underlying stream should be closed\");\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Category(\"Performance\")]\n\t\t[Explicit(\"Long Running\")]\n\t\tpublic void WriteThroughput()\n\t\t{\n\t\t\tPerformanceTesting.TestWrite(0x10000000, bs =>\n\t\t\t{\n\t\t\t\tvar zos = new ZipOutputStream(bs);\n\t\t\t\tzos.PutNextEntry(new ZipEntry(\"0\"));\n\t\t\t\treturn zos;\n\t\t\t});\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Category(\"Performance\")]\n\t\t[Explicit(\"Long Running\")]\n\t\tpublic void SingleLargeEntry()\n\t\t{\n\t\t\tconst string EntryName = \"CantSeek\";\n\n\t\t\tPerformanceTesting.TestReadWrite(\n\t\t\t\tsize: TestDataSize.Large,\n\t\t\t\tinput: bs =>\n\t\t\t\t{\n\t\t\t\t\tvar zis = new ZipInputStream(bs);\n\t\t\t\t\tvar entry = zis.GetNextEntry();\n\n\t\t\t\t\tAssert.AreEqual(EntryName, entry.Name);\n\t\t\t\t\tAssert.IsTrue((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0);\n\t\t\t\t\treturn zis;\n\t\t\t\t},\n\t\t\t\toutput: bs =>\n\t\t\t\t{\n\t\t\t\t\tvar zos = new ZipOutputStream(bs);\n\t\t\t\t\tzos.PutNextEntry(new ZipEntry(EntryName));\n\t\t\t\t\treturn zos;\n\t\t\t\t}\n\t\t\t);\n\t\t}\n\n\t\tconst string BZip2CompressedZip =\n\t\t\t\"UEsDBC4AAAAMAEyxgU5p3ou9JwAAAAcAAAAFAAAAYS5kYXRCWmg5MUFZJlNZ0buMcAAAAkgACABA\" +\n\t\t\t\"ACAAIQCCCxdyRThQkNG7jHBQSwECMwAuAAAADABMsYFOad6LvScAAAAHAAAABQAAAAAAAAAAAAAA\" +\n\t\t\t\"AAAAAAAAYS5kYXRQSwUGAAAAAAEAAQAzAAAASgAAAAAA\";\n\n\t\t/// <summary>\n\t\t/// Should fail to read a zip with BZip2 compression\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ShouldReadBZip2EntryButNotDecompress()\n\t\t{\n\t\t\tvar fileBytes = System.Convert.FromBase64String(BZip2CompressedZip);\n\n\t\t\tusing (var input = new MemoryStream(fileBytes, false))\n\t\t\t{\n\t\t\t\tvar zis = new ZipInputStream(input);\n\t\t\t\tvar entry = zis.GetNextEntry();\n\n\t\t\t\tAssert.That(entry.Name, Is.EqualTo(\"a.dat\"), \"Should be able to get entry name\");\n\t\t\t\tAssert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), \"Entry should be BZip2 compressed\");\n\t\t\t\tAssert.That(zis.CanDecompressEntry, Is.False, \"Should not be able to decompress BZip2 entry\");\n\n\t\t\t\tvar buffer = new byte[1];\n\t\t\t\tAssert.Throws<ZipException>(() => zis.Read(buffer, 0, 1), \"Trying to read the stream should throw\");\n\t\t\t}\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Test for https://github.com/icsharpcode/SharpZipLib/issues/341\n\t\t/// Should be able to read entries whose names contain invalid filesystem\n\t\t/// characters\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ShouldBeAbleToReadEntriesWithInvalidFileNames()\n\t\t{\n\t\t\tvar testFileName = \"<A|B?C>.txt\";\n\n\t\t\tusing (var memoryStream = new MemoryStream())\n\t\t\t{\n\t\t\t\tusing (var outStream = new ZipOutputStream(memoryStream))\n\t\t\t\t{\n\t\t\t\t\toutStream.IsStreamOwner = false;\n\t\t\t\t\toutStream.PutNextEntry(new ZipEntry(testFileName));\n\t\t\t\t}\n\n\t\t\t\tmemoryStream.Seek(0, SeekOrigin.Begin);\n\n\t\t\t\tusing (var inStream = new ZipInputStream(memoryStream))\n\t\t\t\t{\n\t\t\t\t\tvar entry = inStream.GetNextEntry();\n\t\t\t\t\tAssert.That(entry.Name, Is.EqualTo(testFileName), \"output name must match original name\");\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Test for https://github.com/icsharpcode/SharpZipLib/issues/507\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void AddingAnAESEntryWithNoPasswordShouldThrow()\n\t\t{\n\t\t\tusing (var memoryStream = new MemoryStream())\n\t\t\t{\n\t\t\t\tusing (var outStream = new ZipOutputStream(memoryStream))\n\t\t\t\t{\n\t\t\t\t\tvar newEntry = new ZipEntry(\"test\") { AESKeySize = 256 };\n\n\t\t\t\t\tAssert.Throws<InvalidOperationException>(() => outStream.PutNextEntry(newEntry));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void ShouldThrowDescriptiveExceptionOnUncompressedDescriptorEntry()\n\t\t{\n\t\t\tusing (var ms = new MemoryStreamWithoutSeek())\n\t\t\t{\n\t\t\t\tusing (var zos = new ZipOutputStream(ms))\n\t\t\t\t{\n\t\t\t\t\tzos.IsStreamOwner = false;\n\t\t\t\t\tvar entry = new ZipEntry(\"testentry\");\n\t\t\t\t\tentry.CompressionMethod = CompressionMethod.Stored;\n\t\t\t\t\tentry.Flags |= (int)GeneralBitFlags.Descriptor;\n\t\t\t\t\tzos.PutNextEntry(entry);\n\t\t\t\t\tzos.Write(new byte[1], 0, 1);\n\t\t\t\t\tzos.CloseEntry();\n\t\t\t\t}\n\n\t\t\t\t// Patch the Compression Method, since ZipOutputStream automatically changes it to Deflate when descriptors are used\n\t\t\t\tms.Seek(8, SeekOrigin.Begin);\n\t\t\t\tms.WriteByte((byte)CompressionMethod.Stored);\n\t\t\t\tms.Seek(0, SeekOrigin.Begin);\n\n\t\t\t\tusing (var zis = new ZipInputStream(ms))\n\t\t\t\t{\n\t\t\t\t\tzis.IsStreamOwner = false;\n\t\t\t\t\tvar buf = new byte[32];\n\t\t\t\t\tzis.GetNextEntry();\n\n\t\t\t\t\tAssert.Throws(typeof(StreamUnsupportedException), () =>\n\t\t\t\t\t{\n\t\t\t\t\t\tzis.Read(buf, 0, buf.Length);\n\t\t\t\t\t});\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n",
+                "test_imports": [
+                    "using ICSharpCode.SharpZipLib.Core;",
+                    "using ICSharpCode.SharpZipLib.Tests.TestSupport;",
+                    "using ICSharpCode.SharpZipLib.Zip;",
+                    "using NUnit.Framework;",
+                    "using System;",
+                    "using System.IO;"
+                ],
+                "test_namespace": "ICSharpCode.SharpZipLib.Tests.Zip",
+                "test_class_name": "StreamHandling",
+                "test_file_path": "test/ICSharpCode.SharpZipLib.Tests/Zip/StreamHandling.cs",
+                "test_runner": "NUnit",
+                "project_path": "test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj"
+            },
+            {
+                "tests": "using ICSharpCode.SharpZipLib.Core;\nusing ICSharpCode.SharpZipLib.Zip;\nusing NUnit.Framework;\nusing System;\nusing System.IO;\nusing ICSharpCode.SharpZipLib.Tests.TestSupport;\n\nnamespace ICSharpCode.SharpZipLib.Tests.Zip\n{\n\t[TestFixture]\n\tpublic class ZipNameTransformHandling : TransformBase\n\t{\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void Basic()\n\t\t{\n\t\t\tvar t = new ZipNameTransform();\n\n\t\t\tTestFile(t, \"abcdef\", \"abcdef\");\n\n\t\t\t// This is ignored but could be converted to 'file3'\n\t\t\tTestFile(t, @\"./file3\", \"./file3\");\n\n\t\t\t// The following relative paths cant be handled and are ignored\n\t\t\tTestFile(t, @\"../file3\", \"../file3\");\n\t\t\tTestFile(t, @\".../file3\", \".../file3\");\n\n\t\t\t// Trick filenames.\n\t\t\tTestFile(t, @\".....file3\", \".....file3\");\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Platform(\"Win\")]\n\t\tpublic void Basic_Windows()\n\t\t{\n\t\t\tvar t = new ZipNameTransform();\n\t\t\tTestFile(t, @\"\\\\uncpath\\d1\\file1\", \"file1\");\n\t\t\tTestFile(t, @\"C:\\absolute\\file2\", \"absolute/file2\");\n\t\t\t\n\t\t\tTestFile(t, @\"c::file\", \"_file\");\n\t\t}\n\t\t\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Platform(Exclude=\"Win\")]\n\t\tpublic void Basic_Posix()\n\t\t{\n\t\t\tvar t = new ZipNameTransform();\n\t\t\tTestFile(t, @\"backslash_path\\file1\", \"backslash_path/file1\");\n\t\t\tTestFile(t, \"/absolute/file2\", \"absolute/file2\");\n\t\t\t\n\t\t\tTestFile(t, @\"////////:file\", \"_file\");\n\t\t}\n\n\t\t[Test]\n\t\tpublic void TooLong()\n\t\t{\n\t\t\tvar zt = new ZipNameTransform();\n\t\t\tvar tooLong = new string('x', 65536);\n\t\t\tAssert.Throws<PathTooLongException>(() => zt.TransformDirectory(tooLong));\n\t\t}\n\n\t\t[Test]\n\t\tpublic void LengthBoundaryOk()\n\t\t{\n\t\t\tvar zt = new ZipNameTransform();\n\t\t\tvar tooLongWithRoot = Utils.SystemRoot + new string('x', 65535);\n\t\t\tAssert.DoesNotThrow(() => zt.TransformDirectory(tooLongWithRoot));\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Platform(\"Win\")]\n\t\tpublic void NameTransforms_Windows()\n\t\t{\n\t\t\tINameTransform t = new ZipNameTransform(@\"C:\\Slippery\");\n\t\t\tAssert.AreEqual(\"Pongo/Directory/\", t.TransformDirectory(@\"C:\\Slippery\\Pongo\\Directory\"), \"Value should be trimmed and converted\");\n\t\t\tAssert.AreEqual(\"PoNgo/Directory/\", t.TransformDirectory(@\"c:\\slipperY\\PoNgo\\Directory\"), \"Trimming should be case insensitive\");\n\t\t\tAssert.AreEqual(\"slippery/Pongo/Directory/\", t.TransformDirectory(@\"d:\\slippery\\Pongo\\Directory\"), \"Trimming should account for root\");\n\n\t\t\tAssert.AreEqual(\"Pongo/File\", t.TransformFile(@\"C:\\Slippery\\Pongo\\File\"), \"Value should be trimmed and converted\");\n\t\t}\n\t\t\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\t[Platform(Exclude=\"Win\")]\n\t\tpublic void NameTransforms_Posix()\n\t\t{\n\t\t\tINameTransform t = new ZipNameTransform(@\"/Slippery\");\n\t\t\tAssert.AreEqual(\"Pongo/Directory/\", t.TransformDirectory(@\"/Slippery\\Pongo\\Directory\"), \"Value should be trimmed and converted\");\n\t\t\tAssert.AreEqual(\"PoNgo/Directory/\", t.TransformDirectory(@\"/slipperY\\PoNgo\\Directory\"), \"Trimming should be case insensitive\");\n\t\t\tAssert.AreEqual(\"slippery/Pongo/Directory/\", t.TransformDirectory(@\"/slippery/slippery/Pongo/Directory\"), \"Trimming should account for root\");\n\n\t\t\tAssert.AreEqual(\"Pongo/File\", t.TransformFile(@\"/Slippery/Pongo/File\"), \"Value should be trimmed and converted\");\n\t\t}\n\n\t\t/// <summary>\n\t\t/// Test ZipEntry static file name cleaning methods\n\t\t/// </summary>\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void FilenameCleaning()\n\t\t{\n\t\t\tAssert.AreEqual(\"hello\", ZipEntry.CleanName(\"hello\"));\n\t\t\tif(Environment.OSVersion.Platform == PlatformID.Win32NT) \n\t\t\t{\n\t\t\t\tAssert.AreEqual(\"eccles\", ZipEntry.CleanName(@\"z:\\eccles\"));\n\t\t\t\tAssert.AreEqual(\"eccles\", ZipEntry.CleanName(@\"\\\\server\\share\\eccles\"));\n\t\t\t\tAssert.AreEqual(\"dir/eccles\", ZipEntry.CleanName(@\"\\\\server\\share\\dir\\eccles\"));\n\t\t\t}\n\t\t\telse {\n\t\t\t\tAssert.AreEqual(\"eccles\", ZipEntry.CleanName(@\"/eccles\"));\n\t\t\t}\n\t\t}\n\n\t\t[Test]\n\t\t[Category(\"Zip\")]\n\t\tpublic void PathalogicalNames()\n\t\t{\n\t\t\tstring badName = \".*:\\\\zy3$\";\n\n\t\t\tAssert.IsFalse(ZipNameTransform.IsValidName(badName));\n\n\t\t\tvar t = new ZipNameTransform();\n\t\t\tstring result = t.TransformFile(badName);\n\n\t\t\tAssert.IsTrue(ZipNameTransform.IsValidName(result));\n\t\t}\n\t}\n}\n",
+                "test_imports": [
+                    "using ICSharpCode.SharpZipLib.Core;",
+                    "using ICSharpCode.SharpZipLib.Zip;",
+                    "using NUnit.Framework;",
+                    "using System;",
+                    "using System.IO;",
+                    "using ICSharpCode.SharpZipLib.Tests.TestSupport;"
+                ],
+                "test_namespace": "ICSharpCode.SharpZipLib.Tests.Zip",
+                "test_class_name": "ZipNameTransformHandling",
+                "test_file_path": "test/ICSharpCode.SharpZipLib.Tests/Zip/ZipNameTransformHandling.cs",
+                "test_runner": "NUnit",
+                "project_path": "test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\n    [Test]\n    public void CleanName_Test_1()\n    {\n        string input = @\"C:\\folder\\file.txt\";\n        string expected = \"folder/file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_2()\n    {\n        string input = @\"\\\\server\\share\\file.txt\";\n        string expected = \"share/file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_3()\n    {\n        string input = @\"folder\\subfolder\\file.txt\";\n        string expected = \"folder/subfolder/file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_4()\n    {\n        string input = @\"/folder/subfolder/file.txt\";\n        string expected = \"folder/subfolder/file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_5()\n    {\n        string input = @\"//folder//subfolder//file.txt\";\n        string expected = \"folder/subfolder/file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_6()\n    {\n        string input = @\"C:\\\";\n        string expected = \"\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_7()\n    {\n        string input = @\"\\\\server\\share\\\";\n        string expected = \"\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_8()\n    {\n        string input = @\"C:\\folder\\..\\\\file.txt\";\n        string expected = \"folder/../file.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n\n    [Test]\n    public void CleanName_Test_9()\n    {\n        string input = null;\n        Assert.Throws<ArgumentNullException>(() => ZipEntry.CleanName(input));\n    }\n\n    [Test]\n    public void CleanName_Test_10()\n    {\n        string input = @\"C:\\folder\\file with spaces.txt\";\n        string expected = \"folder/file with spaces.txt\";\n        string actual = ZipEntry.CleanName(input);\n        Assert.AreEqual(expected, actual);\n    }\n}",
+        "new_code": "{\nif (string.IsNullOrEmpty(name))\n{\n    throw new ArgumentNullException(nameof(name));\n}\n\n// Remove device names and UNC paths\nif (name.StartsWith(@\"\\\\\") || name.StartsWith(@\"C:\\\") || name.StartsWith(@\"D:\\\"))\n{\n    name = name.Substring(name.IndexOf(Path.DirectorySeparatorChar) + 1);\n}\n\n// Replace backslashes with forward slashes\nname = name.Replace('\\\\', '/');\n\n// Trim leading slashes to make the name relative\nwhile (name.StartsWith(\"/\"))\n{\n    name = name.Substring(1);\n}\n\nreturn name;}"
+    }
+]

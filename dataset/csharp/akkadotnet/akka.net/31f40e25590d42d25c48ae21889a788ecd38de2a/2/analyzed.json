@@ -1,0 +1,88 @@
+[
+    {
+        "doc": "/// <summary>\r\n/// Determines if the specified <paramref name = \"actorRef\"/> is invalid.\r\n/// An <paramref name = \"actorRef\"/> is thought to be invalid if it's one of the following:\r\n///    <see langword=\"null\"/>, <see cref = \"Nobody\"/>, and <see cref = \"DeadLetterActorRef\"/>\r\n/// </summary>\r\n/// <param name = \"actorRef\">The actor that is being tested.</param>\r\n/// <returns><c>true</c> if the <paramref name = \"actorRef\"/> is invalid; otherwise <c>false</c>.</returns>",
+        "signature": {
+            "name": "IsNobody",
+            "returns": "bool",
+            "params": [
+                "this IActorRef actorRef"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "ActorRefExtensions",
+            "doc": "/// <summary>\r\n/// This class contains extension methods used for working with <see cref = \"IActorRef\">ActorRefs</see>.\r\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\r\n/// Returns the <paramref name = \"actorRef\"/>'s value if it's not <see langword=\"null\"/>, <see cref = \"Nobody\"/>, \r\n/// or <see cref = \"DeadLetterActorRef\"/>. Otherwise return the result of evaluating `elseValue`.\r\n/// </summary>\r\n/// <param name = \"actorRef\">The actor that is being tested.</param>\r\n/// <param name = \"elseValue\">TBD</param>",
+                    "signature": {
+                        "name": "GetOrElse",
+                        "returns": "IActorRef",
+                        "params": [
+                            "this IActorRef actorRef",
+                            "Func<IActorRef> elseValue"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return actorRef.IsNobody() ? elseValue() : actorRef;\r\n        }"
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [
+                "using System;"
+            ],
+            "constructors": [],
+            "extends": "",
+            "implements": [],
+            "namespace": "Akka.Actor"
+        },
+        "code": "{\r\n            return actorRef is null || actorRef is Nobody || actorRef is DeadLetterActorRef\r\n                || actorRef.Path is null || (actorRef.Path.Uid == 0 && actorRef.Path.Name == \"deadLetters\");\r\n        }",
+        "code_file_path": "core/Akka/Actor/ActorRef.Extensions.cs",
+        "called_functions": [],
+        "id": 1327,
+        "tests": [
+            {
+                "tests": "//-----------------------------------------------------------------------\r\n// <copyright file=\"ActorRefIgnoreSpec.cs\" company=\"Akka.NET Project\">\r\n//     Copyright (C) 2009-2022 Lightbend Inc. <http://www.lightbend.com>\r\n//     Copyright (C) 2013-2022 .NET Foundation <https://github.com/akkadotnet/akka.net>\r\n// </copyright>\r\n//-----------------------------------------------------------------------\r\n\r\nusing System;\r\nusing System.Threading;\r\nusing Akka.Actor;\r\nusing Akka.Actor.Internal;\r\nusing Akka.Serialization;\r\nusing Akka.TestKit;\r\nusing Akka.TestKit.TestActors;\r\nusing Xunit;\r\nusing Akka.Util.Internal;\r\nusing FluentAssertions;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace Akka.Tests.Actor\r\n{\r\n    public class ActorRefIgnoreSpec : AkkaSpec, INoImplicitSender\r\n    {\r\n        [Fact]\r\n        public async Task IgnoreActorRef_should_ignore_all_incoming_messages()\r\n        {\r\n            var askMeRef = Sys.ActorOf(Props.Create(() => new AskMeActor()));\r\n            askMeRef.IsNobody();\r\n            ActorRefExtensions.IsNobody(askMeRef);\r\n\r\n            var probe = CreateTestProbe(\"response-probe\");\r\n            askMeRef.Tell(new Request(probe.Ref));\r\n            await probe.ExpectMsgAsync(1);\r\n\r\n            // this is more a compile-time proof\r\n            // since the reply is ignored, we can't check that a message was sent to it\r\n            askMeRef.Tell(new Request(Sys.IgnoreRef));\r\n\r\n            await probe.ExpectNoMsgAsync(default);\r\n\r\n            // but we do check that the counter has increased when we used the ActorRef.ignore\r\n            askMeRef.Tell(new Request(probe.Ref));\r\n            await probe.ExpectMsgAsync(3);\r\n        }\r\n\r\n        [Fact]\r\n        public void IgnoreActorRef_should_make_a_Future_timeout_when_used_in_a_ask()\r\n        {\r\n            // this is kind of obvious, the Future won't complete because the ignoreRef is used\r\n\r\n            var timeout = TimeSpan.FromMilliseconds(500);\r\n            var askMeRef = Sys.ActorOf(Props.Create(() => new AskMeActor()));\r\n\r\n            Assert.Throws<AskTimeoutException>(() =>\r\n            {\r\n                _ = askMeRef.Ask(new Request(Sys.IgnoreRef), timeout).GetAwaiter().GetResult();\r\n            });\r\n        }\r\n\r\n        [Fact]\r\n        public async Task IgnoreActorRef_should_be_watchable_from_another_actor_without_throwing_an_exception()\r\n        {\r\n            var probe = CreateTestProbe(\"probe-response\");\r\n            var forwardMessageRef = Sys.ActorOf(Props.Create(() => new ForwardMessageWatchActor(probe)));\r\n\r\n            // this proves that the actor started and is operational and 'watch' didn't impact it\r\n            forwardMessageRef.Tell(\"abc\");\r\n            await probe.ExpectMsgAsync(\"abc\");\r\n        }\r\n\r\n        [Fact]\r\n        public void IgnoreActorRef_should_be_a_singleton()\r\n        {\r\n            Sys.IgnoreRef.Should().BeSameAs(Sys.IgnoreRef);\r\n        }\r\n\r\n        /// <summary>\r\n        /// this Actor behavior receives simple request and answers back total number of\r\n        /// messages it received so far\r\n        /// </summary>\r\n        internal class AskMeActor : ActorBase\r\n        {\r\n            private int counter;\r\n\r\n            public AskMeActor()\r\n            {\r\n            }\r\n\r\n            protected override bool Receive(object message)\r\n            {\r\n                switch (message)\r\n                {\r\n                    case Request r:\r\n                        counter++;\r\n                        r.ReplyTo.Tell(counter);\r\n                        return true;\r\n                }\r\n                return false;\r\n            }\r\n        }\r\n\r\n        internal class Request\r\n        {\r\n            public Request(IActorRef replyTo)\r\n            {\r\n                ReplyTo = replyTo;\r\n            }\r\n\r\n            public IActorRef ReplyTo { get; }\r\n        }\r\n\r\n        internal class ForwardMessageWatchActor : ActorBase\r\n        {\r\n            private readonly IActorRef probe;\r\n\r\n            public ForwardMessageWatchActor(IActorRef probe)\r\n            {\r\n                Context.Watch(Context.System.IgnoreRef);\r\n                this.probe = probe;\r\n            }\r\n\r\n            protected override bool Receive(object message)\r\n            {\r\n                switch (message)\r\n                {\r\n                    case string str:\r\n                        probe.Tell(str);\r\n                        return true;\r\n                }\r\n                return false;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n",
+                "test_imports": [
+                    "using System;",
+                    "using System.Threading;",
+                    "using Akka.Actor;",
+                    "using Akka.Actor.Internal;",
+                    "using Akka.Serialization;",
+                    "using Akka.TestKit;",
+                    "using Akka.TestKit.TestActors;",
+                    "using Xunit;",
+                    "using Akka.Util.Internal;",
+                    "using FluentAssertions;",
+                    "using System.Threading.Tasks;"
+                ],
+                "test_namespace": "Akka.Tests.Actor",
+                "test_class_name": "ActorRefIgnoreSpec",
+                "test_file_path": "core/Akka.Tests/Actor/ActorRefIgnoreSpec.cs",
+                "test_runner": "xUnit",
+                "project_path": "core/Akka.Tests/Akka.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "using FluentAssertions;\nusing Akka.TestKit;\nusing Akka.Serialization;\nusing System;\nusing Xunit;\nusing System.Threading.Tasks;\nusing Akka.TestKit.TestActors;\nusing Akka.Actor.Internal;\nusing Akka.Util.Internal;\nusing System.Threading;\nusing Akka.Actor;\n\nnamespace Akka.Tests.Actor\n{\n\npublic class ActorRefIgnoreSpec\n{\n    [Fact]\n    public void IsNobody_Test_1()\n{\n        // Arrange\n        IActorRef validActorRef = ActorRefs.NoSender; // Replace with a valid actor reference if needed\n        IActorRef nobodyActorRef = ActorRefs.Nobody;\n        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;\n\n        // Act\n        bool resultForValid = validActorRef.IsNobody();\n        bool resultForNobody = nobodyActorRef.IsNobody();\n        bool resultForDeadLetter = deadLetterActorRef.IsNobody();\n        bool resultForNull = ((IActorRef)null).IsNobody();\n\n        // Assert\n        resultForValid.Should().BeFalse();\n        resultForNobody.Should().BeTrue();\n        resultForDeadLetter.Should().BeTrue();\n        resultForNull.Should().BeTrue();\n    }\n\n    [Fact]\n    public void IsNobody_Test_2()\n    {\n        // Arrange\n        IActorRef anotherValidActorRef = ActorRefs.Nobody; // Replace with a valid actor reference if needed\n\n        // Act\n        bool result = anotherValidActorRef.IsNobody();\n\n        // Assert\n        result.Should().BeTrue();\n    }\n\n    [Fact]\n    public void IsNobody_Test_3()\n    {\n        // Arrange\n        IActorRef nullActorRef = null;\n\n        // Act\n        bool result = nullActorRef.IsNobody();\n\n        // Assert\n        result.Should().BeTrue();\n    }\n\n    [Fact]\n    public void IsNobody_Test_4()\n    {\n        // Arrange\n        IActorRef deadLetterActorRef = DeadLetterActorRef.Instance;\n\n        // Act\n        bool result = deadLetterActorRef.IsNobody();\n\n        // Assert\n        result.Should().BeTrue();\n    }\n}}",
+        "new_code": "{\nreturn actorRef == null || actorRef.Equals(Nobody.Instance) || actorRef.Equals(DeadLetterActorRef.Instance);}"
+    }
+]

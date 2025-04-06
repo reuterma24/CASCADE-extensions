@@ -1,0 +1,182 @@
+verify returned with:255
+
+        // Arrange
+        var parser = new HtmlParser("<html><body></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify the expected behavior, e.g., check if the correct error was raised or state was changed
+        Assert.IsTrue(parser.TagCurrentlyOpen("div"), "Expected 'div' tag to be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("span", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the parser handles the unexpected end tag correctly
+        Assert.IsFalse(parser.TagCurrentlyOpen("span"), "Expected 'span' tag to not be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><div></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser correctly closed the 'div' tag
+        Assert.IsFalse(parser.TagCurrentlyOpen("div"), "Expected 'div' tag to be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><ul><li></li></ul></body></html>");
+        var tag = new HtmlTagToken("li", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the parser correctly handles the end tag for 'li'
+        Assert.IsTrue(parser.IsInListItemScope(), "Expected to be in list item scope after processing 'li' end tag.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("h1", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser raised an error for the unexpected end tag
+        Assert.Throws<HtmlParseError>(() => parser.RaiseErrorOccurred(HtmlParseError.UnexpectedEndTag, tag), "Expected an error for unexpected end tag.");
+    }
+
+Error: Typ- oder Namespacedefinition oder Dateiende erwartet.
+Line: 12, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 15, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 30, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 45, Column: 5
+
+Error: Der "public"-Modifizierer ist für dieses Element nicht gültig.
+Line: 60, Column: 5
+
+
+
+verify returned with:0
+using System;
+using NUnit.Framework;
+using AngleSharp.Dom;
+using AngleSharp.Core.Tests.Mocks;
+using AngleSharp.Parser.Html;
+
+namespace AngleSharp.Core.Tests
+{
+
+[TestFixture]
+public class HtmlScript
+{
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_1()
+{
+        // Arrange
+        var parser = new HtmlParser("<html><body></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify the expected behavior, e.g., check if the correct error was raised or state was changed
+        Assert.IsTrue(parser.TagCurrentlyOpen("div"), "Expected 'div' tag to be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_2()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("span", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the parser handles the unexpected end tag correctly
+        Assert.IsFalse(parser.TagCurrentlyOpen("span"), "Expected 'span' tag to not be open.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_3()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><div></div></body></html>");
+        var tag = new HtmlTagToken("div", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser correctly closed the 'div' tag
+        Assert.IsFalse(parser.TagCurrentlyOpen("div"), "Expected 'div' tag to be closed.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_4()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><ul><li></li></ul></body></html>");
+        var tag = new HtmlTagToken("li", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Verify that the parser correctly handles the end tag for 'li'
+        Assert.IsTrue(parser.IsInListItemScope(), "Expected to be in list item scope after processing 'li' end tag.");
+    }
+
+    [Test]
+    public void InBodyEndTagAnythingElse_Test_5()
+    {
+        // Arrange
+        var parser = new HtmlParser("<html><body><p></p></body></html>");
+        var tag = new HtmlTagToken("h1", HtmlTokenType.EndTag);
+
+        // Act
+        parser.InBodyEndTagAnythingElse(tag);
+
+        // Assert
+        // Check if the parser raised an error for the unexpected end tag
+        Assert.Throws<HtmlParseError>(() => parser.RaiseErrorOccurred(HtmlParseError.UnexpectedEndTag, tag), "Expected an error for unexpected end tag.");
+    }
+}}
+Syntactically correct
+
+

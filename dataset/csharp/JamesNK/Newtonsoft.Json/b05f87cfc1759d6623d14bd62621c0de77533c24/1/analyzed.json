@@ -1,0 +1,719 @@
+[
+    {
+        "doc": "/// <summary>\r\n/// Creates a <see cref = \"JValue\"/> null value.\r\n/// </summary>\r\n/// <returns>A <see cref = \"JValue\"/> null value.</returns>",
+        "signature": {
+            "name": "CreateUndefined",
+            "returns": "JValue",
+            "params": [],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "JValue",
+            "doc": "/// <summary>\r\n/// Represents a value in JSON (string, integer, date, etc).\r\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "DeepEquals",
+                        "returns": "bool",
+                        "params": [
+                            "JToken node"
+                        ],
+                        "modifier": [
+                            "internal",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            JValue other = node as JValue;\r\n            if (other == null)\r\n            {\r\n                return false;\r\n            }\r\n            if (other == this)\r\n            {\r\n                return true;\r\n            }\r\n\r\n            return ValuesEquals(this, other);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "CompareBigInteger",
+                        "returns": "int",
+                        "params": [
+                            "BigInteger i1",
+                            "object i2"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            int result = i1.CompareTo(ConvertUtils.ToBigInteger(i2));\r\n\r\n            if (result != 0)\r\n            {\r\n                return result;\r\n            }\r\n\r\n            // converting a fractional number to a BigInteger will lose the fraction\r\n            // check for fraction if result is two numbers are equal\r\n            if (i2 is decimal)\r\n            {\r\n                decimal d = (decimal)i2;\r\n                return (0m).CompareTo(Math.Abs(d - Math.Truncate(d)));\r\n            }\r\n            else if (i2 is double || i2 is float)\r\n            {\r\n                double d = Convert.ToDouble(i2, CultureInfo.InvariantCulture);\r\n                return (0d).CompareTo(Math.Abs(d - Math.Truncate(d)));\r\n            }\r\n\r\n            return result;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "Compare",
+                        "returns": "int",
+                        "params": [
+                            "JTokenType valueType",
+                            "object objA",
+                            "object objB"
+                        ],
+                        "modifier": [
+                            "internal",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (objA == null && objB == null)\r\n            {\r\n                return 0;\r\n            }\r\n            if (objA != null && objB == null)\r\n            {\r\n                return 1;\r\n            }\r\n            if (objA == null && objB != null)\r\n            {\r\n                return -1;\r\n            }\r\n\r\n            switch (valueType)\r\n            {\r\n                case JTokenType.Integer:\r\n#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)\r\n                    if (objA is BigInteger)\r\n                    {\r\n                        return CompareBigInteger((BigInteger)objA, objB);\r\n                    }\r\n                    if (objB is BigInteger)\r\n                    {\r\n                        return -CompareBigInteger((BigInteger)objB, objA);\r\n                    }\r\n#endif\r\n                    if (objA is ulong || objB is ulong || objA is decimal || objB is decimal)\r\n                    {\r\n                        return Convert.ToDecimal(objA, CultureInfo.InvariantCulture).CompareTo(Convert.ToDecimal(objB, CultureInfo.InvariantCulture));\r\n                    }\r\n                    else if (objA is float || objB is float || objA is double || objB is double)\r\n                    {\r\n                        return CompareFloat(objA, objB);\r\n                    }\r\n                    else\r\n                    {\r\n                        return Convert.ToInt64(objA, CultureInfo.InvariantCulture).CompareTo(Convert.ToInt64(objB, CultureInfo.InvariantCulture));\r\n                    }\r\n                case JTokenType.Float:\r\n#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)\r\n                    if (objA is BigInteger)\r\n                    {\r\n                        return CompareBigInteger((BigInteger)objA, objB);\r\n                    }\r\n                    if (objB is BigInteger)\r\n                    {\r\n                        return -CompareBigInteger((BigInteger)objB, objA);\r\n                    }\r\n#endif\r\n                    return CompareFloat(objA, objB);\r\n                case JTokenType.Comment:\r\n                case JTokenType.String:\r\n                case JTokenType.Raw:\r\n                    string s1 = Convert.ToString(objA, CultureInfo.InvariantCulture);\r\n                    string s2 = Convert.ToString(objB, CultureInfo.InvariantCulture);\r\n\r\n                    return string.CompareOrdinal(s1, s2);\r\n                case JTokenType.Boolean:\r\n                    bool b1 = Convert.ToBoolean(objA, CultureInfo.InvariantCulture);\r\n                    bool b2 = Convert.ToBoolean(objB, CultureInfo.InvariantCulture);\r\n\r\n                    return b1.CompareTo(b2);\r\n                case JTokenType.Date:\r\n#if !NET20\r\n                    if (objA is DateTime)\r\n                    {\r\n#endif\r\n                        DateTime date1 = (DateTime)objA;\r\n                        DateTime date2;\r\n\r\n#if !NET20\r\n                        if (objB is DateTimeOffset)\r\n                        {\r\n                            date2 = ((DateTimeOffset)objB).DateTime;\r\n                        }\r\n                        else\r\n#endif\r\n                        {\r\n                            date2 = Convert.ToDateTime(objB, CultureInfo.InvariantCulture);\r\n                        }\r\n\r\n                        return date1.CompareTo(date2);\r\n#if !NET20\r\n                    }\r\n                    else\r\n                    {\r\n                        DateTimeOffset date1 = (DateTimeOffset)objA;\r\n                        DateTimeOffset date2;\r\n\r\n                        if (objB is DateTimeOffset)\r\n                        {\r\n                            date2 = (DateTimeOffset)objB;\r\n                        }\r\n                        else\r\n                        {\r\n                            date2 = new DateTimeOffset(Convert.ToDateTime(objB, CultureInfo.InvariantCulture));\r\n                        }\r\n\r\n                        return date1.CompareTo(date2);\r\n                    }\r\n#endif\r\n                case JTokenType.Bytes:\r\n                    if (!(objB is byte[]))\r\n                    {\r\n                        throw new ArgumentException(\"Object must be of type byte[].\");\r\n                    }\r\n\r\n                    byte[] bytes1 = objA as byte[];\r\n                    byte[] bytes2 = objB as byte[];\r\n                    if (bytes1 == null)\r\n                    {\r\n                        return -1;\r\n                    }\r\n                    if (bytes2 == null)\r\n                    {\r\n                        return 1;\r\n                    }\r\n\r\n                    return MiscellaneousUtils.ByteArrayCompare(bytes1, bytes2);\r\n                case JTokenType.Guid:\r\n                    if (!(objB is Guid))\r\n                    {\r\n                        throw new ArgumentException(\"Object must be of type Guid.\");\r\n                    }\r\n\r\n                    Guid guid1 = (Guid)objA;\r\n                    Guid guid2 = (Guid)objB;\r\n\r\n                    return guid1.CompareTo(guid2);\r\n                case JTokenType.Uri:\r\n                    if (!(objB is Uri))\r\n                    {\r\n                        throw new ArgumentException(\"Object must be of type Uri.\");\r\n                    }\r\n\r\n                    Uri uri1 = (Uri)objA;\r\n                    Uri uri2 = (Uri)objB;\r\n\r\n                    return Comparer<string>.Default.Compare(uri1.ToString(), uri2.ToString());\r\n                case JTokenType.TimeSpan:\r\n                    if (!(objB is TimeSpan))\r\n                    {\r\n                        throw new ArgumentException(\"Object must be of type TimeSpan.\");\r\n                    }\r\n\r\n                    TimeSpan ts1 = (TimeSpan)objA;\r\n                    TimeSpan ts2 = (TimeSpan)objB;\r\n\r\n                    return ts1.CompareTo(ts2);\r\n                default:\r\n                    throw MiscellaneousUtils.CreateArgumentOutOfRangeException(\"valueType\", valueType, \"Unexpected value type: {0}\".FormatWith(CultureInfo.InvariantCulture, valueType));\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "CompareFloat",
+                        "returns": "int",
+                        "params": [
+                            "object objA",
+                            "object objB"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            double d1 = Convert.ToDouble(objA, CultureInfo.InvariantCulture);\r\n            double d2 = Convert.ToDouble(objB, CultureInfo.InvariantCulture);\r\n\r\n            // take into account possible floating point errors\r\n            if (MathUtils.ApproxEquals(d1, d2))\r\n            {\r\n                return 0;\r\n            }\r\n\r\n            return d1.CompareTo(d2);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "Operation",
+                        "returns": "bool",
+                        "params": [
+                            "ExpressionType operation",
+                            "object objA",
+                            "object objB",
+                            "out object result"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (objA is string || objB is string)\r\n            {\r\n                if (operation == ExpressionType.Add || operation == ExpressionType.AddAssign)\r\n                {\r\n                    result = ((objA != null) ? objA.ToString() : null) + ((objB != null) ? objB.ToString() : null);\r\n                    return true;\r\n                }\r\n            }\r\n\r\n#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)\r\n            if (objA is BigInteger || objB is BigInteger)\r\n            {\r\n                if (objA == null || objB == null)\r\n                {\r\n                    result = null;\r\n                    return true;\r\n                }\r\n\r\n                // not that this will lose the fraction\r\n                // BigInteger doesn't have operators with non-integer types\r\n                BigInteger i1 = ConvertUtils.ToBigInteger(objA);\r\n                BigInteger i2 = ConvertUtils.ToBigInteger(objB);\r\n\r\n                switch (operation)\r\n                {\r\n                    case ExpressionType.Add:\r\n                    case ExpressionType.AddAssign:\r\n                        result = i1 + i2;\r\n                        return true;\r\n                    case ExpressionType.Subtract:\r\n                    case ExpressionType.SubtractAssign:\r\n                        result = i1 - i2;\r\n                        return true;\r\n                    case ExpressionType.Multiply:\r\n                    case ExpressionType.MultiplyAssign:\r\n                        result = i1 * i2;\r\n                        return true;\r\n                    case ExpressionType.Divide:\r\n                    case ExpressionType.DivideAssign:\r\n                        result = i1 / i2;\r\n                        return true;\r\n                }\r\n            }\r\n            else\r\n#endif\r\n                if (objA is ulong || objB is ulong || objA is decimal || objB is decimal)\r\n            {\r\n                if (objA == null || objB == null)\r\n                {\r\n                    result = null;\r\n                    return true;\r\n                }\r\n\r\n                decimal d1 = Convert.ToDecimal(objA, CultureInfo.InvariantCulture);\r\n                decimal d2 = Convert.ToDecimal(objB, CultureInfo.InvariantCulture);\r\n\r\n                switch (operation)\r\n                {\r\n                    case ExpressionType.Add:\r\n                    case ExpressionType.AddAssign:\r\n                        result = d1 + d2;\r\n                        return true;\r\n                    case ExpressionType.Subtract:\r\n                    case ExpressionType.SubtractAssign:\r\n                        result = d1 - d2;\r\n                        return true;\r\n                    case ExpressionType.Multiply:\r\n                    case ExpressionType.MultiplyAssign:\r\n                        result = d1 * d2;\r\n                        return true;\r\n                    case ExpressionType.Divide:\r\n                    case ExpressionType.DivideAssign:\r\n                        result = d1 / d2;\r\n                        return true;\r\n                }\r\n            }\r\n            else if (objA is float || objB is float || objA is double || objB is double)\r\n            {\r\n                if (objA == null || objB == null)\r\n                {\r\n                    result = null;\r\n                    return true;\r\n                }\r\n\r\n                double d1 = Convert.ToDouble(objA, CultureInfo.InvariantCulture);\r\n                double d2 = Convert.ToDouble(objB, CultureInfo.InvariantCulture);\r\n\r\n                switch (operation)\r\n                {\r\n                    case ExpressionType.Add:\r\n                    case ExpressionType.AddAssign:\r\n                        result = d1 + d2;\r\n                        return true;\r\n                    case ExpressionType.Subtract:\r\n                    case ExpressionType.SubtractAssign:\r\n                        result = d1 - d2;\r\n                        return true;\r\n                    case ExpressionType.Multiply:\r\n                    case ExpressionType.MultiplyAssign:\r\n                        result = d1 * d2;\r\n                        return true;\r\n                    case ExpressionType.Divide:\r\n                    case ExpressionType.DivideAssign:\r\n                        result = d1 / d2;\r\n                        return true;\r\n                }\r\n            }\r\n            else if (objA is int || objA is uint || objA is long || objA is short || objA is ushort || objA is sbyte || objA is byte ||\r\n                     objB is int || objB is uint || objB is long || objB is short || objB is ushort || objB is sbyte || objB is byte)\r\n            {\r\n                if (objA == null || objB == null)\r\n                {\r\n                    result = null;\r\n                    return true;\r\n                }\r\n\r\n                long l1 = Convert.ToInt64(objA, CultureInfo.InvariantCulture);\r\n                long l2 = Convert.ToInt64(objB, CultureInfo.InvariantCulture);\r\n\r\n                switch (operation)\r\n                {\r\n                    case ExpressionType.Add:\r\n                    case ExpressionType.AddAssign:\r\n                        result = l1 + l2;\r\n                        return true;\r\n                    case ExpressionType.Subtract:\r\n                    case ExpressionType.SubtractAssign:\r\n                        result = l1 - l2;\r\n                        return true;\r\n                    case ExpressionType.Multiply:\r\n                    case ExpressionType.MultiplyAssign:\r\n                        result = l1 * l2;\r\n                        return true;\r\n                    case ExpressionType.Divide:\r\n                    case ExpressionType.DivideAssign:\r\n                        result = l1 / l2;\r\n                        return true;\r\n                }\r\n            }\r\n\r\n            result = null;\r\n            return false;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "CloneToken",
+                        "returns": "JToken",
+                        "params": [],
+                        "modifier": [
+                            "internal",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return new JValue(this);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Creates a <see cref = \"JValue\"/> comment with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\n/// <returns>A <see cref = \"JValue\"/> comment with the given value.</returns>",
+                    "signature": {
+                        "name": "CreateComment",
+                        "returns": "JValue",
+                        "params": [
+                            "string value"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return new JValue(value, JTokenType.Comment);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Creates a <see cref = \"JValue\"/> string with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\n/// <returns>A <see cref = \"JValue\"/> string with the given value.</returns>",
+                    "signature": {
+                        "name": "CreateString",
+                        "returns": "JValue",
+                        "params": [
+                            "string value"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return new JValue(value, JTokenType.String);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Creates a <see cref = \"JValue\"/> null value.\r\n/// </summary>\r\n/// <returns>A <see cref = \"JValue\"/> null value.</returns>",
+                    "signature": {
+                        "name": "CreateNull",
+                        "returns": "JValue",
+                        "params": [],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return new JValue(null, JTokenType.Null);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "GetValueType",
+                        "returns": "JTokenType",
+                        "params": [
+                            "JTokenType? current",
+                            "object value"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (value == null)\r\n            {\r\n                return JTokenType.Null;\r\n            }\r\n#if !(DOTNET || PORTABLE40 || PORTABLE)\r\n            else if (value == DBNull.Value)\r\n            {\r\n                return JTokenType.Null;\r\n            }\r\n#endif\r\n            else if (value is string)\r\n            {\r\n                return GetStringValueType(current);\r\n            }\r\n            else if (value is long || value is int || value is short || value is sbyte\r\n                     || value is ulong || value is uint || value is ushort || value is byte)\r\n            {\r\n                return JTokenType.Integer;\r\n            }\r\n            else if (value is Enum)\r\n            {\r\n                return JTokenType.Integer;\r\n            }\r\n#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)\r\n            else if (value is BigInteger)\r\n            {\r\n                return JTokenType.Integer;\r\n            }\r\n#endif\r\n            else if (value is double || value is float || value is decimal)\r\n            {\r\n                return JTokenType.Float;\r\n            }\r\n            else if (value is DateTime)\r\n            {\r\n                return JTokenType.Date;\r\n            }\r\n#if !NET20\r\n            else if (value is DateTimeOffset)\r\n            {\r\n                return JTokenType.Date;\r\n            }\r\n#endif\r\n            else if (value is byte[])\r\n            {\r\n                return JTokenType.Bytes;\r\n            }\r\n            else if (value is bool)\r\n            {\r\n                return JTokenType.Boolean;\r\n            }\r\n            else if (value is Guid)\r\n            {\r\n                return JTokenType.Guid;\r\n            }\r\n            else if (value is Uri)\r\n            {\r\n                return JTokenType.Uri;\r\n            }\r\n            else if (value is TimeSpan)\r\n            {\r\n                return JTokenType.TimeSpan;\r\n            }\r\n\r\n            throw new ArgumentException(\"Could not determine JSON object type for type {0}.\".FormatWith(CultureInfo.InvariantCulture, value.GetType()));\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "GetStringValueType",
+                        "returns": "JTokenType",
+                        "params": [
+                            "JTokenType? current"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (current == null)\r\n            {\r\n                return JTokenType.String;\r\n            }\r\n\r\n            switch (current.GetValueOrDefault())\r\n            {\r\n                case JTokenType.Comment:\r\n                case JTokenType.String:\r\n                case JTokenType.Raw:\r\n                    return current.GetValueOrDefault();\r\n                default:\r\n                    return JTokenType.String;\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Writes this token to a <see cref = \"JsonWriter\"/>.\r\n/// </summary>\r\n/// <param name = \"writer\">A <see cref = \"JsonWriter\"/> into which this method will write.</param>\r\n/// <param name = \"converters\">A collection of <see cref = \"JsonConverter\"/> which will be used when writing the token.</param>",
+                    "signature": {
+                        "name": "WriteTo",
+                        "returns": "void",
+                        "params": [
+                            "JsonWriter writer",
+                            "params JsonConverter[] converters"
+                        ],
+                        "modifier": [
+                            "public",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (converters != null && converters.Length > 0 && _value != null)\r\n            {\r\n                JsonConverter matchingConverter = JsonSerializer.GetMatchingConverter(converters, _value.GetType());\r\n                if (matchingConverter != null && matchingConverter.CanWrite)\r\n                {\r\n                    matchingConverter.WriteJson(writer, _value, JsonSerializer.CreateDefault());\r\n                    return;\r\n                }\r\n            }\r\n\r\n            switch (_valueType)\r\n            {\r\n                case JTokenType.Comment:\r\n                    writer.WriteComment((_value != null) ? _value.ToString() : null);\r\n                    return;\r\n                case JTokenType.Raw:\r\n                    writer.WriteRawValue((_value != null) ? _value.ToString() : null);\r\n                    return;\r\n                case JTokenType.Null:\r\n                    writer.WriteNull();\r\n                    return;\r\n                case JTokenType.Undefined:\r\n                    writer.WriteUndefined();\r\n                    return;\r\n                case JTokenType.Integer:\r\n                    if (_value is int)\r\n                    {\r\n                        writer.WriteValue((int)_value);\r\n                    }\r\n                    else if (_value is long)\r\n                    {\r\n                        writer.WriteValue((long)_value);\r\n                    }\r\n                    else if (_value is ulong)\r\n                    {\r\n                        writer.WriteValue((ulong)_value);\r\n                    }\r\n#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)\r\n                    else if (_value is BigInteger)\r\n                    {\r\n                        writer.WriteValue((BigInteger)_value);\r\n                    }\r\n#endif\r\n                    else\r\n                    {\r\n                        writer.WriteValue(Convert.ToInt64(_value, CultureInfo.InvariantCulture));\r\n                    }\r\n                    return;\r\n                case JTokenType.Float:\r\n                    if (_value is decimal)\r\n                    {\r\n                        writer.WriteValue((decimal)_value);\r\n                    }\r\n                    else if (_value is double)\r\n                    {\r\n                        writer.WriteValue((double)_value);\r\n                    }\r\n                    else if (_value is float)\r\n                    {\r\n                        writer.WriteValue((float)_value);\r\n                    }\r\n                    else\r\n                    {\r\n                        writer.WriteValue(Convert.ToDouble(_value, CultureInfo.InvariantCulture));\r\n                    }\r\n                    return;\r\n                case JTokenType.String:\r\n                    writer.WriteValue((_value != null) ? _value.ToString() : null);\r\n                    return;\r\n                case JTokenType.Boolean:\r\n                    writer.WriteValue(Convert.ToBoolean(_value, CultureInfo.InvariantCulture));\r\n                    return;\r\n                case JTokenType.Date:\r\n#if !NET20\r\n                    if (_value is DateTimeOffset)\r\n                    {\r\n                        writer.WriteValue((DateTimeOffset)_value);\r\n                    }\r\n                    else\r\n#endif\r\n                    {\r\n                        writer.WriteValue(Convert.ToDateTime(_value, CultureInfo.InvariantCulture));\r\n                    }\r\n                    return;\r\n                case JTokenType.Bytes:\r\n                    writer.WriteValue((byte[])_value);\r\n                    return;\r\n                case JTokenType.Guid:\r\n                case JTokenType.TimeSpan:\r\n                    writer.WriteValue((_value != null) ? _value.ToString() : null);\r\n                    return;\r\n                case JTokenType.Uri:\r\n                    writer.WriteValue((_value != null) ? ((Uri)_value).OriginalString : null);\r\n                    return;\r\n            }\r\n\r\n            throw MiscellaneousUtils.CreateArgumentOutOfRangeException(\"TokenType\", _valueType, \"Unexpected token type.\");\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "GetDeepHashCode",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "internal",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            int valueHashCode = (_value != null) ? _value.GetHashCode() : 0;\r\n\r\n            // GetHashCode on an enum boxes so cast to int\r\n            return ((int)_valueType).GetHashCode() ^ valueHashCode;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ValuesEquals",
+                        "returns": "bool",
+                        "params": [
+                            "JValue v1",
+                            "JValue v2"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (v1 == v2 || (v1._valueType == v2._valueType && Compare(v1._valueType, v1._value, v2._value) == 0));\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Indicates whether the current object is equal to another object of the same type.\r\n/// </summary>\r\n/// <returns>\r\n/// true if the current object is equal to the <paramref name = \"other\"/> parameter; otherwise, false.\r\n/// </returns>\r\n/// <param name = \"other\">An object to compare with this object.</param>",
+                    "signature": {
+                        "name": "Equals",
+                        "returns": "bool",
+                        "params": [
+                            "JValue other"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (other == null)\r\n            {\r\n                return false;\r\n            }\r\n\r\n            return ValuesEquals(this, other);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Determines whether the specified <see cref=\"T:System.Object\"/> is equal to the current <see cref=\"T:System.Object\"/>.\r\n/// </summary>\r\n/// <param name = \"obj\">The <see cref=\"T:System.Object\"/> to compare with the current <see cref=\"T:System.Object\"/>.</param>\r\n/// <returns>\r\n/// true if the specified <see cref=\"T:System.Object\"/> is equal to the current <see cref=\"T:System.Object\"/>; otherwise, false.\r\n/// </returns>\r\n/// <exception cref=\"T:System.NullReferenceException\">\r\n/// The <paramref name = \"obj\"/> parameter is null.\r\n/// </exception>",
+                    "signature": {
+                        "name": "Equals",
+                        "returns": "bool",
+                        "params": [
+                            "object obj"
+                        ],
+                        "modifier": [
+                            "public",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (obj == null)\r\n            {\r\n                return false;\r\n            }\r\n\r\n            JValue otherValue = obj as JValue;\r\n            if (otherValue != null)\r\n            {\r\n                return Equals(otherValue);\r\n            }\r\n\r\n            return base.Equals(obj);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Serves as a hash function for a particular type.\r\n/// </summary>\r\n/// <returns>\r\n/// A hash code for the current <see cref=\"T:System.Object\"/>.\r\n/// </returns>",
+                    "signature": {
+                        "name": "GetHashCode",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "public",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (_value == null)\r\n            {\r\n                return 0;\r\n            }\r\n\r\n            return _value.GetHashCode();\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns a <see cref = \"System.String\"/> that represents this instance.\r\n/// </summary>\r\n/// <returns>\r\n/// A <see cref = \"System.String\"/> that represents this instance.\r\n/// </returns>",
+                    "signature": {
+                        "name": "ToString",
+                        "returns": "string",
+                        "params": [],
+                        "modifier": [
+                            "public",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (_value == null)\r\n            {\r\n                return string.Empty;\r\n            }\r\n\r\n            return _value.ToString();\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns a <see cref = \"System.String\"/> that represents this instance.\r\n/// </summary>\r\n/// <param name = \"format\">The format.</param>\r\n/// <returns>\r\n/// A <see cref = \"System.String\"/> that represents this instance.\r\n/// </returns>",
+                    "signature": {
+                        "name": "ToString",
+                        "returns": "string",
+                        "params": [
+                            "string format"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return ToString(format, CultureInfo.CurrentCulture);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns a <see cref = \"System.String\"/> that represents this instance.\r\n/// </summary>\r\n/// <param name = \"formatProvider\">The format provider.</param>\r\n/// <returns>\r\n/// A <see cref = \"System.String\"/> that represents this instance.\r\n/// </returns>",
+                    "signature": {
+                        "name": "ToString",
+                        "returns": "string",
+                        "params": [
+                            "IFormatProvider formatProvider"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return ToString(null, formatProvider);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns a <see cref = \"System.String\"/> that represents this instance.\r\n/// </summary>\r\n/// <param name = \"format\">The format.</param>\r\n/// <param name = \"formatProvider\">The format provider.</param>\r\n/// <returns>\r\n/// A <see cref = \"System.String\"/> that represents this instance.\r\n/// </returns>",
+                    "signature": {
+                        "name": "ToString",
+                        "returns": "string",
+                        "params": [
+                            "string format",
+                            "IFormatProvider formatProvider"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (_value == null)\r\n            {\r\n                return string.Empty;\r\n            }\r\n\r\n            IFormattable formattable = _value as IFormattable;\r\n            if (formattable != null)\r\n            {\r\n                return formattable.ToString(format, formatProvider);\r\n            }\r\n            else\r\n            {\r\n                return _value.ToString();\r\n            }\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Returns the <see cref=\"T:System.Dynamic.DynamicMetaObject\"/> responsible for binding operations performed on this object.\r\n/// </summary>\r\n/// <param name = \"parameter\">The expression tree representation of the runtime value.</param>\r\n/// <returns>\r\n/// The <see cref=\"T:System.Dynamic.DynamicMetaObject\"/> to bind this object.\r\n/// </returns>",
+                    "signature": {
+                        "name": "GetMetaObject",
+                        "returns": "DynamicMetaObject",
+                        "params": [
+                            "Expression parameter"
+                        ],
+                        "modifier": [
+                            "protected",
+                            "override"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return new DynamicProxyMetaObject<JValue>(parameter, this, new JValueDynamicProxy(), true);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "CompareTo",
+                        "returns": "int",
+                        "params": [
+                            "object obj"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (obj == null)\r\n            {\r\n                return 1;\r\n            }\r\n\r\n            object otherValue = (obj is JValue) ? ((JValue)obj).Value : obj;\r\n\r\n            return Compare(_valueType, _value, otherValue);\r\n        }"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.\r\n/// </summary>\r\n/// <param name = \"obj\">An object to compare with this instance.</param>\r\n/// <returns>\r\n/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings:\r\n/// Value\r\n/// Meaning\r\n/// Less than zero\r\n/// This instance is less than <paramref name = \"obj\"/>.\r\n/// Zero\r\n/// This instance is equal to <paramref name = \"obj\"/>.\r\n/// Greater than zero\r\n/// This instance is greater than <paramref name = \"obj\"/>.\r\n/// </returns>\r\n/// <exception cref=\"T:System.ArgumentException\">\r\n/// \t<paramref name = \"obj\"/> is not the same type as this instance.\r\n/// </exception>",
+                    "signature": {
+                        "name": "CompareTo",
+                        "returns": "int",
+                        "params": [
+                            "JValue obj"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (obj == null)\r\n            {\r\n                return 1;\r\n            }\r\n\r\n            return Compare(_valueType, _value, obj._value);\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "GetTypeCode",
+                        "returns": "TypeCode",
+                        "params": [],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            if (_value == null)\r\n            {\r\n                return TypeCode.Empty;\r\n            }\r\n\r\n            IConvertible convertable = _value as IConvertible;\r\n\r\n            if (convertable == null)\r\n            {\r\n                return TypeCode.Object;\r\n            }\r\n\r\n            return convertable.GetTypeCode();\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToBoolean",
+                        "returns": "bool",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (bool)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToChar",
+                        "returns": "char",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (char)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToSByte",
+                        "returns": "sbyte",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (sbyte)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToByte",
+                        "returns": "byte",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (byte)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToInt16",
+                        "returns": "short",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (short)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToUInt16",
+                        "returns": "ushort",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (ushort)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToInt32",
+                        "returns": "int",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (int)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToUInt32",
+                        "returns": "uint",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (uint)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToInt64",
+                        "returns": "long",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (long)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToUInt64",
+                        "returns": "ulong",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (ulong)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToSingle",
+                        "returns": "float",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (float)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToDouble",
+                        "returns": "double",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (double)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToDecimal",
+                        "returns": "decimal",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (decimal)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToDateTime",
+                        "returns": "DateTime",
+                        "params": [
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return (DateTime)this;\r\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ToType",
+                        "returns": "object",
+                        "params": [
+                            "Type conversionType",
+                            "IFormatProvider provider"
+                        ],
+                        "modifier": [],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\r\n            return ToObject(conversionType);\r\n        }"
+                }
+            ],
+            "variables": [
+                "private JTokenType _valueType;",
+                "private object _value;"
+            ],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.Collections.Generic;",
+                "using Newtonsoft.Json.Utilities;",
+                "using System.Globalization;",
+                "using System.Dynamic;",
+                "using System.Linq.Expressions;",
+                "using System.Numerics;"
+            ],
+            "constructors": [
+                "internal JValue(object value, JTokenType type)\r\n{\r\n    _value = value;\r\n    _valueType = type;\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class from another <see cref = \"JValue\"/> object.\r\n/// </summary>\r\n/// <param name = \"other\">A <see cref = \"JValue\"/> object to copy from.</param>\r\npublic JValue(JValue other) : this(other.Value, other.Type)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(long value) : this(value, JTokenType.Integer)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(decimal value) : this(value, JTokenType.Float)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(char value) : this(value, JTokenType.String)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\n[CLSCompliant(false)]\r\npublic JValue(ulong value) : this(value, JTokenType.Integer)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(double value) : this(value, JTokenType.Float)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(float value) : this(value, JTokenType.Float)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(DateTime value) : this(value, JTokenType.Date)\r\n{\r\n}",
+                "#if !NET20\r\n/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(DateTimeOffset value) : this(value, JTokenType.Date)\r\n{\r\n}",
+                "#endif\r\n/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(bool value) : this(value, JTokenType.Boolean)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(string value) : this(value, JTokenType.String)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(Guid value) : this(value, JTokenType.Guid)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(Uri value) : this(value, (value != null) ? JTokenType.Uri : JTokenType.Null)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(TimeSpan value) : this(value, JTokenType.TimeSpan)\r\n{\r\n}",
+                "/// <summary>\r\n/// Initializes a new instance of the <see cref = \"JValue\"/> class with the given value.\r\n/// </summary>\r\n/// <param name = \"value\">The value.</param>\r\npublic JValue(object value) : this(value, GetValueType(null, value))\r\n{\r\n}"
+            ],
+            "extends": "JToken",
+            "implements": [
+                "IEquatable<JValue>",
+                "IFormattable",
+                "IComparable",
+                "IComparable<JValue>",
+                "IConvertible"
+            ],
+            "namespace": "Newtonsoft.Json.Linq"
+        },
+        "code": "{\r\n            return new JValue(null, JTokenType.Undefined);\r\n        }",
+        "code_file_path": "Newtonsoft.Json/Linq/JValue.cs",
+        "called_functions": [],
+        "id": 926,
+        "tests": [
+            {
+                "tests": "namespace Newtonsoft.Json.Tests;\r\n\r\nusing JValue = Newtonsoft.Json.JValue;\r\n\r\npublic class JValueTests\r\n{\r\n    [Fact]\r\n    public void Test1()\r\n    {\r\n        JValue.CreateUndefined();\r\n    }\r\n}\r\n",
+                "test_imports": [
+                    "using JValue = Newtonsoft.Json.JValue;"
+                ],
+                "test_namespace": "Newtonsoft.Json.Tests",
+                "test_class_name": "JValueTests",
+                "test_file_path": "Newtonsoft.Json.Tests/JValueTests.cs",
+                "test_runner": "xUnit",
+                "project_path": "Newtonsoft.Json.Tests/Newtonsoft.Json.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "\nusing Xunit;\n\nnamespace Newtonsoft.Json.Tests\n{\n    public class JValueTests\n    {\n        // Test for CreateUndefined method\n        [Fact]\n        public void CreateUndefined_Test_1()\n        {\n            // Act\n            var result = JValue.CreateUndefined();\n\n            // Assert\n            Assert.NotNull(result);\n            Assert.Equal(JTokenType.Undefined, result.Type);\n            Assert.Null(result.Value);\n        }\n\n        [Fact]\n        public void CreateUndefined_Test_2()\n        {\n            // Act\n            var result = JValue.CreateUndefined();\n\n            // Assert\n            Assert.IsType<JValue>(result);\n            Assert.True(result.Equals(JValue.CreateUndefined()));\n        }\n\n        [Fact]\n        public void CreateUndefined_Test_3()\n        {\n            // Act\n            var result = JValue.CreateUndefined();\n\n            // Assert\n            Assert.Equal(0, result.GetHashCode());\n        }\n\n        [Fact]\n        public void CreateUndefined_Test_4()\n        {\n            // Act\n            var result = JValue.CreateUndefined();\n\n            // Assert\n            Assert.True(result.Equals((object)null));\n        }\n\n        [Fact]\n        public void CreateUndefined_Test_5()\n        {\n            // Act\n            var result = JValue.CreateUndefined();\n\n            // Assert\n            Assert.Equal(\"undefined\", result.ToString());\n        }\n    }\n}",
+        "new_code": "{\nreturn new JValue(null, JTokenType.Undefined);}"
+    }
+]

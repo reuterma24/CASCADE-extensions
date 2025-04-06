@@ -1,0 +1,1367 @@
+[
+    {
+        "doc": "/// <summary>\r\n/// Defines a 'null' validator on the current rule builder. \r\n/// Validation will fail if the property is not null.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+        "signature": {
+            "name": "NotNull",
+            "returns": "IRuleBuilderOptions<T, TProperty>",
+            "params": [
+                "this IRuleBuilder<T, TProperty> ruleBuilder"
+            ],
+            "modifier": [
+                "public",
+                "static"
+            ],
+            "annotations": [],
+            "generics": [
+                "T",
+                "TProperty"
+            ]
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "DefaultValidatorExtensions",
+            "doc": "/// <summary>\r\n/// Extension methods that provide the default set of validators.\r\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'null' validator on the current rule builder. \r\n/// Validation will fail if the property is not null.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Null",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new NullValidator());\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'not empty' validator on the current rule builder.\r\n/// Validation will fail if the property is null, an empty or the default value for the type (for example, 0 for integers)\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "NotEmpty",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new NotEmptyValidator(default(TProperty)));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'empty' validator on the current rule builder.\r\n/// Validation will fail if the property is not null, an empty or the default value for the type (for example, 0 for integers)\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Empty",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new EmptyValidator(default(TProperty)));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a length validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the length of the string is outside of the specifed range. The range is inclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Length",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "int min",
+                            "int max"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LengthValidator(min, max));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a length validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the length of the string is outside of the specifed range. The range is inclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Length",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Func<T, int> min",
+                            "Func<T, int> max"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LengthValidator(min.CoerceToNonGeneric(), max.CoerceToNonGeneric()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a length validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the length of the string is not equal to the length specified.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Length",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "int exactLength"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new ExactLengthValidator(exactLength));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a length validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the length of the string is not equal to the length specified.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Length",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Func<T, int> exactLength"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new ExactLengthValidator(exactLength.CoerceToNonGeneric()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The regular expression to check the value against.</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "string expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(expression));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The regular expression to check the value against.</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Func<T, string> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(expression.CoerceToNonGeneric()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"regex\">The regular expression to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Regex regex"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(regex));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"regex\">The regular expression to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Func<T, Regex> regex"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(regex.CoerceToNonGeneric()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The regular expression to check the value against.</param>\r\n/// <param name = \"options\">Regex options</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "string expression",
+                            "RegexOptions options"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(expression, options));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda does not match the regular expression.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The regular expression to check the value against.</param>\r\n/// <param name = \"options\">Regex options</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Matches",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder",
+                            "Func<T, string> expression",
+                            "RegexOptions options"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new RegularExpressionValidator(expression.CoerceToNonGeneric(), options));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a regular expression validator on the current rule builder, but only for string properties.\r\n/// Validation will fail if the value returned by the lambda is not a valid email address.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "EmailAddress",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new EmailValidator());\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'not equal' validator on the current rule builder.\r\n/// Validation will fail if the specified value is equal to the value of the property.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"toCompare\">The value to compare</param>\r\n/// <param name = \"comparer\">Equality comparer to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "NotEqual",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty toCompare",
+                            "IEqualityComparer comparer = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new NotEqualValidator(toCompare, comparer));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'not equal' validator on the current rule builder using a lambda to specify the value.\r\n/// Validation will fail if the value returned by the lambda is equal to the value of the property.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda expression to provide the comparison value</param>\r\n/// <param name = \"comparer\">Equality Comparer to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "NotEqual",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression",
+                            "IEqualityComparer comparer = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\t\t\treturn ruleBuilder.SetValidator(new NotEqualValidator(func.CoerceToNonGeneric(), expression.GetMember(), comparer));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'equals' validator on the current rule builder. \r\n/// Validation will fail if the specified value is not equal to the value of the property.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"toCompare\">The value to compare</param>\r\n/// <param name = \"comparer\">Equality Comparer to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Equal",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty toCompare",
+                            "IEqualityComparer comparer = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new EqualValidator(toCompare, comparer));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'equals' validator on the current rule builder using a lambda to specify the comparison value.\r\n/// Validation will fail if the value returned by the lambda is not equal to the value of the property.\r\n/// </summary>\r\n/// <typeparam name = \"T\">The type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda expression to provide the comparison value</param>\r\n/// <param name = \"comparer\">Equality comparer to use</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Equal",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression",
+                            "IEqualityComparer comparer = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\t\t\treturn ruleBuilder.SetValidator(new EqualValidator(func.CoerceToNonGeneric(), expression.GetMember(), comparer));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Must",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<TProperty, bool> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\r\n\t\t\treturn ruleBuilder.Must((x, val) => predicate(val));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// This overload accepts the object being validated in addition to the property being validated.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Must",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<T, TProperty, bool> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\t\t\treturn ruleBuilder.Must((x, val, propertyValidatorContext) => predicate(x, val));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// This overload accepts the object being validated in addition to the property being validated.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "Must",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<T, TProperty, PropertyValidatorContext, bool> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\t\t\treturn ruleBuilder.SetValidator(new PredicateValidator((instance, property, propertyValidatorContext) => predicate((T)instance, (TProperty)property, propertyValidatorContext)));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an asynchronous predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "MustAsync",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<TProperty, CancellationToken, Task<bool>> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\r\n\t\t\treturn ruleBuilder.MustAsync((x, val, ctx, cancel) => predicate(val, cancel));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an asynchronous predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// This overload accepts the object being validated in addition to the property being validated.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "MustAsync",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<T, TProperty, CancellationToken, Task<bool>> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\t\t\treturn ruleBuilder.MustAsync((x, val, propertyValidatorContext, cancel) => predicate(x, val, cancel));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an asynchronous predicate validator on the current rule builder using a lambda expression to specify the predicate.\r\n/// Validation will fail if the specified lambda returns false.\r\n/// Validation will succeed if the specifed lambda returns true.\r\n/// This overload accepts the object being validated in addition to the property being validated.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"predicate\">A lambda expression specifying the predicate</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "MustAsync",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Func<T, TProperty, PropertyValidatorContext, CancellationToken, Task<bool>> predicate"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tpredicate.Guard(\"Cannot pass a null predicate to Must.\");\r\n\t\t\treturn ruleBuilder.SetValidator(new AsyncPredicateValidator((instance, property, propertyValidatorContext, cancel) => predicate((T)instance, (TProperty)property, propertyValidatorContext, cancel)));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than' validator on the current rule builder. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than' validator on the current rule builder. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty?>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty?> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than or equal' validator on the current rule builder. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than or equal' validator on the current rule builder. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "TProperty valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(valueToCompare));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda that should return the value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\texpression.Guard(\"Cannot pass null to LessThan\");\r\n\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda that should return the value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\texpression.Guard(\"Cannot pass null to LessThan\");\r\n\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda that should return the value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\texpression.Guard(\"Cannot pass null to LessThan\");\r\n\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than the specified value.\r\n/// The validation will fail if the property value is greater than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">A lambda that should return the value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThan",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\texpression.Guard(\"Cannot pass null to LessThan\");\r\n\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than or equal' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is less than or equal to the specified value.\r\n/// The validation will fail if the property value is greater than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "LessThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty?>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty?> ruleBuilder",
+                            "Expression<Func<T, TProperty?>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new LessThanOrEqualValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "Expression<Func<T, TProperty>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'less than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than the specified value.\r\n/// The validation will fail if the property value is less than or equal to the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"expression\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThan",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> expression"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = expression.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanValidator(func.CoerceToNonGeneric(), expression.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, TProperty>> valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = valueToCompare.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(func.CoerceToNonGeneric(), valueToCompare.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "Expression<Func<T, Nullable<TProperty>>> valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = valueToCompare.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(func.CoerceToNonGeneric(), valueToCompare.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than or equal to' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty?>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty?> ruleBuilder",
+                            "Expression<Func<T, TProperty?>> valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = valueToCompare.Compile();\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(func.CoerceToNonGeneric(), valueToCompare.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a 'greater than or equal to' validator on the current rule builder using a lambda expression. \r\n/// The validation will succeed if the property value is greater than or equal the specified value.\r\n/// The validation will fail if the property value is less than the specified value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"valueToCompare\">The value being compared</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "GreaterThanOrEqualTo",
+                        "returns": "IRuleBuilderOptions<T, TProperty?>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty?> ruleBuilder",
+                            "Expression<Func<T, TProperty>> valueToCompare"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar func = valueToCompare.Compile();\r\n\r\n\t\t\treturn ruleBuilder.SetValidator(new GreaterThanOrEqualValidator(func.CoerceToNonGeneric(), valueToCompare.GetMember()));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Validates certain properties of the specified instance.\r\n/// </summary>\r\n/// <param name = \"validator\">The current validator</param>\r\n/// <param name = \"instance\">The object to validate</param>\r\n/// <param name = \"propertyExpressions\">Expressions to specify the properties to validate</param>\r\n/// <returns>A ValidationResult object containing any validation failures</returns>",
+                    "signature": {
+                        "name": "Validate",
+                        "returns": "ValidationResult",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "params Expression<Func<T, object>>[] propertyExpressions"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar selector = ValidatorOptions.ValidatorSelectors.MemberNameValidatorSelectorFactory(MemberNameValidatorSelector.MemberNamesFromExpressions(propertyExpressions));\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), selector);\r\n\t\t\treturn validator.Validate(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Validates certain properties of the specified instance.\r\n/// </summary>\r\n/// <param name = \"instance\">The object to validate</param>\r\n/// <param name = \"properties\">The names of the properties to validate.</param>\r\n/// <returns>A ValidationResult object containing any validation failures.</returns>",
+                    "signature": {
+                        "name": "Validate",
+                        "returns": "ValidationResult",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "params string[] properties"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), ValidatorOptions.ValidatorSelectors.MemberNameValidatorSelectorFactory(properties));\r\n\t\t\treturn validator.Validate(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "Validate",
+                        "returns": "ValidationResult",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "IValidatorSelector selector = null",
+                            "string ruleSet = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tif (selector != null && ruleSet != null)\r\n\t\t\t{\r\n\t\t\t\tthrow new InvalidOperationException(\"Cannot specify both an IValidatorSelector and a RuleSet.\");\r\n\t\t\t}\r\n\r\n\t\t\tif (selector == null)\r\n\t\t\t{\r\n\t\t\t\tselector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();\r\n\t\t\t}\r\n\r\n\t\t\tif (ruleSet != null)\r\n\t\t\t{\r\n\t\t\t\tvar ruleSetNames = ruleSet.Split(',', ';');\r\n\t\t\t\tselector = ValidatorOptions.ValidatorSelectors.RulesetValidatorSelectorFactory(ruleSetNames);\r\n\t\t\t}\r\n\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), selector);\r\n\t\t\treturn validator.Validate(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Validates certain properties of the specified instance asynchronously.\r\n/// </summary>\r\n/// <param name = \"validator\">The current validator</param>\r\n/// <param name = \"instance\">The object to validate</param>\r\n/// <param name = \"propertyExpressions\">Expressions to specify the properties to validate</param>\r\n/// <returns>A ValidationResult object containing any validation failures</returns>",
+                    "signature": {
+                        "name": "ValidateAsync",
+                        "returns": "Task<ValidationResult>",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "params Expression<Func<T, object>>[] propertyExpressions"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar selector = ValidatorOptions.ValidatorSelectors.MemberNameValidatorSelectorFactory(MemberNameValidatorSelector.MemberNamesFromExpressions(propertyExpressions));\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), selector);\r\n\t\t\treturn validator.ValidateAsync(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Validates certain properties of the specified instance asynchronously.\r\n/// </summary>\r\n/// <param name = \"instance\">The object to validate</param>\r\n/// <param name = \"properties\">The names of the properties to validate.</param>\r\n/// <returns>A ValidationResult object containing any validation failures.</returns>",
+                    "signature": {
+                        "name": "ValidateAsync",
+                        "returns": "Task<ValidationResult>",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "params string[] properties"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), ValidatorOptions.ValidatorSelectors.MemberNameValidatorSelectorFactory(properties));\r\n\t\t\treturn validator.ValidateAsync(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "ValidateAsync",
+                        "returns": "Task<ValidationResult>",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "IValidatorSelector selector = null",
+                            "string ruleSet = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tif (selector != null && ruleSet != null)\r\n\t\t\t{\r\n\t\t\t\tthrow new InvalidOperationException(\"Cannot specify both an IValidatorSelector and a RuleSet.\");\r\n\t\t\t}\r\n\r\n\t\t\tif (selector == null)\r\n\t\t\t{\r\n\t\t\t\tselector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();\r\n\t\t\t}\r\n\r\n\t\t\tif (ruleSet != null)\r\n\t\t\t{\r\n\t\t\t\tvar ruleSetNames = ruleSet.Split(',', ';');\r\n\t\t\t\tselector = ValidatorOptions.ValidatorSelectors.RulesetValidatorSelectorFactory(ruleSetNames);\r\n\t\t\t}\r\n\r\n\t\t\tvar context = new ValidationContext<T>(instance, new PropertyChain(), selector);\r\n\t\t\treturn validator.ValidateAsync(context);\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Performs validation and then throws an exception if validation fails.\r\n/// </summary>\r\n/// <param name = \"validator\">The validator this method is extending.</param>\r\n/// <param name = \"instance\">The instance of the type we are validating.</param>\r\n/// <param name = \"ruleSet\">Optional: a ruleset when need to validate against.</param>",
+                    "signature": {
+                        "name": "ValidateAndThrow",
+                        "returns": "void",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "string ruleSet = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\tvar result = validator.Validate(instance, ruleSet: ruleSet);\r\n\r\n\t\t\tif (!result.IsValid)\r\n\t\t\t{\r\n\t\t\t\tthrow new ValidationException(result.Errors);\r\n\t\t\t}\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Performs validation asynchronously and then throws an exception if validation fails.\r\n/// </summary>\r\n/// <param name = \"validator\">The validator this method is extending.</param>\r\n/// <param name = \"instance\">The instance of the type we are validating.</param>\r\n/// <param name = \"ruleSet\">Optional: a ruleset when need to validate against.</param>",
+                    "signature": {
+                        "name": "ValidateAndThrowAsync",
+                        "returns": "Task",
+                        "params": [
+                            "this IValidator<T> validator",
+                            "T instance",
+                            "string ruleSet = null"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn validator\r\n\t\t\t\t.ValidateAsync(instance, ruleSet: ruleSet)\r\n\t\t\t\t.Then(r => r.IsValid\r\n\t\t\t\t\t? TaskHelpers.Completed()\r\n\t\t\t\t\t: TaskHelpers.FromError(new ValidationException(r.Errors)));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'inclusive between' validator on the current rule builder, but only for properties of types that implement IComparable.\r\n/// Validation will fail if the value of the property is outside of the specifed range. The range is inclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"from\">The lowest allowed value</param>\r\n/// <param name = \"to\">The highest allowed value</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "InclusiveBetween",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty from",
+                            "TProperty to"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new InclusiveBetweenValidator(from, to));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'inclusive between' validator on the current rule builder, but only for properties of types that implement IComparable.\r\n/// Validation will fail if the value of the property is outside of the specifed range. The range is inclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"from\">The lowest allowed value</param>\r\n/// <param name = \"to\">The highest allowed value</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "InclusiveBetween",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "TProperty from",
+                            "TProperty to"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new InclusiveBetweenValidator(from, to));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'exclusive between' validator on the current rule builder, but only for properties of types that implement IComparable.\r\n/// Validation will fail if the value of the property is outside of the specifed range. The range is exclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"from\">The lowest allowed value</param>\r\n/// <param name = \"to\">The highest allowed value</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "ExclusiveBetween",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder",
+                            "TProperty from",
+                            "TProperty to"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new ExclusiveBetweenValidator(from, to));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines an 'exclusive between' validator on the current rule builder, but only for properties of types that implement IComparable.\r\n/// Validation will fail if the value of the property is outside of the specifed range. The range is exclusive.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of object being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <param name = \"from\">The lowest allowed value</param>\r\n/// <param name = \"to\">The highest allowed value</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "ExclusiveBetween",
+                        "returns": "IRuleBuilderOptions<T, Nullable<TProperty>>",
+                        "params": [
+                            "this IRuleBuilder<T, Nullable<TProperty>> ruleBuilder",
+                            "TProperty from",
+                            "TProperty to"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new ExclusiveBetweenValidator(from, to));\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a credit card validator for the current rule builder that ensures that the specified string is a valid credit card number.\r\n/// </summary>",
+                    "signature": {
+                        "name": "CreditCard",
+                        "returns": "IRuleBuilderOptions<T, string>",
+                        "params": [
+                            "this IRuleBuilder<T, string> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new CreditCardValidator());\r\n\t\t}"
+                },
+                {
+                    "doc": "/// <summary>\r\n/// Defines a enum value validator on the current rule builder that ensures that the specific value is a valid enum value.\r\n/// </summary>\r\n/// <typeparam name = \"T\">Type of Enum being validated</typeparam>\r\n/// <typeparam name = \"TProperty\">Type of property being validated</typeparam>\r\n/// <param name = \"ruleBuilder\">The rule builder on which the validator should be defined</param>\r\n/// <returns></returns>",
+                    "signature": {
+                        "name": "IsInEnum",
+                        "returns": "IRuleBuilderOptions<T, TProperty>",
+                        "params": [
+                            "this IRuleBuilder<T, TProperty> ruleBuilder"
+                        ],
+                        "modifier": [
+                            "public",
+                            "static"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "T",
+                            "TProperty"
+                        ]
+                    },
+                    "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new EnumValidator(typeof(TProperty)));\r\n\t\t}"
+                }
+            ],
+            "variables": [],
+            "generics": [],
+            "imports": [],
+            "constructors": [],
+            "extends": "",
+            "implements": [],
+            "namespace": "FluentValidation"
+        },
+        "code": "{\r\n\t\t\treturn ruleBuilder.SetValidator(new NotNullValidator());\r\n\t\t}",
+        "code_file_path": "src/FluentValidation/DefaultValidatorExtensions.cs",
+        "called_functions": [
+            "ruleBuilder.SetValidator(new NotNullValidator())"
+        ],
+        "id": 110,
+        "tests": [
+            {
+                "tests": "#region License\r\n// Copyright (c) Jeremy Skinner (http://www.jeremyskinner.co.uk)\r\n// \r\n// Licensed under the Apache License, Version 2.0 (the \"License\"); \r\n// you may not use this file except in compliance with the License. \r\n// You may obtain a copy of the License at \r\n// \r\n// http://www.apache.org/licenses/LICENSE-2.0 \r\n// \r\n// Unless required by applicable law or agreed to in writing, software \r\n// distributed under the License is distributed on an \"AS IS\" BASIS, \r\n// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. \r\n// See the License for the specific language governing permissions and \r\n// limitations under the License.\r\n// \r\n// The latest version of this file can be found at https://github.com/jeremyskinner/FluentValidation\r\n#endregion\r\n\r\nnamespace FluentValidation.Tests {\r\n\tusing System;\r\n\tusing System.Collections.Generic;\r\n\tusing System.Linq;\r\n\tusing System.Threading.Tasks;\r\n\tusing Internal;\r\n\tusing Xunit;\r\n\tusing Validators;\r\n\r\n\t\r\n\tpublic class DefaultValidatorExtensionTester {\r\n\t\tprivate AbstractValidator<Person> validator;\r\n\r\n\t\tpublic DefaultValidatorExtensionTester() {\r\n\t\t\tvalidator = new TestValidator();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void NotNull_should_create_NotNullValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).NotNull();\r\n\t\t\tAssertValidator<NotNullValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void NotEmpty_should_create_NotEmptyValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).NotEmpty();\r\n\t\t\tAssertValidator<NotEmptyValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Empty_should_create_EmptyValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Empty();\r\n\t\t\tAssertValidator<EmptyValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Length_should_create_LengthValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Length(1, 20);\r\n\t\t\tAssertValidator<LengthValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Length_should_create_ExactLengthValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Length(5);\r\n\t\t\tAssertValidator<ExactLengthValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Length_should_create_MaximumLengthValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).MaximumLength(5);\r\n\t\t\tAssertValidator<MaximumLengthValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Length_should_create_MinimumLengthValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).MinimumLength(5);\r\n\t\t\tAssertValidator<MinimumLengthValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void NotEqual_should_create_NotEqualValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).NotEqual(\"Foo\");\r\n\t\t\tAssertValidator<NotEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void NotEqual_should_create_NotEqualValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).NotEqual(x => \"Foo\");\r\n\t\t\tAssertValidator<NotEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Equal_should_create_EqualValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Equal(\"Foo\");\r\n\t\t\tAssertValidator<EqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Equal_should_create_EqualValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Equal(x => \"Foo\");\r\n\t\t\tAssertValidator<EqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Must_should_create_PredicteValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Must(x => true);\r\n\t\t\tAssertValidator<PredicateValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Must_should_create_PredicateValidator_with_context() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).Must((x, val) => true);\r\n\t\t\tAssertValidator<PredicateValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void Must_should_create_PredicateValidator_with_PropertyValidatorContext() {\r\n\t\t\tvar hasPropertyValidatorContext = false;\r\n\t\t\tthis.validator.RuleFor(x => x.Surname).Must((x, val, ctx) => {\r\n\t\t\t\thasPropertyValidatorContext = ctx != null;\r\n\t\t\t\treturn true;\r\n\t\t\t});\r\n\t\t\tthis.validator.Validate(new Person() {\r\n\t\t\t\tSurname = \"Surname\"\r\n\t\t\t});\r\n\t\t\tthis.AssertValidator<PredicateValidator>();\r\n\t\t\thasPropertyValidatorContext.ShouldBeTrue();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void MustAsync_should_create_AsyncPredicteValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).MustAsync(async (x, cancel) => true);\r\n\t\t\tAssertValidator<AsyncPredicateValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void MustAsync_should_create_AsyncPredicateValidator_with_context() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).MustAsync(async (x, val) => true);\r\n\t\t\tAssertValidator<AsyncPredicateValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void MustAsync_should_create_AsyncPredicateValidator_with_PropertyValidatorContext() {\r\n\t\t\tvar hasPropertyValidatorContext = false;\r\n\t\t\tthis.validator.RuleFor(x => x.Surname).MustAsync(async (x, val, ctx, cancel) => {\r\n\t\t\t\thasPropertyValidatorContext = ctx != null;\r\n\t\t\t\treturn true;\r\n\t\t\t});\r\n\t\t\tthis.validator.ValidateAsync(new Person {\r\n\t\t\t\tSurname = \"Surname\"\r\n\t\t\t}).Wait();\r\n\t\t\tthis.AssertValidator<AsyncPredicateValidator>();\r\n\t\t\thasPropertyValidatorContext.ShouldBeTrue();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void LessThan_should_create_LessThanValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).LessThan(\"foo\");\r\n\t\t\tAssertValidator<LessThanValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void LessThan_should_create_LessThanValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).LessThan(x => \"foo\");\r\n\t\t\tAssertValidator<LessThanValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void LessThanOrEqual_should_create_LessThanOrEqualValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).LessThanOrEqualTo(\"foo\");\r\n\t\t\tAssertValidator<LessThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void LessThanOrEqual_should_create_LessThanOrEqualValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).LessThanOrEqualTo(x => \"foo\");\r\n\t\t\tAssertValidator<LessThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void LessThanOrEqual_should_create_LessThanOrEqualValidator_with_lambda_with_other_Nullable() {\r\n\t\t\tvalidator.RuleFor(x => x.NullableInt).LessThanOrEqualTo(x => x.OtherNullableInt);\r\n\t\t\tAssertValidator<LessThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void GreaterThan_should_create_GreaterThanValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).GreaterThan(\"foo\");\r\n\t\t\tAssertValidator<GreaterThanValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void GreaterThan_should_create_GreaterThanValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).GreaterThan(x => \"foo\");\r\n\t\t\tAssertValidator<GreaterThanValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void GreaterThanOrEqual_should_create_GreaterThanOrEqualValidator_with_explicit_value() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).GreaterThanOrEqualTo(\"foo\");\r\n\t\t\tAssertValidator<GreaterThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void GreaterThanOrEqual_should_create_GreaterThanOrEqualValidator_with_lambda() {\r\n\t\t\tvalidator.RuleFor(x => x.Surname).GreaterThanOrEqualTo(x => \"foo\");\r\n\t\t\tAssertValidator<GreaterThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void GreaterThanOrEqual_should_create_GreaterThanOrEqualValidator_with_lambda_with_other_Nullable() {\r\n\t\t\tvalidator.RuleFor(x => x.NullableInt).GreaterThanOrEqualTo(x => x.OtherNullableInt);\r\n\t\t\tAssertValidator<GreaterThanOrEqualValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void ScalePrecision_should_create_ScalePrecisionValidator() {\r\n\t\t\tvalidator.RuleFor(x => x.Discount).ScalePrecision(2, 5);\r\n\t\t\tAssertValidator<ScalePrecisionValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic void ScalePrecision_should_create_ScalePrecisionValidator_with_ignore_trailing_zeros() {\r\n\t\t\tvalidator.RuleFor(x => x.Discount).ScalePrecision(2, 5, true);\r\n\t\t\tAssertValidator<ScalePrecisionValidator>();\r\n\t\t}\r\n\r\n\t\t[Fact]\r\n\t\tpublic async Task MustAsync_should_not_throw_InvalidCastException() {\r\n\t\t\tvar model = new Model\r\n\t\t\t{\r\n\t\t\t\tIds = new Guid[0]\r\n\t\t\t};\r\n\t\t\tvar validator = new AsyncModelTestValidator();\r\n\t\t\t// this fails with \"Specified cast is not valid\" error\r\n\t\t\tvar result = await validator.ValidateAsync(model);\r\n\t\t\tresult.IsValid.ShouldBeTrue();\r\n\t\t}\r\n\t\tprivate void AssertValidator<TValidator>() {\r\n\t\t\tvar rule = (PropertyRule)validator.First();\r\n\t\t\trule.CurrentValidator.ShouldBe<TValidator>();\r\n\t\t}\r\n\r\n\t\tclass Model\r\n\t\t{\r\n\t\t\tpublic IEnumerable<Guid> Ids { get; set; }\r\n\t\t}\r\n\r\n\t\tclass AsyncModelTestValidator : AbstractValidator<Model>\r\n\t\t{\r\n\t\t\tpublic AsyncModelTestValidator()\r\n\t\t\t{\r\n\t\t\t\tRuleForEach(m => m.Ids)\r\n\t\t\t\t\t.MustAsync((g, cancel) => Task.FromResult(true));\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\r\n}",
+                "test_imports": [
+                    "using System;",
+                    "using System.Collections.Generic;",
+                    "using System.Linq;",
+                    "using System.Threading.Tasks;",
+                    "using Internal;",
+                    "using Xunit;",
+                    "using Validators;"
+                ],
+                "test_namespace": "FluentValidation.Tests",
+                "test_class_name": "DefaultValidatorExtensionTester",
+                "test_file_path": "src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs",
+                "test_runner": "xUnit",
+                "project_path": "src/FluentValidation.Tests/FluentValidation.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "using System.Collections.Generic;\nusing FluentValidation.Results;\nusing Validators;\nusing System;\nusing Moq;\nusing Xunit;\nusing System.Threading.Tasks;\nusing System.Linq;\nusing Internal;\nusing FluentValidation;\n\nnamespace FluentValidation.Tests\n{\n\npublic class DefaultValidatorExtensionTester\n{\n    [Fact]\n    public void NotNull_Test_1()\n{\n        // Arrange\n        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();\n        var validator = new DefaultValidatorExtensions();\n\n        // Act\n        var result = validator.NotNull(ruleBuilder.Object);\n\n        // Assert\n        Assert.NotNull(result);\n    }\n\n    [Fact]\n    public void NotNull_Should_Fail_When_Value_Is_Null()\n    {\n        // Arrange\n        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();\n        var validator = new DefaultValidatorExtensions();\n        var testInstance = new TestClass { Property = null };\n\n        // Act\n        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);\n\n        // Assert\n        Assert.False(result.IsValid);\n        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestClass.Property));\n    }\n\n    [Fact]\n    public void NotNull_Should_Pass_When_Value_Is_Not_Null()\n    {\n        // Arrange\n        var ruleBuilder = new Mock<IRuleBuilder<TestClass, string>>();\n        var validator = new DefaultValidatorExtensions();\n        var testInstance = new TestClass { Property = \"Valid Value\" };\n\n        // Act\n        var result = validator.NotNull(ruleBuilder.Object).Validate(testInstance);\n\n        // Assert\n        Assert.True(result.IsValid);\n    }\n\n    [Fact]\n    public void NotNull_Should_Throw_ArgumentNullException_When_RuleBuilder_Is_Null()\n    {\n        // Arrange\n        IRuleBuilder<TestClass, string> ruleBuilder = null;\n        var validator = new DefaultValidatorExtensions();\n\n        // Act & Assert\n        Assert.Throws<ArgumentNullException>(() => validator.NotNull(ruleBuilder));\n    }\n\n    private class TestClass\n    {\n        public string Property { get; set; }\n    }\n}}",
+        "new_code": "{\nreturn ruleBuilder.Must(value => value != null)\n    .WithMessage(\"'{PropertyName}' must not be null.\");}"
+    }
+]

@@ -1,0 +1,628 @@
+[
+    {
+        "doc": "/// <summary>\n/// Reads a header chunk from the data.\n/// </summary>\n/// <param name = \"pngMetadata\">The png metadata.</param>\n/// <param name = \"data\">The <see cref=\"T:ReadOnlySpan{byte}\"/> containing data.</param>",
+        "signature": {
+            "name": "ReadHeaderChunk",
+            "returns": "void",
+            "params": [
+                "PngMetadata pngMetadata",
+                "ReadOnlySpan<byte> data"
+            ],
+            "modifier": [
+                "public"
+            ],
+            "annotations": [],
+            "generics": []
+        },
+        "language": "csharp",
+        "parent": {
+            "name": "PngDecoderCore",
+            "doc": "/// <summary>\n/// Performs the png decoding operation.\n/// </summary>",
+            "other_methods": [
+                {
+                    "doc": "/// <inheritdoc/>",
+                    "signature": {
+                        "name": "Decode",
+                        "returns": "Image<TPixel>",
+                        "params": [
+                            "BufferedReadStream stream",
+                            "CancellationToken cancellationToken"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            var metadata = new ImageMetadata();\n            PngMetadata pngMetadata = metadata.GetPngMetadata();\n            this.currentStream = stream;\n            this.currentStream.Skip(8);\n            Image<TPixel> image = null;\n            try\n            {\n                while (!this.isEndChunkReached && this.TryReadChunk(out PngChunk chunk))\n                {\n                    try\n                    {\n                        switch (chunk.Type)\n                        {\n                            case PngChunkType.Header:\n                                this.ReadHeaderChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Physical:\n                                this.ReadPhysicalChunk(metadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Gamma:\n                                this.ReadGammaChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Data:\n                                if (image is null)\n                                {\n                                    this.InitializeImage(metadata, out image);\n                                }\n\n                                this.ReadScanlines(chunk, image.Frames.RootFrame, pngMetadata);\n\n                                break;\n                            case PngChunkType.Palette:\n                                var pal = new byte[chunk.Length];\n                                chunk.Data.GetSpan().CopyTo(pal);\n                                this.palette = pal;\n                                break;\n                            case PngChunkType.Transparency:\n                                var alpha = new byte[chunk.Length];\n                                chunk.Data.GetSpan().CopyTo(alpha);\n                                this.paletteAlpha = alpha;\n                                this.AssignTransparentMarkers(alpha, pngMetadata);\n                                break;\n                            case PngChunkType.Text:\n                                this.ReadTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.CompressedText:\n                                this.ReadCompressedTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.InternationalText:\n                                this.ReadInternationalTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Exif:\n                                if (!this.ignoreMetadata)\n                                {\n                                    var exifData = new byte[chunk.Length];\n                                    chunk.Data.GetSpan().CopyTo(exifData);\n                                    metadata.ExifProfile = new ExifProfile(exifData);\n                                }\n\n                                break;\n                            case PngChunkType.End:\n                                this.isEndChunkReached = true;\n                                break;\n                            case PngChunkType.ProprietaryApple:\n                                PngThrowHelper.ThrowInvalidChunkType(\"Proprietary Apple PNG detected! This PNG file is not conform to the specification and cannot be decoded.\");\n                                break;\n                        }\n                    }\n                    finally\n                    {\n                        chunk.Data?.Dispose(); // Data is rented in ReadChunkData()\n                    }\n                }\n\n                if (image is null)\n                {\n                    PngThrowHelper.ThrowNoData();\n                }\n\n                return image;\n            }\n            finally\n            {\n                this.scanline?.Dispose();\n                this.previousScanline?.Dispose();\n            }\n        }"
+                },
+                {
+                    "doc": "/// <inheritdoc/>",
+                    "signature": {
+                        "name": "Identify",
+                        "returns": "IImageInfo",
+                        "params": [
+                            "BufferedReadStream stream",
+                            "CancellationToken cancellationToken"
+                        ],
+                        "modifier": [
+                            "public"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            var metadata = new ImageMetadata();\n            PngMetadata pngMetadata = metadata.GetPngMetadata();\n            this.currentStream = stream;\n            this.currentStream.Skip(8);\n            try\n            {\n                while (!this.isEndChunkReached && this.TryReadChunk(out PngChunk chunk))\n                {\n                    try\n                    {\n                        switch (chunk.Type)\n                        {\n                            case PngChunkType.Header:\n                                this.ReadHeaderChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Physical:\n                                this.ReadPhysicalChunk(metadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Gamma:\n                                this.ReadGammaChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Data:\n                                this.SkipChunkDataAndCrc(chunk);\n                                break;\n                            case PngChunkType.Text:\n                                this.ReadTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.CompressedText:\n                                this.ReadCompressedTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.InternationalText:\n                                this.ReadInternationalTextChunk(pngMetadata, chunk.Data.GetSpan());\n                                break;\n                            case PngChunkType.Exif:\n                                if (!this.ignoreMetadata)\n                                {\n                                    var exifData = new byte[chunk.Length];\n                                    chunk.Data.GetSpan().CopyTo(exifData);\n                                    metadata.ExifProfile = new ExifProfile(exifData);\n                                }\n\n                                break;\n                            case PngChunkType.End:\n                                this.isEndChunkReached = true;\n                                break;\n                        }\n                    }\n                    finally\n                    {\n                        chunk.Data?.Dispose(); // Data is rented in ReadChunkData()\n                    }\n                }\n            }\n            finally\n            {\n                this.scanline?.Dispose();\n                this.previousScanline?.Dispose();\n            }\n\n            if (this.header.Width == 0 && this.header.Height == 0)\n            {\n                PngThrowHelper.ThrowNoHeader();\n            }\n\n            return new ImageInfo(new PixelTypeInfo(this.CalculateBitsPerPixel()), this.header.Width, this.header.Height, metadata);\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the least significant bits from the byte pair with the others set to 0.\n/// </summary>\n/// <param name = \"buffer\">The source buffer</param>\n/// <param name = \"offset\">THe offset</param>\n/// <returns>The <see cref = \"int \"/></returns>",
+                    "signature": {
+                        "name": "ReadByteLittleEndian",
+                        "returns": "byte",
+                        "params": [
+                            "ReadOnlySpan<byte> buffer",
+                            "int offset"
+                        ],
+                        "modifier": [
+                            "private",
+                            "static"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": ""
+                },
+                {
+                    "doc": "/// <summary>\n/// Attempts to convert a byte array to a new array where each value in the original array is represented by the\n/// specified number of bits.\n/// </summary>\n/// <param name = \"source\">The bytes to convert from. Cannot be empty.</param>\n/// <param name = \"bytesPerScanline\">The number of bytes per scanline</param>\n/// <param name = \"bits\">The number of bits per value.</param>\n/// <param name = \"buffer\">The new array.</param>\n/// <returns>The resulting <see cref = \"ReadOnlySpan{Byte}\"/> array.</returns>",
+                    "signature": {
+                        "name": "TryScaleUpTo8BitArray",
+                        "returns": "bool",
+                        "params": [
+                            "ReadOnlySpan<byte> source",
+                            "int bytesPerScanline",
+                            "int bits",
+                            "out IMemoryOwner<byte> buffer"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (bits >= 8)\n            {\n                buffer = null;\n                return false;\n            }\n\n            buffer = this.memoryAllocator.Allocate<byte>(bytesPerScanline * 8 / bits, AllocationOptions.Clean);\n            ref byte sourceRef = ref MemoryMarshal.GetReference(source);\n            ref byte resultRef = ref buffer.GetReference();\n            int mask = 0xFF >> (8 - bits);\n            int resultOffset = 0;\n\n            for (int i = 0; i < bytesPerScanline; i++)\n            {\n                byte b = Unsafe.Add(ref sourceRef, i);\n                for (int shift = 0; shift < 8; shift += bits)\n                {\n                    int colorIndex = (b >> (8 - bits - shift)) & mask;\n                    Unsafe.Add(ref resultRef, resultOffset) = (byte)colorIndex;\n                    resultOffset++;\n                }\n            }\n\n            return true;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the data chunk containing physical dimension data.\n/// </summary>\n/// <param name = \"metadata\">The metadata to read to.</param>\n/// <param name = \"data\">The data containing physical data.</param>",
+                    "signature": {
+                        "name": "ReadPhysicalChunk",
+                        "returns": "void",
+                        "params": [
+                            "ImageMetadata metadata",
+                            "ReadOnlySpan<byte> data"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            var physicalChunk = PhysicalChunkData.Parse(data);\n\n            metadata.ResolutionUnits = physicalChunk.UnitSpecifier == byte.MinValue\n                ? PixelResolutionUnit.AspectRatio\n                : PixelResolutionUnit.PixelsPerMeter;\n\n            metadata.HorizontalResolution = physicalChunk.XAxisPixelsPerUnit;\n            metadata.VerticalResolution = physicalChunk.YAxisPixelsPerUnit;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the data chunk containing gamma data.\n/// </summary>\n/// <param name = \"pngMetadata\">The metadata to read to.</param>\n/// <param name = \"data\">The data containing physical data.</param>",
+                    "signature": {
+                        "name": "ReadGammaChunk",
+                        "returns": "void",
+                        "params": [
+                            "PngMetadata pngMetadata",
+                            "ReadOnlySpan<byte> data"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            // The value is encoded as a 4-byte unsigned integer, representing gamma times 100000.\n            // For example, a gamma of 1/2.2 would be stored as 45455.\n            pngMetadata.Gamma = BinaryPrimitives.ReadUInt32BigEndian(data) / 100_000F;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Initializes the image and various buffers needed for processing\n/// </summary>\n/// <typeparam name = \"TPixel\">The type the pixels will be</typeparam>\n/// <param name = \"metadata\">The metadata information for the image</param>\n/// <param name = \"image\">The image that we will populate</param>",
+                    "signature": {
+                        "name": "InitializeImage",
+                        "returns": "void",
+                        "params": [
+                            "ImageMetadata metadata",
+                            "out Image<TPixel> image"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            image = Image.CreateUninitialized<TPixel>(\n                this.Configuration,\n                this.header.Width,\n                this.header.Height,\n                metadata);\n\n            this.bytesPerPixel = this.CalculateBytesPerPixel();\n            this.bytesPerScanline = this.CalculateScanlineLength(this.header.Width) + 1;\n            this.bytesPerSample = 1;\n            if (this.header.BitDepth >= 8)\n            {\n                this.bytesPerSample = this.header.BitDepth / 8;\n            }\n\n            this.previousScanline = this.memoryAllocator.Allocate<byte>(this.bytesPerScanline, AllocationOptions.Clean);\n            this.scanline = this.Configuration.MemoryAllocator.Allocate<byte>(this.bytesPerScanline, AllocationOptions.Clean);\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Calculates the correct number of bits per pixel for the given color type.\n/// </summary>\n/// <returns>The <see cref = \"int \"/></returns>",
+                    "signature": {
+                        "name": "CalculateBitsPerPixel",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            switch (this.pngColorType)\n            {\n                case PngColorType.Grayscale:\n                case PngColorType.Palette:\n                    return this.header.BitDepth;\n                case PngColorType.GrayscaleWithAlpha:\n                    return this.header.BitDepth * 2;\n                case PngColorType.Rgb:\n                    return this.header.BitDepth * 3;\n                case PngColorType.RgbWithAlpha:\n                    return this.header.BitDepth * 4;\n                default:\n                    PngThrowHelper.ThrowNotSupportedColor();\n                    return -1;\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Calculates the correct number of bytes per pixel for the given color type.\n/// </summary>\n/// <returns>The <see cref = \"int \"/></returns>",
+                    "signature": {
+                        "name": "CalculateBytesPerPixel",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            switch (this.pngColorType)\n            {\n                case PngColorType.Grayscale:\n                    return this.header.BitDepth == 16 ? 2 : 1;\n\n                case PngColorType.GrayscaleWithAlpha:\n                    return this.header.BitDepth == 16 ? 4 : 2;\n\n                case PngColorType.Palette:\n                    return 1;\n\n                case PngColorType.Rgb:\n                    return this.header.BitDepth == 16 ? 6 : 3;\n\n                case PngColorType.RgbWithAlpha:\n                default:\n                    return this.header.BitDepth == 16 ? 8 : 4;\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Calculates the scanline length.\n/// </summary>\n/// <param name = \"width\">The width of the row.</param>\n/// <returns>\n/// The <see cref = \"int \"/> representing the length.\n/// </returns>",
+                    "signature": {
+                        "name": "CalculateScanlineLength",
+                        "returns": "int",
+                        "params": [
+                            "int width"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            int mod = this.header.BitDepth == 16 ? 16 : 8;\n            int scanlineLength = width * this.header.BitDepth * this.bytesPerPixel;\n\n            int amount = scanlineLength % mod;\n            if (amount != 0)\n            {\n                scanlineLength += mod - amount;\n            }\n\n            return scanlineLength / mod;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the scanlines within the image.\n/// </summary>\n/// <typeparam name = \"TPixel\">The pixel format.</typeparam>\n/// <param name = \"chunk\">The png chunk containing the compressed scanline data.</param>\n/// <param name = \"image\"> The pixel data.</param>\n/// <param name = \"pngMetadata\">The png metadata</param>",
+                    "signature": {
+                        "name": "ReadScanlines",
+                        "returns": "void",
+                        "params": [
+                            "PngChunk chunk",
+                            "ImageFrame<TPixel> image",
+                            "PngMetadata pngMetadata"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            using (var deframeStream = new ZlibInflateStream(this.currentStream, this.ReadNextDataChunk))\n            {\n                deframeStream.AllocateNewBytes(chunk.Length, true);\n                DeflateStream dataStream = deframeStream.CompressedStream;\n\n                if (this.header.InterlaceMethod == PngInterlaceMode.Adam7)\n                {\n                    this.DecodeInterlacedPixelData(dataStream, image, pngMetadata);\n                }\n                else\n                {\n                    this.DecodePixelData(dataStream, image, pngMetadata);\n                }\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Decodes the raw pixel data row by row\n/// </summary>\n/// <typeparam name = \"TPixel\">The pixel format.</typeparam>\n/// <param name = \"compressedStream\">The compressed pixel data stream.</param>\n/// <param name = \"image\">The image to decode to.</param>\n/// <param name = \"pngMetadata\">The png metadata</param>",
+                    "signature": {
+                        "name": "DecodePixelData",
+                        "returns": "void",
+                        "params": [
+                            "DeflateStream compressedStream",
+                            "ImageFrame<TPixel> image",
+                            "PngMetadata pngMetadata"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            while (this.currentRow < this.header.Height)\n            {\n                Span<byte> scanlineSpan = this.scanline.GetSpan();\n                while (this.currentRowBytesRead < this.bytesPerScanline)\n                {\n                    int bytesRead = compressedStream.Read(scanlineSpan, this.currentRowBytesRead, this.bytesPerScanline - this.currentRowBytesRead);\n                    if (bytesRead <= 0)\n                    {\n                        return;\n                    }\n\n                    this.currentRowBytesRead += bytesRead;\n                }\n\n                this.currentRowBytesRead = 0;\n\n                switch ((FilterType)scanlineSpan[0])\n                {\n                    case FilterType.None:\n                        break;\n\n                    case FilterType.Sub:\n                        SubFilter.Decode(scanlineSpan, this.bytesPerPixel);\n                        break;\n\n                    case FilterType.Up:\n                        UpFilter.Decode(scanlineSpan, this.previousScanline.GetSpan());\n                        break;\n\n                    case FilterType.Average:\n                        AverageFilter.Decode(scanlineSpan, this.previousScanline.GetSpan(), this.bytesPerPixel);\n                        break;\n\n                    case FilterType.Paeth:\n                        PaethFilter.Decode(scanlineSpan, this.previousScanline.GetSpan(), this.bytesPerPixel);\n                        break;\n\n                    default:\n                        PngThrowHelper.ThrowUnknownFilter();\n                        break;\n                }\n\n                this.ProcessDefilteredScanline(scanlineSpan, image, pngMetadata);\n\n                this.SwapScanlineBuffers();\n                this.currentRow++;\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Decodes the raw interlaced pixel data row by row\n/// <see href=\"https://github.com/juehv/DentalImageViewer/blob/8a1a4424b15d6cc453b5de3f273daf3ff5e3a90d/DentalImageViewer/lib/jiu-0.14.3/net/sourceforge/jiu/codecs/PNGCodec.java\"/>\n/// </summary>\n/// <typeparam name = \"TPixel\">The pixel format.</typeparam>\n/// <param name = \"compressedStream\">The compressed pixel data stream.</param>\n/// <param name = \"image\">The current image.</param>\n/// <param name = \"pngMetadata\">The png metadata.</param>",
+                    "signature": {
+                        "name": "DecodeInterlacedPixelData",
+                        "returns": "void",
+                        "params": [
+                            "DeflateStream compressedStream",
+                            "ImageFrame<TPixel> image",
+                            "PngMetadata pngMetadata"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            int pass = 0;\n            int width = this.header.Width;\n            Buffer2D<TPixel> imageBuffer = image.PixelBuffer;\n            while (true)\n            {\n                int numColumns = Adam7.ComputeColumns(width, pass);\n\n                if (numColumns == 0)\n                {\n                    pass++;\n\n                    // This pass contains no data; skip to next pass\n                    continue;\n                }\n\n                int bytesPerInterlaceScanline = this.CalculateScanlineLength(numColumns) + 1;\n\n                while (this.currentRow < this.header.Height)\n                {\n                    while (this.currentRowBytesRead < bytesPerInterlaceScanline)\n                    {\n                        int bytesRead = compressedStream.Read(this.scanline.GetSpan(), this.currentRowBytesRead, bytesPerInterlaceScanline - this.currentRowBytesRead);\n                        if (bytesRead <= 0)\n                        {\n                            return;\n                        }\n\n                        this.currentRowBytesRead += bytesRead;\n                    }\n\n                    this.currentRowBytesRead = 0;\n\n                    Span<byte> scanSpan = this.scanline.Slice(0, bytesPerInterlaceScanline);\n                    Span<byte> prevSpan = this.previousScanline.Slice(0, bytesPerInterlaceScanline);\n\n                    switch ((FilterType)scanSpan[0])\n                    {\n                        case FilterType.None:\n                            break;\n\n                        case FilterType.Sub:\n                            SubFilter.Decode(scanSpan, this.bytesPerPixel);\n                            break;\n\n                        case FilterType.Up:\n                            UpFilter.Decode(scanSpan, prevSpan);\n                            break;\n\n                        case FilterType.Average:\n                            AverageFilter.Decode(scanSpan, prevSpan, this.bytesPerPixel);\n                            break;\n\n                        case FilterType.Paeth:\n                            PaethFilter.Decode(scanSpan, prevSpan, this.bytesPerPixel);\n                            break;\n\n                        default:\n                            PngThrowHelper.ThrowUnknownFilter();\n                            break;\n                    }\n\n                    Span<TPixel> rowSpan = imageBuffer.DangerousGetRowSpan(this.currentRow);\n                    this.ProcessInterlacedDefilteredScanline(this.scanline.GetSpan(), rowSpan, pngMetadata, Adam7.FirstColumn[pass], Adam7.ColumnIncrement[pass]);\n\n                    this.SwapScanlineBuffers();\n\n                    this.currentRow += Adam7.RowIncrement[pass];\n                }\n\n                pass++;\n                this.previousScanline.Clear();\n\n                if (pass < 7)\n                {\n                    this.currentRow = Adam7.FirstRow[pass];\n                }\n                else\n                {\n                    pass = 0;\n                    break;\n                }\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Processes the de-filtered scanline filling the image pixel data\n/// </summary>\n/// <typeparam name = \"TPixel\">The pixel format.</typeparam>\n/// <param name = \"defilteredScanline\">The de-filtered scanline</param>\n/// <param name = \"pixels\">The image</param>\n/// <param name = \"pngMetadata\">The png metadata.</param>",
+                    "signature": {
+                        "name": "ProcessDefilteredScanline",
+                        "returns": "void",
+                        "params": [
+                            "ReadOnlySpan<byte> defilteredScanline",
+                            "ImageFrame<TPixel> pixels",
+                            "PngMetadata pngMetadata"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            Span<TPixel> rowSpan = pixels.PixelBuffer.DangerousGetRowSpan(this.currentRow);\n\n            // Trim the first marker byte from the buffer\n            ReadOnlySpan<byte> trimmed = defilteredScanline.Slice(1, defilteredScanline.Length - 1);\n\n            // Convert 1, 2, and 4 bit pixel data into the 8 bit equivalent.\n            IMemoryOwner<byte> buffer = null;\n            try\n            {\n                ReadOnlySpan<byte> scanlineSpan = this.TryScaleUpTo8BitArray(\n                    trimmed,\n                    this.bytesPerScanline - 1,\n                    this.header.BitDepth,\n                    out buffer)\n                ? buffer.GetSpan()\n                : trimmed;\n\n                switch (this.pngColorType)\n                {\n                    case PngColorType.Grayscale:\n                        PngScanlineProcessor.ProcessGrayscaleScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pngMetadata.HasTransparency,\n                            pngMetadata.TransparentL16.GetValueOrDefault(),\n                            pngMetadata.TransparentL8.GetValueOrDefault());\n\n                        break;\n\n                    case PngColorType.GrayscaleWithAlpha:\n                        PngScanlineProcessor.ProcessGrayscaleWithAlphaScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            this.bytesPerPixel,\n                            this.bytesPerSample);\n\n                        break;\n\n                    case PngColorType.Palette:\n                        PngScanlineProcessor.ProcessPaletteScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            this.palette,\n                            this.paletteAlpha);\n\n                        break;\n\n                    case PngColorType.Rgb:\n                        PngScanlineProcessor.ProcessRgbScanline(\n                            this.Configuration,\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            this.bytesPerPixel,\n                            this.bytesPerSample,\n                            pngMetadata.HasTransparency,\n                            pngMetadata.TransparentRgb48.GetValueOrDefault(),\n                            pngMetadata.TransparentRgb24.GetValueOrDefault());\n\n                        break;\n\n                    case PngColorType.RgbWithAlpha:\n                        PngScanlineProcessor.ProcessRgbaScanline(\n                            this.Configuration,\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            this.bytesPerPixel,\n                            this.bytesPerSample);\n\n                        break;\n                }\n            }\n            finally\n            {\n                buffer?.Dispose();\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Processes the interlaced de-filtered scanline filling the image pixel data\n/// </summary>\n/// <typeparam name = \"TPixel\">The pixel format.</typeparam>\n/// <param name = \"defilteredScanline\">The de-filtered scanline</param>\n/// <param name = \"rowSpan\">The current image row.</param>\n/// <param name = \"pngMetadata\">The png metadata.</param>\n/// <param name = \"pixelOffset\">The column start index. Always 0 for none interlaced images.</param>\n/// <param name = \"increment\">The column increment. Always 1 for none interlaced images.</param>",
+                    "signature": {
+                        "name": "ProcessInterlacedDefilteredScanline",
+                        "returns": "void",
+                        "params": [
+                            "ReadOnlySpan<byte> defilteredScanline",
+                            "Span<TPixel> rowSpan",
+                            "PngMetadata pngMetadata",
+                            "int pixelOffset = 0",
+                            "int increment = 1"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": [
+                            "TPixel"
+                        ]
+                    },
+                    "code": "{\n            // Trim the first marker byte from the buffer\n            ReadOnlySpan<byte> trimmed = defilteredScanline.Slice(1, defilteredScanline.Length - 1);\n\n            // Convert 1, 2, and 4 bit pixel data into the 8 bit equivalent.\n            IMemoryOwner<byte> buffer = null;\n            try\n            {\n                ReadOnlySpan<byte> scanlineSpan = this.TryScaleUpTo8BitArray(\n                    trimmed,\n                    this.bytesPerScanline,\n                    this.header.BitDepth,\n                    out buffer)\n                ? buffer.GetSpan()\n                : trimmed;\n\n                switch (this.pngColorType)\n                {\n                    case PngColorType.Grayscale:\n                        PngScanlineProcessor.ProcessInterlacedGrayscaleScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pixelOffset,\n                            increment,\n                            pngMetadata.HasTransparency,\n                            pngMetadata.TransparentL16.GetValueOrDefault(),\n                            pngMetadata.TransparentL8.GetValueOrDefault());\n\n                        break;\n\n                    case PngColorType.GrayscaleWithAlpha:\n                        PngScanlineProcessor.ProcessInterlacedGrayscaleWithAlphaScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pixelOffset,\n                            increment,\n                            this.bytesPerPixel,\n                            this.bytesPerSample);\n\n                        break;\n\n                    case PngColorType.Palette:\n                        PngScanlineProcessor.ProcessInterlacedPaletteScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pixelOffset,\n                            increment,\n                            this.palette,\n                            this.paletteAlpha);\n\n                        break;\n\n                    case PngColorType.Rgb:\n                        PngScanlineProcessor.ProcessInterlacedRgbScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pixelOffset,\n                            increment,\n                            this.bytesPerPixel,\n                            this.bytesPerSample,\n                            pngMetadata.HasTransparency,\n                            pngMetadata.TransparentRgb48.GetValueOrDefault(),\n                            pngMetadata.TransparentRgb24.GetValueOrDefault());\n\n                        break;\n\n                    case PngColorType.RgbWithAlpha:\n                        PngScanlineProcessor.ProcessInterlacedRgbaScanline(\n                            this.header,\n                            scanlineSpan,\n                            rowSpan,\n                            pixelOffset,\n                            increment,\n                            this.bytesPerPixel,\n                            this.bytesPerSample);\n\n                        break;\n                }\n            }\n            finally\n            {\n                buffer?.Dispose();\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Decodes and assigns marker colors that identify transparent pixels in non indexed images.\n/// </summary>\n/// <param name = \"alpha\">The alpha tRNS array.</param>\n/// <param name = \"pngMetadata\">The png metadata.</param>",
+                    "signature": {
+                        "name": "AssignTransparentMarkers",
+                        "returns": "void",
+                        "params": [
+                            "ReadOnlySpan<byte> alpha",
+                            "PngMetadata pngMetadata"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.pngColorType == PngColorType.Rgb)\n            {\n                if (alpha.Length >= 6)\n                {\n                    if (this.header.BitDepth == 16)\n                    {\n                        ushort rc = BinaryPrimitives.ReadUInt16LittleEndian(alpha.Slice(0, 2));\n                        ushort gc = BinaryPrimitives.ReadUInt16LittleEndian(alpha.Slice(2, 2));\n                        ushort bc = BinaryPrimitives.ReadUInt16LittleEndian(alpha.Slice(4, 2));\n\n                        pngMetadata.TransparentRgb48 = new Rgb48(rc, gc, bc);\n                        pngMetadata.HasTransparency = true;\n                        return;\n                    }\n\n                    byte r = ReadByteLittleEndian(alpha, 0);\n                    byte g = ReadByteLittleEndian(alpha, 2);\n                    byte b = ReadByteLittleEndian(alpha, 4);\n                    pngMetadata.TransparentRgb24 = new Rgb24(r, g, b);\n                    pngMetadata.HasTransparency = true;\n                }\n            }\n            else if (this.pngColorType == PngColorType.Grayscale)\n            {\n                if (alpha.Length >= 2)\n                {\n                    if (this.header.BitDepth == 16)\n                    {\n                        pngMetadata.TransparentL16 = new L16(BinaryPrimitives.ReadUInt16LittleEndian(alpha.Slice(0, 2)));\n                    }\n                    else\n                    {\n                        pngMetadata.TransparentL8 = new L8(ReadByteLittleEndian(alpha, 0));\n                    }\n\n                    pngMetadata.HasTransparency = true;\n                }\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads a text chunk containing image properties from the data.\n/// </summary>\n/// <param name = \"metadata\">The metadata to decode to.</param>\n/// <param name = \"data\">The <see cref=\"T:Span\"/> containing the data.</param>",
+                    "signature": {
+                        "name": "ReadTextChunk",
+                        "returns": "void",
+                        "params": [
+                            "PngMetadata metadata",
+                            "ReadOnlySpan<byte> data"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.ignoreMetadata)\n            {\n                return;\n            }\n\n            int zeroIndex = data.IndexOf((byte)0);\n\n            // Keywords are restricted to 1 to 79 bytes in length.\n            if (zeroIndex < PngConstants.MinTextKeywordLength || zeroIndex > PngConstants.MaxTextKeywordLength)\n            {\n                return;\n            }\n\n            ReadOnlySpan<byte> keywordBytes = data.Slice(0, zeroIndex);\n            if (!this.TryReadTextKeyword(keywordBytes, out string name))\n            {\n                return;\n            }\n\n            string value = PngConstants.Encoding.GetString(data.Slice(zeroIndex + 1));\n\n            metadata.TextData.Add(new PngTextData(name, value, string.Empty, string.Empty));\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the compressed text chunk. Contains a uncompressed keyword and a compressed text string.\n/// </summary>\n/// <param name = \"metadata\">The metadata to decode to.</param>\n/// <param name = \"data\">The <see cref=\"T:Span\"/> containing the data.</param>",
+                    "signature": {
+                        "name": "ReadCompressedTextChunk",
+                        "returns": "void",
+                        "params": [
+                            "PngMetadata metadata",
+                            "ReadOnlySpan<byte> data"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.ignoreMetadata)\n            {\n                return;\n            }\n\n            int zeroIndex = data.IndexOf((byte)0);\n            if (zeroIndex < PngConstants.MinTextKeywordLength || zeroIndex > PngConstants.MaxTextKeywordLength)\n            {\n                return;\n            }\n\n            byte compressionMethod = data[zeroIndex + 1];\n            if (compressionMethod != 0)\n            {\n                // Only compression method 0 is supported (zlib datastream with deflate compression).\n                return;\n            }\n\n            ReadOnlySpan<byte> keywordBytes = data.Slice(0, zeroIndex);\n            if (!this.TryReadTextKeyword(keywordBytes, out string name))\n            {\n                return;\n            }\n\n            ReadOnlySpan<byte> compressedData = data.Slice(zeroIndex + 2);\n\n            if (this.TryUncompressTextData(compressedData, PngConstants.Encoding, out string uncompressed))\n            {\n                metadata.TextData.Add(new PngTextData(name, uncompressed, string.Empty, string.Empty));\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads a iTXt chunk, which contains international text data. It contains:\n/// - A uncompressed keyword.\n/// - Compression flag, indicating if a compression is used.\n/// - Compression method.\n/// - Language tag (optional).\n/// - A translated keyword (optional).\n/// - Text data, which is either compressed or uncompressed.\n/// </summary>\n/// <param name = \"metadata\">The metadata to decode to.</param>\n/// <param name = \"data\">The <see cref=\"T:Span\"/> containing the data.</param>",
+                    "signature": {
+                        "name": "ReadInternationalTextChunk",
+                        "returns": "void",
+                        "params": [
+                            "PngMetadata metadata",
+                            "ReadOnlySpan<byte> data"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.ignoreMetadata)\n            {\n                return;\n            }\n\n            int zeroIndexKeyword = data.IndexOf((byte)0);\n            if (zeroIndexKeyword < PngConstants.MinTextKeywordLength || zeroIndexKeyword > PngConstants.MaxTextKeywordLength)\n            {\n                return;\n            }\n\n            byte compressionFlag = data[zeroIndexKeyword + 1];\n            if (!(compressionFlag == 0 || compressionFlag == 1))\n            {\n                return;\n            }\n\n            byte compressionMethod = data[zeroIndexKeyword + 2];\n            if (compressionMethod != 0)\n            {\n                // Only compression method 0 is supported (zlib datastream with deflate compression).\n                return;\n            }\n\n            int langStartIdx = zeroIndexKeyword + 3;\n            int languageLength = data.Slice(langStartIdx).IndexOf((byte)0);\n            if (languageLength < 0)\n            {\n                return;\n            }\n\n            string language = PngConstants.LanguageEncoding.GetString(data.Slice(langStartIdx, languageLength));\n\n            int translatedKeywordStartIdx = langStartIdx + languageLength + 1;\n            int translatedKeywordLength = data.Slice(translatedKeywordStartIdx).IndexOf((byte)0);\n            string translatedKeyword = PngConstants.TranslatedEncoding.GetString(data.Slice(translatedKeywordStartIdx, translatedKeywordLength));\n\n            ReadOnlySpan<byte> keywordBytes = data.Slice(0, zeroIndexKeyword);\n            if (!this.TryReadTextKeyword(keywordBytes, out string keyword))\n            {\n                return;\n            }\n\n            int dataStartIdx = translatedKeywordStartIdx + translatedKeywordLength + 1;\n            if (compressionFlag == 1)\n            {\n                ReadOnlySpan<byte> compressedData = data.Slice(dataStartIdx);\n\n                if (this.TryUncompressTextData(compressedData, PngConstants.TranslatedEncoding, out string uncompressed))\n                {\n                    metadata.TextData.Add(new PngTextData(keyword, uncompressed, language, translatedKeyword));\n                }\n            }\n            else\n            {\n                string value = PngConstants.TranslatedEncoding.GetString(data.Slice(dataStartIdx));\n                metadata.TextData.Add(new PngTextData(keyword, value, language, translatedKeyword));\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Decompresses a byte array with zlib compressed text data.\n/// </summary>\n/// <param name = \"compressedData\">Compressed text data bytes.</param>\n/// <param name = \"encoding\">The string encoding to use.</param>\n/// <param name = \"value\">The uncompressed value.</param>\n/// <returns>The <see cref = \"bool \"/>.</returns>",
+                    "signature": {
+                        "name": "TryUncompressTextData",
+                        "returns": "bool",
+                        "params": [
+                            "ReadOnlySpan<byte> compressedData",
+                            "Encoding encoding",
+                            "out string value"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            using (var memoryStream = new MemoryStream(compressedData.ToArray()))\n            using (var bufferedStream = new BufferedReadStream(this.Configuration, memoryStream))\n            using (var inflateStream = new ZlibInflateStream(bufferedStream))\n            {\n                if (!inflateStream.AllocateNewBytes(compressedData.Length, false))\n                {\n                    value = null;\n                    return false;\n                }\n\n                var uncompressedBytes = new List<byte>();\n\n                // Note: this uses a buffer which is only 4 bytes long to read the stream, maybe allocating a larger buffer makes sense here.\n                int bytesRead = inflateStream.CompressedStream.Read(this.buffer, 0, this.buffer.Length);\n                while (bytesRead != 0)\n                {\n                    uncompressedBytes.AddRange(this.buffer.AsSpan(0, bytesRead).ToArray());\n                    bytesRead = inflateStream.CompressedStream.Read(this.buffer, 0, this.buffer.Length);\n                }\n\n                value = encoding.GetString(uncompressedBytes.ToArray());\n                return true;\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the next data chunk.\n/// </summary>\n/// <returns>Count of bytes in the next data chunk, or 0 if there are no more data chunks left.</returns>",
+                    "signature": {
+                        "name": "ReadNextDataChunk",
+                        "returns": "int",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.nextChunk != null)\n            {\n                return 0;\n            }\n\n            this.currentStream.Read(this.buffer, 0, 4);\n\n            if (this.TryReadChunk(out PngChunk chunk))\n            {\n                if (chunk.Type == PngChunkType.Data)\n                {\n                    return chunk.Length;\n                }\n\n                this.nextChunk = chunk;\n            }\n\n            return 0;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads a chunk from the stream.\n/// </summary>\n/// <param name = \"chunk\">The image format chunk.</param>\n/// <returns>\n/// The <see cref = \"PngChunk\"/>.\n/// </returns>",
+                    "signature": {
+                        "name": "TryReadChunk",
+                        "returns": "bool",
+                        "params": [
+                            "out PngChunk chunk"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.nextChunk != null)\n            {\n                chunk = this.nextChunk.Value;\n\n                this.nextChunk = null;\n\n                return true;\n            }\n\n            if (!this.TryReadChunkLength(out int length))\n            {\n                chunk = default;\n\n                // IEND\n                return false;\n            }\n\n            while (length < 0 || length > (this.currentStream.Length - this.currentStream.Position))\n            {\n                // Not a valid chunk so try again until we reach a known chunk.\n                if (!this.TryReadChunkLength(out length))\n                {\n                    chunk = default;\n\n                    return false;\n                }\n            }\n\n            PngChunkType type = this.ReadChunkType();\n\n            // NOTE: Reading the chunk data is the responsible of the caller\n            if (type == PngChunkType.Data)\n            {\n                chunk = new PngChunk(length, type);\n\n                return true;\n            }\n\n            chunk = new PngChunk(\n                length: length,\n                type: type,\n                data: this.ReadChunkData(length));\n\n            this.ValidateChunk(chunk);\n\n            return true;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Validates the png chunk.\n/// </summary>\n/// <param name = \"chunk\">The <see cref = \"PngChunk\"/>.</param>",
+                    "signature": {
+                        "name": "ValidateChunk",
+                        "returns": "void",
+                        "params": [
+                            "in PngChunk chunk"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            uint inputCrc = this.ReadChunkCrc();\n\n            if (chunk.IsCritical)\n            {\n                Span<byte> chunkType = stackalloc byte[4];\n                BinaryPrimitives.WriteUInt32BigEndian(chunkType, (uint)chunk.Type);\n\n                uint validCrc = Crc32.Calculate(chunkType);\n                validCrc = Crc32.Calculate(validCrc, chunk.Data.GetSpan());\n\n                if (validCrc != inputCrc)\n                {\n                    string chunkTypeName = Encoding.ASCII.GetString(chunkType);\n                    PngThrowHelper.ThrowInvalidChunkCrc(chunkTypeName);\n                }\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the cycle redundancy chunk from the data.\n/// </summary>",
+                    "signature": {
+                        "name": "ReadChunkCrc",
+                        "returns": "uint",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            uint crc = 0;\n            if (this.currentStream.Read(this.buffer, 0, 4) == 4)\n            {\n                crc = BinaryPrimitives.ReadUInt32BigEndian(this.buffer);\n            }\n\n            return crc;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Skips the chunk data and the cycle redundancy chunk read from the data.\n/// </summary>\n/// <param name = \"chunk\">The image format chunk.</param>",
+                    "signature": {
+                        "name": "SkipChunkDataAndCrc",
+                        "returns": "void",
+                        "params": [
+                            "in PngChunk chunk"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            this.currentStream.Skip(chunk.Length);\n            this.currentStream.Skip(4);\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Reads the chunk data from the stream.\n/// </summary>\n/// <param name = \"length\">The length of the chunk data to read.</param>",
+                    "signature": {
+                        "name": "ReadChunkData",
+                        "returns": "IMemoryOwner<byte>",
+                        "params": [
+                            "int length"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            // We rent the buffer here to return it afterwards in Decode()\n            IMemoryOwner<byte> buffer = this.Configuration.MemoryAllocator.Allocate<byte>(length, AllocationOptions.Clean);\n\n            this.currentStream.Read(buffer.GetSpan(), 0, length);\n\n            return buffer;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Identifies the chunk type from the chunk.\n/// </summary>\n/// <exception cref = \"ImageFormatException\">\n/// Thrown if the input stream is not valid.\n/// </exception>",
+                    "signature": {
+                        "name": "ReadChunkType",
+                        "returns": "PngChunkType",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.currentStream.Read(this.buffer, 0, 4) == 4)\n            {\n                return (PngChunkType)BinaryPrimitives.ReadUInt32BigEndian(this.buffer);\n            }\n            else\n            {\n                PngThrowHelper.ThrowInvalidChunkType();\n\n                // The IDE cannot detect the throw here.\n                return default;\n            }\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Attempts to read the length of the next chunk.\n/// </summary>\n/// <returns>\n/// Whether the length was read.\n/// </returns>",
+                    "signature": {
+                        "name": "TryReadChunkLength",
+                        "returns": "bool",
+                        "params": [
+                            "out int result"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [
+                            "MethodImpl"
+                        ],
+                        "generics": []
+                    },
+                    "code": "{\n            if (this.currentStream.Read(this.buffer, 0, 4) == 4)\n            {\n                result = BinaryPrimitives.ReadInt32BigEndian(this.buffer);\n\n                return true;\n            }\n\n            result = default;\n            return false;\n        }"
+                },
+                {
+                    "doc": "/// <summary>\n/// Tries to reads a text chunk keyword, which have some restrictions to be valid:\n/// Keywords shall contain only printable Latin-1 characters and should not have leading or trailing whitespace.\n/// See: https://www.w3.org/TR/PNG/#11zTXt\n/// </summary>\n/// <param name = \"keywordBytes\">The keyword bytes.</param>\n/// <param name = \"name\">The name.</param>\n/// <returns>True, if the keyword could be read and is valid.</returns>",
+                    "signature": {
+                        "name": "TryReadTextKeyword",
+                        "returns": "bool",
+                        "params": [
+                            "ReadOnlySpan<byte> keywordBytes",
+                            "out string name"
+                        ],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            name = string.Empty;\n\n            // Keywords shall contain only printable Latin-1.\n            foreach (byte c in keywordBytes)\n            {\n                if (!((c >= 32 && c <= 126) || (c >= 161 && c <= 255)))\n                {\n                    return false;\n                }\n            }\n\n            // Keywords should not be empty or have leading or trailing whitespace.\n            name = PngConstants.Encoding.GetString(keywordBytes);\n            if (string.IsNullOrWhiteSpace(name) || name.StartsWith(\" \") || name.EndsWith(\" \"))\n            {\n                return false;\n            }\n\n            return true;\n        }"
+                },
+                {
+                    "doc": "",
+                    "signature": {
+                        "name": "SwapScanlineBuffers",
+                        "returns": "void",
+                        "params": [],
+                        "modifier": [
+                            "private"
+                        ],
+                        "annotations": [],
+                        "generics": []
+                    },
+                    "code": "{\n            IMemoryOwner<byte> temp = this.previousScanline;\n            this.previousScanline = this.scanline;\n            this.scanline = temp;\n        }"
+                }
+            ],
+            "variables": [
+                "/// <summary>\n/// Reusable buffer.\n/// </summary>\nprivate readonly byte[] buffer = new byte[4];",
+                "/// <summary>\n/// Gets or sets a value indicating whether the metadata should be ignored when the image is being decoded.\n/// </summary>\nprivate readonly bool ignoreMetadata;",
+                "/// <summary>\n/// Used the manage memory allocations.\n/// </summary>\nprivate readonly MemoryAllocator memoryAllocator;",
+                "/// <summary>\n/// The stream to decode from.\n/// </summary>\nprivate BufferedReadStream currentStream;",
+                "/// <summary>\n/// The png header.\n/// </summary>\nprivate PngHeader header;",
+                "/// <summary>\n/// The number of bytes per pixel.\n/// </summary>\nprivate int bytesPerPixel;",
+                "/// <summary>\n/// The number of bytes per sample.\n/// </summary>\nprivate int bytesPerSample;",
+                "/// <summary>\n/// The number of bytes per scanline.\n/// </summary>\nprivate int bytesPerScanline;",
+                "/// <summary>\n/// The palette containing color information for indexed png's.\n/// </summary>\nprivate byte[] palette;",
+                "/// <summary>\n/// The palette containing alpha channel color information for indexed png's.\n/// </summary>\nprivate byte[] paletteAlpha;",
+                "/// <summary>\n/// A value indicating whether the end chunk has been reached.\n/// </summary>\nprivate bool isEndChunkReached;",
+                "/// <summary>\n/// Previous scanline processed.\n/// </summary>\nprivate IMemoryOwner<byte> previousScanline;",
+                "/// <summary>\n/// The current scanline that is being processed.\n/// </summary>\nprivate IMemoryOwner<byte> scanline;",
+                "/// <summary>\n/// The index of the current scanline being processed.\n/// </summary>\nprivate int currentRow = Adam7.FirstRow[0];",
+                "/// <summary>\n/// The current number of bytes read in the current scanline.\n/// </summary>\nprivate int currentRowBytesRead;",
+                "/// <summary>\n/// Gets or sets the png color type.\n/// </summary>\nprivate PngColorType pngColorType;",
+                "/// <summary>\n/// The next chunk of data to return.\n/// </summary>\nprivate PngChunk? nextChunk;"
+            ],
+            "generics": [],
+            "imports": [
+                "using System;",
+                "using System.Buffers;",
+                "using System.Buffers.Binary;",
+                "using System.Collections.Generic;",
+                "using System.IO;",
+                "using System.IO.Compression;",
+                "using System.Runtime.CompilerServices;",
+                "using System.Runtime.InteropServices;",
+                "using System.Text;",
+                "using System.Threading;",
+                "using SixLabors.ImageSharp.Compression.Zlib;",
+                "using SixLabors.ImageSharp.Formats.Png.Chunks;",
+                "using SixLabors.ImageSharp.Formats.Png.Filters;",
+                "using SixLabors.ImageSharp.IO;",
+                "using SixLabors.ImageSharp.Memory;",
+                "using SixLabors.ImageSharp.Metadata;",
+                "using SixLabors.ImageSharp.Metadata.Profiles.Exif;",
+                "using SixLabors.ImageSharp.PixelFormats;"
+            ],
+            "constructors": [
+                "/// <summary>\n/// Initializes a new instance of the <see cref = \"PngDecoderCore\"/> class.\n/// </summary>\n/// <param name = \"configuration\">The configuration.</param>\n/// <param name = \"options\">The decoder options.</param>\npublic PngDecoderCore(Configuration configuration, IPngDecoderOptions options)\r\n{\r\n    this.Configuration = configuration ?? Configuration.Default;\r\n    this.memoryAllocator = this.Configuration.MemoryAllocator;\r\n    this.ignoreMetadata = options.IgnoreMetadata;\r\n}"
+            ],
+            "extends": "IImageDecoderInternals",
+            "implements": [],
+            "namespace": "SixLabors.ImageSharp.Formats.Png"
+        },
+        "code": "{\n            this.header = PngHeader.Parse(data);\n\n            this.header.Validate();\n\n            pngMetadata.BitDepth = (PngBitDepth)this.header.BitDepth;\n            pngMetadata.ColorType = this.header.ColorType;\n            pngMetadata.InterlaceMethod = this.header.InterlaceMethod;\n\n            this.pngColorType = this.header.ColorType;\n        }",
+        "code_file_path": "ImageSharp/PngDecoder.cs",
+        "called_functions": [
+            "PngHeader.Parse(data)",
+            "this.header.Validate()"
+        ],
+        "id": 1118,
+        "tests": [
+            {
+                "tests": "using ImageSharp;\r\n\r\nnamespace ImageSharpIsolated.Tests\r\n{\r\n    public class PngDecoderTests\r\n    {\r\n        [Fact]\r\n        public void Test1()\r\n        {\r\n            var decoder = new PngDecoder();\r\n            decoder.ReadHeaderChunk([]);\r\n        }\r\n    }\r\n}",
+                "test_imports": [
+                    "using ImageSharp;"
+                ],
+                "test_namespace": "ImageSharpIsolated.Tests",
+                "test_class_name": "PngDecoderTests",
+                "test_file_path": "ImageSharpIsolated.Tests/PngDecoderTests.cs",
+                "test_runner": "xUnit",
+                "project_path": "ImageSharpIsolated.Tests/ImageSharpIsolated.Tests.csproj"
+            }
+        ],
+        "results": {
+            "(code, new_tests)": [
+                [],
+                [],
+                []
+            ],
+            "(new_code, new_tests)": [
+                [],
+                [],
+                []
+            ]
+        },
+        "new_tests": "using ImageSharp;\nusing ImageSharp.Formats; // If PngMetadata is defined in a specific namespace related to formats\nusing Xunit; // For the [Fact] attribute and Assert class\nusing ImageSharp; // Assuming this is where PngMetadata and PngDecoderCore are defined\nusing System;\nusing System.IO;\n\nnamespace ImageSharpIsolated.Tests\n{\n\npublic class PngDecoderTests\n{\n    [Fact]\n    public void ReadHeaderChunk_Test_1()\n{\n    // Arrange\n    var pngMetadata = new PngMetadata();\n    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });\n    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());\n\n    // Act\n    decoder.ReadHeaderChunk(pngMetadata, data);\n\n    // Assert\n    Assert.NotNull(pngMetadata);\n    Assert.Equal(expectedWidth, pngMetadata.Width);\n    Assert.Equal(expectedHeight, pngMetadata.Height);\n    Assert.Equal(expectedColorType, pngMetadata.ColorType);\n}\n\n[Fact]\npublic void ReadHeaderChunk_InvalidData_ThrowsException()\n{\n    // Arrange\n    var pngMetadata = new PngMetadata();\n    var data = new ReadOnlySpan<byte>(new byte[] { /* invalid header data */ });\n    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());\n\n    // Act & Assert\n    Assert.Throws<InvalidDataException>(() => decoder.ReadHeaderChunk(pngMetadata, data));\n}\n\n[Fact]\npublic void ReadHeaderChunk_EmptyData_ThrowsException()\n{\n    // Arrange\n    var pngMetadata = new PngMetadata();\n    var data = ReadOnlySpan<byte>.Empty;\n    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());\n\n    // Act & Assert\n    Assert.Throws<ArgumentException>(() => decoder.ReadHeaderChunk(pngMetadata, data));\n}\n\n[Fact]\npublic void ReadHeaderChunk_ValidData_SetsMetadataCorrectly()\n{\n    // Arrange\n    var pngMetadata = new PngMetadata();\n    var data = new ReadOnlySpan<byte>(new byte[] { /* valid header data */ });\n    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());\n\n    // Act\n    decoder.ReadHeaderChunk(pngMetadata, data);\n\n    // Assert\n    Assert.Equal(expectedBitDepth, pngMetadata.BitDepth);\n    Assert.Equal(expectedColorType, pngMetadata.ColorType);\n    Assert.Equal(expectedCompressionMethod, pngMetadata.CompressionMethod);\n    Assert.Equal(expectedFilterMethod, pngMetadata.FilterMethod);\n    Assert.Equal(expectedInterlaceMethod, pngMetadata.InterlaceMethod);\n}\n\n[Fact]\npublic void ReadHeaderChunk_ValidInterlacedData_SetsInterlaceMethod()\n{\n    // Arrange\n    var pngMetadata = new PngMetadata();\n    var data = new ReadOnlySpan<byte>(new byte[] { /* valid interlaced header data */ });\n    var decoder = new PngDecoderCore(Configuration.Default, new PngDecoderOptions());\n\n    // Act\n    decoder.ReadHeaderChunk(pngMetadata, data);\n\n    // Assert\n    Assert.Equal(PngInterlaceMethod.Adam7, pngMetadata.InterlaceMethod);\n}}}",
+        "new_code": "{\n    // Read the width and height from the data\n    int width = BinaryPrimitives.ReadInt32LittleEndian(data.Slice(0, 4));\n    int height = BinaryPrimitives.ReadInt32LittleEndian(data.Slice(4, 4));\n\n    // Read the bit depth and color type\n    byte bitDepth = data[8];\n    byte colorType = data[9];\n\n    // Set the metadata properties\n    pngMetadata.Width = width;\n    pngMetadata.Height = height;\n    pngMetadata.BitDepth = bitDepth;\n    pngMetadata.ColorType = (PngColorType)colorType;\n\n    // Calculate bytes per pixel based on color type\n    this.bytesPerPixel = CalculateBytesPerPixel();\n    this.bytesPerScanline = CalculateScanlineLength(width);\n\n    // Initialize palette if the color type is indexed\n    if (pngMetadata.ColorType == PngColorType.Indexed)\n    {\n        this.palette = new byte[256 * 3]; // 256 colors, 3 bytes each (RGB)\n        this.paletteAlpha = new byte[256]; // Alpha values for the palette\n    }\n\n    // Set the initial state for processing scanlines\n    this.currentRow = 0;\n    this.currentRowBytesRead = 0;\n    this.previousScanline?.Dispose();\n    this.previousScanline = memoryAllocator.Allocate<byte>(this.bytesPerScanline);\n}"
+    }
+]
