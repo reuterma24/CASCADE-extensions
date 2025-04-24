@@ -23,13 +23,13 @@ Use this command to either inject a generated method or a generated test suite i
 The parameter projectDir is expected to point to the project root file (top-level directory, not the .sln file).  
 The parameter contextFilePath has to point to an context file that contains a single sample (called entry.json in CASCADE).  
 The parameters codeKeyword has to be set to 'new_code' if the method from the context file should be injected. Otherwise set to 'code'.  
-The parameters testKeyword has to be set to 'new_test' if the method from the context file should be injected. Otherwise set to 'test'.
+The parameters testKeyword has to be set to 'new_test' if the test suite from the context file should be injected. Otherwise set to 'test'.
 ```bash
 cSharpTool modify <projectDir> <contextFilePath> <codeKeyword> <testKeyword>
 ```
 &nbsp;  
 3. **verify**  
-Use this command to verify if an C\# file is syntactically correct. The program will return a verification result of 0 if valid, -1 otherwise.  
+Use this command to verify if a C\# file is syntactically correct. The program will return a verification result of 0 if valid, -1 otherwise.  
 The parameter filepath should point to a C\# file.
 ```bash
 cSharpTool verify <filepath>
