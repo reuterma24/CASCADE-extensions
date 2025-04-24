@@ -34,4 +34,3 @@ The parameter filepath should point to a C\# file.
 ```bash
 cSharpTool verify <filepath>
 ```
-&nbsp;  
