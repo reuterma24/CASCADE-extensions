@@ -21,7 +21,7 @@ cSharpTool extract <projectPath> <outputPath> <targetFramework>
 2. **modify**  
 Use this command to either inject a generated method or a generated test suite into the project.
 The parameter projectDir is expected to point to the project root file (top-level directory, not the .sln file).  
-The parameter contextFilePath has to point to an context file that contains a single sample (called entry.json in CASCADE).  
+The parameter contextFilePath has to point to an context file that contains a single sample (called entry.json in Kiecker et al.'s approach).  
 The parameters codeKeyword has to be set to 'new_code' if the method from the context file should be injected. Otherwise set to 'code'.  
 The parameters testKeyword has to be set to 'new_test' if the test suite from the context file should be injected. Otherwise set to 'test'.
 ```bash
